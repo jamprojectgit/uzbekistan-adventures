@@ -1,0 +1,85 @@
+{
+  "nav": {
+    "home": "Home",
+    "tours": "Tours",
+    "cities": "Cities",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "admin": "Admin",
+    "myBookings": "My Bookings"
+  },
+  "home": {
+    "heroTitle": "Discover Uzbekistan",
+    "heroSubtitle": "Explore ancient cities, stunning architecture, and vibrant culture",
+    "searchPlaceholder": "Search tours...",
+    "featuredTours": "Featured Tours",
+    "popularCities": "Popular Cities",
+    "ctaTitle": "Ready for an Adventure?",
+    "ctaSubtitle": "Book your dream tour in Uzbekistan today",
+    "ctaButton": "Explore Tours",
+    "viewAll": "View All"
+  },
+  "tours": {
+    "title": "All Tours",
+    "filterByCity": "Filter by City",
+    "allCities": "All Cities",
+    "priceRange": "Price Range",
+    "duration": "Duration",
+    "days": "days",
+    "day": "day",
+    "perPerson": "per person",
+    "bookNow": "Book Now",
+    "noTours": "No tours found",
+    "included": "What's Included",
+    "excluded": "Not Included",
+    "itinerary": "Itinerary",
+    "from": "From"
+  },
+  "cities": {
+    "title": "Explore Cities",
+    "viewTours": "View Tours"
+  },
+  "booking": {
+    "title": "Book This Tour",
+    "date": "Select Date",
+    "participants": "Participants",
+    "totalPrice": "Total Price",
+    "submit": "Confirm Booking",
+    "success": "Booking confirmed!",
+    "loginRequired": "Please login to book a tour",
+    "myBookings": "My Bookings",
+    "status": "Status",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "cancelled": "Cancelled",
+    "noBookings": "No bookings yet"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full Name",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "checkEmail": "Check your email for a confirmation link"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "tours": "Tours",
+    "cities": "Cities",
+    "bookings": "Bookings",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirmDelete": "Are you sure?"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "back": "Back"
+  }
+}
