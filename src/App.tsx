@@ -15,6 +15,8 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminTours from "./pages/admin/AdminTours";
 import AdminCities from "./pages/admin/AdminCities";
 import AdminBookings from "./pages/admin/AdminBookings";
+import Transfers from "./pages/Transfers";
+import TrainTickets from "./pages/TrainTickets";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +34,8 @@ const App = () => (
             <Route path="/tours/:slug" element={<TourDetail />} />
             <Route path="/cities" element={<Cities />} />
             <Route path="/my-bookings" element={<MyBookings />} />
+            <Route path="/transfers" element={<Transfers />} />
+            <Route path="/train-tickets" element={<TrainTickets />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/admin" element={<AdminLayout />}>

@@ -156,6 +156,172 @@ export type Database = {
           },
         ]
       }
+      train_ticket_requests: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          passengers: number
+          phone: string
+          status: string
+          train_ticket_id: string
+          travel_date: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          passengers?: number
+          phone: string
+          status?: string
+          train_ticket_id: string
+          travel_date: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          passengers?: number
+          phone?: string
+          status?: string
+          train_ticket_id?: string
+          travel_date?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "train_ticket_requests_train_ticket_id_fkey"
+            columns: ["train_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "train_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      train_tickets: {
+        Row: {
+          created_at: string
+          description: Json
+          duration: number
+          id: string
+          price_from: number
+          route: Json
+          status: string
+          train_type: Json
+        }
+        Insert: {
+          created_at?: string
+          description?: Json
+          duration?: number
+          id?: string
+          price_from?: number
+          route?: Json
+          status?: string
+          train_type?: Json
+        }
+        Update: {
+          created_at?: string
+          description?: Json
+          duration?: number
+          id?: string
+          price_from?: number
+          route?: Json
+          status?: string
+          train_type?: Json
+        }
+        Relationships: []
+      }
+      transfer_bookings: {
+        Row: {
+          created_at: string
+          dropoff_address: string | null
+          id: string
+          passengers: number
+          phone: string | null
+          pickup_address: string | null
+          pickup_date: string
+          pickup_time: string
+          status: string
+          transfer_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dropoff_address?: string | null
+          id?: string
+          passengers?: number
+          phone?: string | null
+          pickup_address?: string | null
+          pickup_date: string
+          pickup_time: string
+          status?: string
+          transfer_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dropoff_address?: string | null
+          id?: string
+          passengers?: number
+          phone?: string | null
+          pickup_address?: string | null
+          pickup_date?: string
+          pickup_time?: string
+          status?: string
+          transfer_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transfer_bookings_transfer_id_fkey"
+            columns: ["transfer_id"]
+            isOneToOne: false
+            referencedRelation: "transfers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      transfers: {
+        Row: {
+          car_type: Json
+          created_at: string
+          description: Json
+          id: string
+          image: string | null
+          price: number
+          route: Json
+          status: string
+        }
+        Insert: {
+          car_type?: Json
+          created_at?: string
+          description?: Json
+          id?: string
+          image?: string | null
+          price?: number
+          route?: Json
+          status?: string
+        }
+        Update: {
+          car_type?: Json
+          created_at?: string
+          description?: Json
+          id?: string
+          image?: string | null
+          price?: number
+          route?: Json
+          status?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
