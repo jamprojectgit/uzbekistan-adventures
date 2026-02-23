@@ -19,6 +19,8 @@ const Navbar = () => {
       <Link to="/" className="hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>{t('nav.home')}</Link>
       <Link to="/tours" className="hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>{t('nav.tours')}</Link>
       <Link to="/cities" className="hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>{t('nav.cities')}</Link>
+      <Link to="/transfers" className="hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>{t('nav.transfers')}</Link>
+      <Link to="/train-tickets" className="hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>{t('nav.trainTickets')}</Link>
       {user && (
         <Link to="/my-bookings" className="hover:text-primary transition-colors" onClick={() => setMobileOpen(false)}>{t('nav.myBookings')}</Link>
       )}

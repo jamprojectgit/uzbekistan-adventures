@@ -8,9 +8,11 @@ import CityCard from '@/components/CityCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Search } from 'lucide-react';
+import { Search, Car, Train } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { getLocalizedText } from '@/lib/i18n-utils';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Index = () => {
   const { t } = useTranslation();
@@ -32,6 +34,24 @@ const Index = () => {
     queryKey: ['cities'],
     queryFn: async () => {
       const { data, error } = await supabase.from('cities').select('*').limit(6);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: transfers, isLoading: transfersLoading } = useQuery({
+    queryKey: ['home-transfers'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('transfers').select('*').limit(4);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: trainTickets, isLoading: trainTicketsLoading } = useQuery({
+    queryKey: ['home-train-tickets'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('train_tickets').select('*').limit(4);
       if (error) throw error;
       return data;
     },
@@ -119,6 +139,80 @@ const Index = () => {
             </div>
           ) : (
             <p className="text-muted-foreground text-center py-12">{t('tours.noTours')}</p>
+          )}
+        </div>
+      </section>
+
+      {/* Transfers Section */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold">{t('home.transfers')}</h2>
+          <Button variant="ghost" asChild><Link to="/transfers">{t('home.viewAll')} →</Link></Button>
+        </div>
+        <p className="text-muted-foreground mb-6">{t('home.transfersSubtitle')}</p>
+        {transfersLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1,2,3].map(i => <Skeleton key={i} className="h-48 rounded-lg" />)}
+          </div>
+        ) : transfers && transfers.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {transfers.map((transfer) => (
+              <Card key={transfer.id}>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Car className="h-4 w-4 text-primary" />
+                    {getLocalizedText(transfer.route)}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pb-2">
+                  <p className="text-sm text-muted-foreground">{getLocalizedText(transfer.car_type)}</p>
+                </CardContent>
+                <CardFooter className="flex justify-between items-center">
+                  <span className="font-bold text-primary">${transfer.price}</span>
+                  <Button size="sm" asChild><Link to="/transfers">{t('transfers.book')}</Link></Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted-foreground text-center py-8">{t('transfers.noTransfers')}</p>
+        )}
+      </section>
+
+      {/* Train Tickets Section */}
+      <section className="bg-muted py-16">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold">{t('home.trainTickets')}</h2>
+            <Button variant="ghost" asChild><Link to="/train-tickets">{t('home.viewAll')} →</Link></Button>
+          </div>
+          <p className="text-muted-foreground mb-6">{t('home.trainTicketsSubtitle')}</p>
+          {trainTicketsLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[1,2,3].map(i => <Skeleton key={i} className="h-48 rounded-lg" />)}
+            </div>
+          ) : trainTickets && trainTickets.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {trainTickets.map((ticket) => (
+                <Card key={ticket.id}>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base flex items-center gap-2">
+                      <Train className="h-4 w-4 text-primary" />
+                      {getLocalizedText(ticket.route)}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pb-2">
+                    <p className="text-sm text-muted-foreground">{getLocalizedText(ticket.train_type)}</p>
+                  </CardContent>
+                  <CardFooter className="flex justify-between items-center">
+                    <span className="font-bold text-primary">{t('tours.from')} ${ticket.price_from}</span>
+                    <Button size="sm" asChild><Link to="/train-tickets">{t('trainTickets.submitRequest')}</Link></Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <p className="text-muted-foreground text-center py-8">{t('trainTickets.noTickets')}</p>
           )}
         </div>
       </section>
