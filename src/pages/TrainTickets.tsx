@@ -14,6 +14,7 @@ import { Train, Clock, DollarSign } from 'lucide-react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import TrainSchedule from '@/components/TrainSchedule';
 
 const TrainTickets = () => {
   const { t } = useTranslation();
@@ -153,6 +154,8 @@ const TrainTickets = () => {
           <p className="text-muted-foreground text-center py-12">{t('trainTickets.noTickets')}</p>
         )}
       </section>
+
+      <TrainSchedule />
     </Layout>
   );
 };

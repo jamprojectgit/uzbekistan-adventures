@@ -70,7 +70,9 @@
     "send": "Send Request",
     "requestSuccess": "Request submitted successfully! We'll contact you soon.",
     "noTickets": "No train routes available",
-    "hours": "hours"
+    "hours": "hours",
+    "scheduleTitle": "Train Schedule",
+    "scheduleSubtitle": "Afrosiyob and Sharq train timetables between major cities"
   },
   "booking": {
     "title": "Book This Tour",
