@@ -10,14 +10,17 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
-import { useState } from 'react';
-import { Pencil, Trash2, Plus } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Pencil, Trash2, Plus, Upload, X, ImageIcon } from 'lucide-react';
 
 const AdminTours = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
+  const [images, setImages] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState({
     title_en: '', title_ru: '',
@@ -45,6 +48,31 @@ const AdminTours = () => {
     },
   });
 
+  const uploadImages = async (files: FileList) => {
+    setUploading(true);
+    const newUrls: string[] = [];
+    try {
+      for (const file of Array.from(files)) {
+        const ext = file.name.split('.').pop();
+        const path = `${crypto.randomUUID()}.${ext}`;
+        const { error } = await supabase.storage.from('tour-images').upload(path, file);
+        if (error) throw error;
+        const { data: urlData } = supabase.storage.from('tour-images').getPublicUrl(path);
+        newUrls.push(urlData.publicUrl);
+      }
+      setImages(prev => [...prev, ...newUrls]);
+      toast.success(`${newUrls.length} фото загружено`);
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImages(prev => prev.filter((_, i) => i !== index));
+  };
+
   const saveMutation = useMutation({
     mutationFn: async () => {
       const payload = {
@@ -54,6 +82,7 @@ const AdminTours = () => {
         price: form.price,
         duration: form.duration,
         city_id: form.city_id || null,
+        images,
       };
       if (editing) {
         const { error } = await supabase.from('tours').update(payload).eq('id', editing.id);
@@ -83,6 +112,7 @@ const AdminTours = () => {
 
   const resetForm = () => {
     setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', price: 0, duration: 1, city_id: '' });
+    setImages([]);
     setEditing(null);
   };
 
@@ -96,6 +126,7 @@ const AdminTours = () => {
       price: tour.price, duration: tour.duration,
       city_id: tour.city_id || '',
     });
+    setImages(tour.images || []);
     setEditing(tour);
     setOpen(true);
   };
@@ -131,6 +162,46 @@ const AdminTours = () => {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Images upload */}
+              <div>
+                <Label>Фото</Label>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  onChange={(e) => e.target.files && uploadImages(e.target.files)}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full mt-1"
+                  disabled={uploading}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  {uploading ? 'Загрузка...' : 'Загрузить фото'}
+                </Button>
+                {images.length > 0 && (
+                  <div className="grid grid-cols-3 gap-2 mt-2">
+                    {images.map((url, i) => (
+                      <div key={i} className="relative group aspect-square rounded-md overflow-hidden border">
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(i)}
+                          className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <div className="flex gap-2 pt-2">
                 <Button type="submit" disabled={saveMutation.isPending}>{t('admin.save')}</Button>
                 <Button type="button" variant="outline" onClick={() => { setOpen(false); resetForm(); }}>{t('admin.cancel')}</Button>
@@ -144,6 +215,7 @@ const AdminTours = () => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>Фото</TableHead>
               <TableHead>Title</TableHead>
               <TableHead>Slug</TableHead>
               <TableHead>Price</TableHead>
@@ -154,6 +226,13 @@ const AdminTours = () => {
           <TableBody>
             {tours?.map(tour => (
               <TableRow key={tour.id}>
+                <TableCell>
+                  {tour.images && tour.images.length > 0 ? (
+                    <img src={tour.images[0]} alt="" className="h-10 w-10 rounded object-cover" />
+                  ) : (
+                    <ImageIcon className="h-10 w-10 text-muted-foreground" />
+                  )}
+                </TableCell>
                 <TableCell>{(tour.title as any)?.en || ''}</TableCell>
                 <TableCell>{tour.slug}</TableCell>
                 <TableCell>${tour.price}</TableCell>
