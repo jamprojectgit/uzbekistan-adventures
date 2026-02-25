@@ -24,7 +24,8 @@
     "ctaTitle": "Ready for an Adventure?",
     "ctaSubtitle": "Book your dream tour in Uzbekistan today",
     "ctaButton": "Explore Tours",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "toursByCity": "Tours by City"
   },
   "tours": {
     "title": "All Tours",
