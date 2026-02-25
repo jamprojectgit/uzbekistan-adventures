@@ -99,6 +99,28 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Tours by City */}
+      <section className="container mx-auto px-4 py-16">
+        <h2 className="text-2xl md:text-3xl font-bold mb-8">{t('home.toursByCity')}</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {[
+            { name: { en: 'Samarkand', ru: 'Самарканд' }, slug: 'samarkand', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/images/IMG_9801.JPG' },
+            { name: { en: 'Bukhara', ru: 'Бухара' }, slug: 'bukhara', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/Bukhara/Screenshot%202024-07-30%20135255.jpg' },
+            { name: { en: 'Tashkent', ru: 'Ташкент' }, slug: 'tashkent', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/tashkent/04.png' },
+            { name: { en: 'Khiva', ru: 'Хива' }, slug: 'khiva', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/khiva/2323.jpg' },
+            { name: { en: 'Shakhrisabz', ru: 'Шахрисабз' }, slug: 'shakhrisabz', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/shakhrisabz/DSC_0736-0-0-0-0-1592546576.jpg' },
+          ].map((city) => (
+            <Link key={city.slug} to={`/tours?city=${city.slug}`} className="group">
+              <div className="aspect-square rounded-xl overflow-hidden relative">
+                <img src={city.image} alt={getLocalizedText(city.name)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <h3 className="absolute bottom-3 left-3 right-3 text-white font-semibold text-sm md:text-base">{getLocalizedText(city.name)}</h3>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       {/* Featured Tours */}
       <section className="container mx-auto px-4 py-16">
         <div className="flex items-center justify-between mb-8">
