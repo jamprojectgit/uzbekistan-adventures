@@ -26,6 +26,7 @@ const AdminTours = () => {
     title_en: '', title_ru: '',
     slug: '',
     description_en: '', description_ru: '',
+    itinerary_en: '', itinerary_ru: '',
     price: 0, duration: 1,
     city_id: '',
   });
@@ -79,6 +80,7 @@ const AdminTours = () => {
         title: { en: form.title_en, ru: form.title_ru },
         slug: form.slug,
         description: { en: form.description_en, ru: form.description_ru },
+        itinerary: { en: form.itinerary_en, ru: form.itinerary_ru },
         price: form.price,
         duration: form.duration,
         city_id: form.city_id || null,
@@ -111,7 +113,7 @@ const AdminTours = () => {
   });
 
   const resetForm = () => {
-    setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', price: 0, duration: 1, city_id: '' });
+    setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', itinerary_en: '', itinerary_ru: '', price: 0, duration: 1, city_id: '' });
     setImages([]);
     setEditing(null);
   };
@@ -119,10 +121,12 @@ const AdminTours = () => {
   const openEdit = (tour: any) => {
     const title = tour.title as any;
     const desc = tour.description as any;
+    const itin = tour.itinerary as any;
     setForm({
       title_en: title?.en || '', title_ru: title?.ru || '',
       slug: tour.slug,
       description_en: desc?.en || '', description_ru: desc?.ru || '',
+      itinerary_en: itin?.en || '', itinerary_ru: itin?.ru || '',
       price: tour.price, duration: tour.duration,
       city_id: tour.city_id || '',
     });
@@ -149,6 +153,8 @@ const AdminTours = () => {
               <div><Label>Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({...f, slug: e.target.value}))} required /></div>
               <div><Label>Description (EN)</Label><Textarea value={form.description_en} onChange={e => setForm(f => ({...f, description_en: e.target.value}))} /></div>
               <div><Label>Description (RU)</Label><Textarea value={form.description_ru} onChange={e => setForm(f => ({...f, description_ru: e.target.value}))} /></div>
+              <div><Label>Itinerary (EN)</Label><Textarea value={form.itinerary_en} onChange={e => setForm(f => ({...f, itinerary_en: e.target.value}))} rows={4} /></div>
+              <div><Label>Itinerary (RU)</Label><Textarea value={form.itinerary_ru} onChange={e => setForm(f => ({...f, itinerary_ru: e.target.value}))} rows={4} /></div>
               <div className="grid grid-cols-2 gap-3">
                 <div><Label>Price ($)</Label><Input type="number" value={form.price} onChange={e => setForm(f => ({...f, price: parseInt(e.target.value)||0}))} /></div>
                 <div><Label>Duration (days)</Label><Input type="number" value={form.duration} onChange={e => setForm(f => ({...f, duration: parseInt(e.target.value)||1}))} /></div>
