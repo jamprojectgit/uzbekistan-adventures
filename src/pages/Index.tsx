@@ -13,6 +13,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
 const Index = () => {
   const { t } = useTranslation();
@@ -48,10 +50,16 @@ const Index = () => {
     },
   });
 
-  const { data: trainTickets, isLoading: trainTicketsLoading } = useQuery({
-    queryKey: ['home-train-tickets'],
+  const { data: trainRoutes, isLoading: trainRoutesLoading } = useQuery({
+    queryKey: ['home-train-routes'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('train_tickets').select('*').limit(4);
+      const { data, error } = await supabase
+        .from('train_routes')
+        .select('*')
+        .eq('status', 'published')
+        .order('train_type')
+        .order('departure_time')
+        .limit(6);
       if (error) throw error;
       return data;
     },
@@ -201,7 +209,7 @@ const Index = () => {
         )}
       </section>
 
-      {/* Train Tickets Section */}
+      {/* Train Routes Section */}
       <section className="bg-muted py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
@@ -209,29 +217,38 @@ const Index = () => {
             <Button variant="ghost" asChild><Link to="/train-tickets">{t('home.viewAll')} →</Link></Button>
           </div>
           <p className="text-muted-foreground mb-6">{t('home.trainTicketsSubtitle')}</p>
-          {trainTicketsLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[1,2,3].map(i => <Skeleton key={i} className="h-48 rounded-lg" />)}
-            </div>
-          ) : trainTickets && trainTickets.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {trainTickets.map((ticket) => (
-                <Card key={ticket.id}>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Train className="h-4 w-4 text-primary" />
-                      {getLocalizedText(ticket.route)}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pb-2">
-                    <p className="text-sm text-muted-foreground">{getLocalizedText(ticket.train_type)}</p>
-                  </CardContent>
-                  <CardFooter className="flex justify-between items-center">
-                    <span className="font-bold text-primary">{t('tours.from')} ${ticket.price_from}</span>
-                    <Button size="sm" asChild><Link to="/train-tickets">{t('trainTickets.submitRequest')}</Link></Button>
-                  </CardFooter>
-                </Card>
-              ))}
+          {trainRoutesLoading ? (
+            <Skeleton className="h-48 rounded-lg" />
+          ) : trainRoutes && trainRoutes.length > 0 ? (
+            <div className="rounded-lg border border-border overflow-hidden bg-background">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{t('trainTickets.trainType')}</TableHead>
+                    <TableHead>{t('trainTickets.from')}</TableHead>
+                    <TableHead>{t('trainTickets.to')}</TableHead>
+                    <TableHead>{t('trainTickets.departure')}</TableHead>
+                    <TableHead>{t('trainTickets.arrival')}</TableHead>
+                    <TableHead>{t('trainTickets.days')}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {trainRoutes.map((route) => (
+                    <TableRow key={route.id}>
+                      <TableCell className="font-medium">{route.train_type}</TableCell>
+                      <TableCell>{route.from_city}</TableCell>
+                      <TableCell>{route.to_city}</TableCell>
+                      <TableCell className="font-mono">{route.departure_time}</TableCell>
+                      <TableCell className="font-mono">{route.arrival_time}</TableCell>
+                      <TableCell>
+                        <Badge variant={route.operating_days === 'Daily' ? 'outline' : 'secondary'} className="text-xs">
+                          {route.operating_days}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </div>
           ) : (
             <p className="text-muted-foreground text-center py-8">{t('trainTickets.noTickets')}</p>
