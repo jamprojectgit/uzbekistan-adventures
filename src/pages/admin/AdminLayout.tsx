@@ -22,6 +22,7 @@ const AdminLayout = () => {
     { path: '/admin', label: t('admin.tours') },
     { path: '/admin/cities', label: t('admin.cities') },
     { path: '/admin/bookings', label: t('admin.bookings') },
+    { path: '/admin/transfers', label: 'Transfers' },
   ];
 
   return (
