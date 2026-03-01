@@ -72,7 +72,14 @@
     "noTickets": "No train routes available",
     "hours": "hours",
     "scheduleTitle": "Train Schedule",
-    "scheduleSubtitle": "Afrosiyob and Sharq train timetables between major cities"
+    "scheduleSubtitle": "Afrosiyob and Sharq train timetables between major cities",
+    "trainType": "Train",
+    "from": "From",
+    "to": "To",
+    "departure": "Departure",
+    "arrival": "Arrival",
+    "days": "Days",
+    "price": "Price"
   },
   "booking": {
     "title": "Book This Tour",

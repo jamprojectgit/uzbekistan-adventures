@@ -156,6 +156,48 @@ export type Database = {
           },
         ]
       }
+      train_routes: {
+        Row: {
+          arrival_time: string
+          created_at: string
+          currency: string
+          departure_time: string
+          from_city: string
+          id: string
+          operating_days: string
+          price: number
+          status: string
+          to_city: string
+          train_type: string
+        }
+        Insert: {
+          arrival_time: string
+          created_at?: string
+          currency?: string
+          departure_time: string
+          from_city: string
+          id?: string
+          operating_days?: string
+          price?: number
+          status?: string
+          to_city: string
+          train_type: string
+        }
+        Update: {
+          arrival_time?: string
+          created_at?: string
+          currency?: string
+          departure_time?: string
+          from_city?: string
+          id?: string
+          operating_days?: string
+          price?: number
+          status?: string
+          to_city?: string
+          train_type?: string
+        }
+        Relationships: []
+      }
       train_ticket_requests: {
         Row: {
           created_at: string
