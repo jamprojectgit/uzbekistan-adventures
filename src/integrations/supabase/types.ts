@@ -239,86 +239,45 @@ export type Database = {
         }
         Relationships: []
       }
-      transfer_bookings: {
-        Row: {
-          created_at: string
-          dropoff_address: string | null
-          id: string
-          passengers: number
-          phone: string | null
-          pickup_address: string | null
-          pickup_date: string
-          pickup_time: string
-          status: string
-          transfer_id: string
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          dropoff_address?: string | null
-          id?: string
-          passengers?: number
-          phone?: string | null
-          pickup_address?: string | null
-          pickup_date: string
-          pickup_time: string
-          status?: string
-          transfer_id: string
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          dropoff_address?: string | null
-          id?: string
-          passengers?: number
-          phone?: string | null
-          pickup_address?: string | null
-          pickup_date?: string
-          pickup_time?: string
-          status?: string
-          transfer_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "transfer_bookings_transfer_id_fkey"
-            columns: ["transfer_id"]
-            isOneToOne: false
-            referencedRelation: "transfers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       transfers: {
         Row: {
-          car_type: Json
           created_at: string
-          description: Json
+          currency: string
+          description: string | null
+          from_city: string
           id: string
-          image: string | null
+          image_url: string | null
+          max_passengers: number
           price: number
-          route: Json
           status: string
+          to_city: string
+          vehicle_type: string
         }
         Insert: {
-          car_type?: Json
           created_at?: string
-          description?: Json
+          currency?: string
+          description?: string | null
+          from_city: string
           id?: string
-          image?: string | null
+          image_url?: string | null
+          max_passengers?: number
           price?: number
-          route?: Json
           status?: string
+          to_city: string
+          vehicle_type: string
         }
         Update: {
-          car_type?: Json
           created_at?: string
-          description?: Json
+          currency?: string
+          description?: string | null
+          from_city?: string
           id?: string
-          image?: string | null
+          image_url?: string | null
+          max_passengers?: number
           price?: number
-          route?: Json
           status?: string
+          to_city?: string
+          vehicle_type?: string
         }
         Relationships: []
       }

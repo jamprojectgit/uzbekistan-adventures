@@ -178,16 +178,16 @@ const Index = () => {
           </div>
         ) : transfers && transfers.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {transfers.map((transfer) => (
+             {transfers.map((transfer) => (
               <Card key={transfer.id}>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base flex items-center gap-2">
                     <Car className="h-4 w-4 text-primary" />
-                    {getLocalizedText(transfer.route)}
+                    {transfer.from_city} → {transfer.to_city}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="pb-2">
-                  <p className="text-sm text-muted-foreground">{getLocalizedText(transfer.car_type)}</p>
+                  <p className="text-sm text-muted-foreground">{transfer.vehicle_type}</p>
                 </CardContent>
                 <CardFooter className="flex justify-between items-center">
                   <span className="font-bold text-primary">${transfer.price}</span>

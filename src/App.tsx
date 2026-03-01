@@ -15,6 +15,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import AdminTours from "./pages/admin/AdminTours";
 import AdminCities from "./pages/admin/AdminCities";
 import AdminBookings from "./pages/admin/AdminBookings";
+import AdminTransfers from "./pages/admin/AdminTransfers";
 import Transfers from "./pages/Transfers";
 import TrainTickets from "./pages/TrainTickets";
 import NotFound from "./pages/NotFound";
@@ -42,6 +43,7 @@ const App = () => (
               <Route index element={<AdminTours />} />
               <Route path="cities" element={<AdminCities />} />
               <Route path="bookings" element={<AdminBookings />} />
+              <Route path="transfers" element={<AdminTransfers />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
