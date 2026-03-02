@@ -25,7 +25,7 @@ interface DepartureForm {
 }
 
 const emptyForm: DepartureForm = {
-  train_type: 'Afrosiyob',
+  train_type: 'Afrosiyab',
   from_city: '',
   to_city: '',
   departure_time: '',
@@ -218,7 +218,7 @@ const AdminTrainRoutes = () => {
               <Select value={form.train_type} onValueChange={(v) => setForm({ ...form, train_type: v })} disabled={isGroupPrefilled}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Afrosiyob">Afrosiyob</SelectItem>
+                  <SelectItem value="Afrosiyab">Afrosiyab</SelectItem>
                   <SelectItem value="Sharq">Sharq</SelectItem>
                 </SelectContent>
               </Select>
