@@ -34,7 +34,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <Link to="/" className="text-xl font-bold tracking-tight text-primary">
-          🇺🇿 UzTours
+          🇺🇿 UzTravelMarket
         </Link>
 
         {/* Desktop */}
@@ -57,9 +57,14 @@ const Navbar = () => {
         </div>
 
         {/* Mobile toggle */}
-        <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setMobileOpen(!mobileOpen)}>
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </Button>
+        <div className="flex items-center gap-1 md:hidden">
+          <Button variant="ghost" size="icon" onClick={toggleLang} title="Switch language">
+            <Globe className="h-4 w-4" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -67,7 +72,6 @@ const Navbar = () => {
         <div className="md:hidden border-t border-border bg-background px-4 py-4 flex flex-col gap-4 text-sm font-medium">
           {navLinks}
           <div className="flex items-center gap-3 pt-2 border-t border-border">
-            <Button variant="ghost" size="icon" onClick={toggleLang}><Globe className="h-4 w-4" /></Button>
             {user ? (
               <Button variant="outline" size="sm" onClick={() => { signOut(); setMobileOpen(false); }}>{t('nav.logout')}</Button>
             ) : (
