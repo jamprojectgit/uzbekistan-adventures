@@ -3,9 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
-import BookingForm from '@/components/BookingForm';
+import ContactButtons from '@/components/ContactButtons';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
 
@@ -66,7 +67,6 @@ const TourDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Images */}
             {tour.images && tour.images.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 rounded-lg overflow-hidden">
                 <img src={tour.images[0]} alt={title} className="w-full h-64 md:h-80 object-cover md:col-span-2" />
@@ -114,7 +114,6 @@ const TourDetail = () => {
               )}
             </div>
 
-            {/* Itinerary */}
             {itinerary && (
               <div>
                 <h3 className="font-semibold mb-3">{t('tours.itinerary')}</h3>
@@ -123,10 +122,23 @@ const TourDetail = () => {
             )}
           </div>
 
-          {/* Sidebar - Booking */}
+          {/* Sidebar - Contact */}
           <div className="lg:col-span-1">
             <div className="sticky top-20">
-              <BookingForm tourId={tour.id} price={tour.price} />
+              <Card>
+                <CardHeader>
+                  <CardTitle>{t('contact.bookVia')}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between items-center py-3 border-b border-border">
+                    <span className="font-medium">{t('tours.perPerson')}</span>
+                    <span className="text-xl font-bold text-primary">${tour.price}</span>
+                  </div>
+                  <ContactButtons
+                    message={`Здравствуйте! Интересует тур: ${title}, $${tour.price}`}
+                  />
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>

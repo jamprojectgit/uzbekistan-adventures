@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
+import ContactButtons from '@/components/ContactButtons';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Car, MapPin, Users } from 'lucide-react';
@@ -61,8 +62,12 @@ const Transfers = () => {
                     <p className="text-sm text-muted-foreground">{transfer.description}</p>
                   )}
                 </CardContent>
-                <CardFooter>
-                  <span className="text-xl font-bold text-primary">${transfer.price}</span>
+                <CardFooter className="flex flex-col gap-3">
+                  <span className="text-xl font-bold text-primary w-full">${transfer.price}</span>
+                  <ContactButtons
+                    size="sm"
+                    message={`Здравствуйте! Интересует трансфер: ${transfer.from_city} → ${transfer.to_city}, ${transfer.vehicle_type}, $${transfer.price}`}
+                  />
                 </CardFooter>
               </Card>
             ))}

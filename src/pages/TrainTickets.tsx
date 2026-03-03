@@ -1,18 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
+import ContactButtons from '@/components/ContactButtons';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Train, Clock } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
 import {
   Table,
   TableBody,
@@ -44,17 +38,6 @@ interface RouteGroup {
 
 const TrainTickets = () => {
   const { t } = useTranslation();
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const [bookingRoute, setBookingRoute] = useState<TrainRoute | null>(null);
-  const [form, setForm] = useState({
-    full_name: '',
-    phone: '',
-    email: '',
-    travel_date: '',
-    passengers: 1,
-    notes: '',
-  });
 
   const { data: routes, isLoading } = useQuery({
     queryKey: ['train-routes'],
@@ -85,41 +68,6 @@ const TrainTickets = () => {
       a.train_type.localeCompare(b.train_type) || a.from_city.localeCompare(b.from_city) || a.to_city.localeCompare(b.to_city)
     );
   }, [routes]);
-
-  const handleSubmit = async () => {
-    if (!bookingRoute || !form.full_name || !form.phone || !form.travel_date) return;
-
-    // Find a matching train_ticket to link the request
-    const { data: tickets } = await supabase
-      .from('train_tickets')
-      .select('id')
-      .limit(1);
-
-    const ticketId = tickets?.[0]?.id;
-    if (!ticketId) {
-      toast({ title: t('common.error'), variant: 'destructive' });
-      return;
-    }
-
-    const { error } = await supabase.from('train_ticket_requests').insert({
-      train_ticket_id: ticketId,
-      user_id: user?.id || null,
-      full_name: form.full_name,
-      phone: form.phone,
-      email: form.email || null,
-      travel_date: form.travel_date,
-      passengers: form.passengers,
-      notes: form.notes || `${bookingRoute.train_type}: ${bookingRoute.from_city} → ${bookingRoute.to_city}, ${bookingRoute.departure_time}–${bookingRoute.arrival_time}`,
-    });
-
-    if (error) {
-      toast({ title: t('common.error'), variant: 'destructive' });
-    } else {
-      toast({ title: t('trainTickets.requestSuccess') });
-      setBookingRoute(null);
-      setForm({ full_name: '', phone: '', email: '', travel_date: '', passengers: 1, notes: '' });
-    }
-  };
 
   return (
     <Layout>
@@ -164,7 +112,7 @@ const TrainTickets = () => {
                       {group.departures.some(r => r.price > 0) && (
                         <TableHead>{t('trainTickets.price')}</TableHead>
                       )}
-                      <TableHead className="w-36"></TableHead>
+                      <TableHead className="w-56"></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -185,9 +133,10 @@ const TrainTickets = () => {
                           </TableCell>
                         )}
                         <TableCell>
-                          <Button size="sm" onClick={() => setBookingRoute(dep)}>
-                            {t('trainTickets.submitRequest')}
-                          </Button>
+                          <ContactButtons
+                            size="sm"
+                            message={`Здравствуйте! Интересует ЖД билет: ${dep.train_type}, ${dep.from_city} → ${dep.to_city}, отправление ${dep.departure_time}`}
+                          />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -198,50 +147,6 @@ const TrainTickets = () => {
           </div>
         )}
       </section>
-
-      <Dialog open={!!bookingRoute} onOpenChange={(open) => !open && setBookingRoute(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{t('trainTickets.requestForm')}</DialogTitle>
-          </DialogHeader>
-          {bookingRoute && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground pb-2 border-b border-border">
-              <Train className="h-4 w-4 text-primary" />
-              <span className="font-medium text-foreground">{bookingRoute.train_type}</span>
-              <span>—</span>
-              <span>{bookingRoute.from_city} → {bookingRoute.to_city}</span>
-              <span className="font-mono">({bookingRoute.departure_time})</span>
-            </div>
-          )}
-          <div className="space-y-4 py-2">
-            <div>
-              <Label>{t('auth.fullName')} *</Label>
-              <Input value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} />
-            </div>
-            <div>
-              <Label>{t('transfers.phone')} *</Label>
-              <Input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-            </div>
-            <div>
-              <Label>{t('auth.email')}</Label>
-              <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-            </div>
-            <div>
-              <Label>{t('trainTickets.travelDate')} *</Label>
-              <Input type="date" value={form.travel_date} onChange={(e) => setForm({ ...form, travel_date: e.target.value })} />
-            </div>
-            <div>
-              <Label>{t('booking.participants')}</Label>
-              <Input type="number" min={1} value={form.passengers} onChange={(e) => setForm({ ...form, passengers: parseInt(e.target.value) || 1 })} />
-            </div>
-            <div>
-              <Label>{t('trainTickets.notes')}</Label>
-              <Textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
-            </div>
-            <Button className="w-full" onClick={handleSubmit}>{t('trainTickets.send')}</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </Layout>
   );
 };

@@ -124,5 +124,8 @@
     "loading": "Loading...",
     "error": "Something went wrong",
     "back": "Back"
+  },
+  "contact": {
+    "bookVia": "Contact Us to Book"
   }
 }
