@@ -34,7 +34,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <Link to="/" className="text-xl font-bold tracking-tight text-primary">
-          🇺🇿 UzTravelMarket
+          UzTravelMarket
         </Link>
 
         {/* Desktop */}
