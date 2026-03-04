@@ -46,13 +46,8 @@ const Navbar = () => {
           <Button variant="ghost" size="icon" onClick={toggleLang} title="Switch language">
             <Globe className="h-4 w-4" />
           </Button>
-          {user ? (
+          {user && (
             <Button variant="outline" size="sm" onClick={signOut}>{t('nav.logout')}</Button>
-          ) : (
-            <>
-              <Button variant="ghost" size="sm" asChild><Link to="/login">{t('nav.login')}</Link></Button>
-              <Button size="sm" asChild><Link to="/signup">{t('nav.signup')}</Link></Button>
-            </>
           )}
         </div>
 
