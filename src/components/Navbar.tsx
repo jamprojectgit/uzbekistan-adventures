@@ -67,13 +67,8 @@ const Navbar = () => {
         <div className="md:hidden border-t border-border bg-background px-4 py-4 flex flex-col gap-4 text-sm font-medium">
           {navLinks}
           <div className="flex items-center gap-3 pt-2 border-t border-border">
-            {user ? (
+            {user && (
               <Button variant="outline" size="sm" onClick={() => { signOut(); setMobileOpen(false); }}>{t('nav.logout')}</Button>
-            ) : (
-              <>
-                <Button variant="ghost" size="sm" asChild><Link to="/login" onClick={() => setMobileOpen(false)}>{t('nav.login')}</Link></Button>
-                <Button size="sm" asChild><Link to="/signup" onClick={() => setMobileOpen(false)}>{t('nav.signup')}</Link></Button>
-              </>
             )}
           </div>
         </div>
