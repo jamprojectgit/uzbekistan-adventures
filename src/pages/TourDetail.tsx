@@ -6,7 +6,7 @@ import Layout from '@/components/Layout';
 import TourRequestWidget from '@/components/TourRequestWidget';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
 
