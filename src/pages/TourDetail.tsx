@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
-import ContactButtons from '@/components/ContactButtons';
+import TourRequestWidget from '@/components/TourRequestWidget';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
 
@@ -122,23 +122,14 @@ const TourDetail = () => {
             )}
           </div>
 
-          {/* Sidebar - Contact */}
+          {/* Sidebar - Booking Request */}
           <div className="lg:col-span-1">
             <div className="sticky top-20">
-              <Card>
-                <CardHeader>
-                  <CardTitle>{t('contact.bookVia')}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center py-3 border-b border-border">
-                    <span className="font-medium">{t('tours.perPerson')}</span>
-                    <span className="text-xl font-bold text-primary">${tour.price}</span>
-                  </div>
-                  <ContactButtons
-                    message={`Здравствуйте! Интересует тур: ${title}, $${tour.price}`}
-                  />
-                </CardContent>
-              </Card>
+              <TourRequestWidget
+                tourId={tour.id}
+                tourTitle={title}
+                price={tour.price}
+              />
             </div>
           </div>
         </div>
