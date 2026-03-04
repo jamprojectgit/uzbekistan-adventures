@@ -49,10 +49,6 @@ const Login = () => {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? t('common.loading') : t('auth.login')}
             </Button>
-            <p className="text-center text-sm text-muted-foreground">
-              {t('auth.noAccount')}{' '}
-              <Link to="/signup" className="text-primary underline">{t('auth.signup')}</Link>
-            </p>
           </form>
         </CardContent>
       </Card>
