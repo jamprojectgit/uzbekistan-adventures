@@ -103,6 +103,39 @@ export type Database = {
         }
         Relationships: []
       }
+      tour_requests: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          pickup_location: string
+          time: string
+          tour_id: string
+          tour_title: string
+          travelers: number
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          pickup_location: string
+          time: string
+          tour_id: string
+          tour_title: string
+          travelers?: number
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          pickup_location?: string
+          time?: string
+          tour_id?: string
+          tour_title?: string
+          travelers?: number
+        }
+        Relationships: []
+      }
       tours: {
         Row: {
           city_id: string | null
