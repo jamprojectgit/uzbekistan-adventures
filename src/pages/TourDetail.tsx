@@ -122,23 +122,14 @@ const TourDetail = () => {
             )}
           </div>
 
-          {/* Sidebar - Contact */}
+          {/* Sidebar - Booking Request */}
           <div className="lg:col-span-1">
             <div className="sticky top-20">
-              <Card>
-                <CardHeader>
-                  <CardTitle>{t('contact.bookVia')}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center py-3 border-b border-border">
-                    <span className="font-medium">{t('tours.perPerson')}</span>
-                    <span className="text-xl font-bold text-primary">${tour.price}</span>
-                  </div>
-                  <ContactButtons
-                    message={`Здравствуйте! Интересует тур: ${title}, $${tour.price}`}
-                  />
-                </CardContent>
-              </Card>
+              <TourRequestWidget
+                tourId={tour.id}
+                tourTitle={title}
+                price={tour.price}
+              />
             </div>
           </div>
         </div>
