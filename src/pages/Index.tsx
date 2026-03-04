@@ -113,7 +113,7 @@ const Index = () => {
         <h2 className="text-2xl md:text-3xl font-bold mb-8">{t('home.toursByCity')}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {[
-            { name: { en: 'Samarkand', ru: 'Самарканд' }, slug: 'samarkand', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/images/IMG_9801.JPG' },
+            { name: { en: 'Samarkand', ru: 'Самарканд' }, slug: 'samarkand', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/samarkand/samarkand.jpg.JPG' },
             { name: { en: 'Bukhara', ru: 'Бухара' }, slug: 'bukhara', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/Bukhara/Screenshot%202024-07-30%20135255.jpg' },
             { name: { en: 'Tashkent', ru: 'Ташкент' }, slug: 'tashkent', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/tashkent/04.png' },
             { name: { en: 'Khiva', ru: 'Хива' }, slug: 'khiva', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/khiva/2323.jpg' },
