@@ -35,6 +35,8 @@
     "duration": "Duration",
     "days": "days",
     "day": "day",
+    "hours": "hours",
+    "hour": "hour",
     "perPerson": "per person",
     "bookNow": "Book Now",
     "noTours": "No tours found",

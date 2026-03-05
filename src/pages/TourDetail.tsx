@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
+import { formatDuration } from '@/lib/duration-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const TourDetail = () => {
@@ -80,7 +81,7 @@ const TourDetail = () => {
               <h1 className="text-3xl font-bold mb-2">{title}</h1>
               <div className="flex items-center gap-4 text-muted-foreground mb-4">
                 {cityName && <span className="flex items-center gap-1"><MapPin className="h-4 w-4" /> {cityName}</span>}
-                <span className="flex items-center gap-1"><Clock className="h-4 w-4" /> {tour.duration} {tour.duration === 1 ? t('tours.day') : t('tours.days')}</span>
+                <span className="flex items-center gap-1"><Clock className="h-4 w-4" /> {formatDuration(tour.duration_value ?? tour.duration, tour.duration_unit ?? 'days')}</span>
                 <span className="font-bold text-primary text-lg">${tour.price} {t('tours.perPerson')}</span>
               </div>
               <p className="text-foreground leading-relaxed whitespace-pre-wrap">{desc}</p>

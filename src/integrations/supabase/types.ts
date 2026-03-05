@@ -142,6 +142,8 @@ export type Database = {
           created_at: string
           description: Json
           duration: number
+          duration_unit: string
+          duration_value: number
           excluded: Json | null
           id: string
           images: string[] | null
@@ -156,6 +158,8 @@ export type Database = {
           created_at?: string
           description?: Json
           duration?: number
+          duration_unit?: string
+          duration_value?: number
           excluded?: Json | null
           id?: string
           images?: string[] | null
@@ -170,6 +174,8 @@ export type Database = {
           created_at?: string
           description?: Json
           duration?: number
+          duration_unit?: string
+          duration_value?: number
           excluded?: Json | null
           id?: string
           images?: string[] | null

@@ -30,6 +30,7 @@ const AdminTours = () => {
     included_en: '', included_ru: '',
     excluded_en: '', excluded_ru: '',
     price: 0, duration: 1,
+    duration_value: 1, duration_unit: 'days',
     city_id: '',
   });
 
@@ -86,7 +87,9 @@ const AdminTours = () => {
         included: { en: form.included_en.split('\n').filter(Boolean), ru: form.included_ru.split('\n').filter(Boolean) },
         excluded: { en: form.excluded_en.split('\n').filter(Boolean), ru: form.excluded_ru.split('\n').filter(Boolean) },
         price: form.price,
-        duration: form.duration,
+        duration: form.duration_value,
+        duration_value: form.duration_value,
+        duration_unit: form.duration_unit,
         city_id: form.city_id || null,
         images,
       };
@@ -117,7 +120,7 @@ const AdminTours = () => {
   });
 
   const resetForm = () => {
-    setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', itinerary_en: '', itinerary_ru: '', included_en: '', included_ru: '', excluded_en: '', excluded_ru: '', price: 0, duration: 1, city_id: '' });
+    setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', itinerary_en: '', itinerary_ru: '', included_en: '', included_ru: '', excluded_en: '', excluded_ru: '', price: 0, duration: 1, duration_value: 1, duration_unit: 'days', city_id: '' });
     setImages([]);
     setEditing(null);
   };
@@ -138,6 +141,8 @@ const AdminTours = () => {
       excluded_en: Array.isArray(excl?.en) ? excl.en.join('\n') : (excl?.en || ''),
       excluded_ru: Array.isArray(excl?.ru) ? excl.ru.join('\n') : (excl?.ru || ''),
       price: tour.price, duration: tour.duration,
+      duration_value: tour.duration_value ?? tour.duration,
+      duration_unit: tour.duration_unit ?? 'days',
       city_id: tour.city_id || '',
     });
     setImages(tour.images || []);
@@ -169,9 +174,19 @@ const AdminTours = () => {
               <div><Label>Included (RU)</Label><Textarea value={form.included_ru} onChange={e => setForm(f => ({...f, included_ru: e.target.value}))} rows={3} placeholder="Транспорт&#10;Гид&#10;Обед" /></div>
               <div><Label>Not Included (EN)</Label><Textarea value={form.excluded_en} onChange={e => setForm(f => ({...f, excluded_en: e.target.value}))} rows={3} placeholder="Flights&#10;Insurance" /></div>
               <div><Label>Not Included (RU)</Label><Textarea value={form.excluded_ru} onChange={e => setForm(f => ({...f, excluded_ru: e.target.value}))} rows={3} placeholder="Перелёт&#10;Страховка" /></div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <div><Label>Price ($)</Label><Input type="number" value={form.price} onChange={e => setForm(f => ({...f, price: parseInt(e.target.value)||0}))} /></div>
-                <div><Label>Duration (days)</Label><Input type="number" value={form.duration} onChange={e => setForm(f => ({...f, duration: parseInt(e.target.value)||1}))} /></div>
+                <div><Label>Duration</Label><Input type="number" value={form.duration_value} onChange={e => setForm(f => ({...f, duration_value: parseInt(e.target.value)||1}))} /></div>
+                <div>
+                  <Label>Unit</Label>
+                  <Select value={form.duration_unit} onValueChange={v => setForm(f => ({...f, duration_unit: v}))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="hours">Hours</SelectItem>
+                      <SelectItem value="days">Days</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <div>
                 <Label>City</Label>
@@ -256,7 +271,7 @@ const AdminTours = () => {
                 <TableCell>{(tour.title as any)?.en || ''}</TableCell>
                 <TableCell>{tour.slug}</TableCell>
                 <TableCell>${tour.price}</TableCell>
-                <TableCell>{tour.duration}d</TableCell>
+                <TableCell>{tour.duration_value ?? tour.duration}{tour.duration_unit === 'hours' ? 'h' : 'd'}</TableCell>
                 <TableCell className="flex gap-1">
                   <Button variant="ghost" size="icon" onClick={() => openEdit(tour)}><Pencil className="h-4 w-4" /></Button>
                   <Button variant="ghost" size="icon" onClick={() => { if (confirm(t('admin.confirmDelete'))) deleteMutation.mutate(tour.id); }}><Trash2 className="h-4 w-4" /></Button>
