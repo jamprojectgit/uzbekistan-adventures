@@ -30,6 +30,7 @@ const AdminTours = () => {
     included_en: '', included_ru: '',
     excluded_en: '', excluded_ru: '',
     price: 0, duration: 1,
+    duration_value: 1, duration_unit: 'days',
     city_id: '',
   });
 
