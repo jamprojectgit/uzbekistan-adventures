@@ -13,6 +13,8 @@ interface TourCardProps {
     description: unknown;
     price: number;
     duration: number;
+    duration_value?: number | null;
+    duration_unit?: string | null;
     images: string[] | null;
     cities?: { name: unknown } | null;
   };
