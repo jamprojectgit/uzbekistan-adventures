@@ -87,7 +87,9 @@ const AdminTours = () => {
         included: { en: form.included_en.split('\n').filter(Boolean), ru: form.included_ru.split('\n').filter(Boolean) },
         excluded: { en: form.excluded_en.split('\n').filter(Boolean), ru: form.excluded_ru.split('\n').filter(Boolean) },
         price: form.price,
-        duration: form.duration,
+        duration: form.duration_value,
+        duration_value: form.duration_value,
+        duration_unit: form.duration_unit,
         city_id: form.city_id || null,
         images,
       };
