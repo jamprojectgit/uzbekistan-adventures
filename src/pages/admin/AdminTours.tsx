@@ -141,6 +141,8 @@ const AdminTours = () => {
       excluded_en: Array.isArray(excl?.en) ? excl.en.join('\n') : (excl?.en || ''),
       excluded_ru: Array.isArray(excl?.ru) ? excl.ru.join('\n') : (excl?.ru || ''),
       price: tour.price, duration: tour.duration,
+      duration_value: tour.duration_value ?? tour.duration,
+      duration_unit: tour.duration_unit ?? 'days',
       city_id: tour.city_id || '',
     });
     setImages(tour.images || []);
