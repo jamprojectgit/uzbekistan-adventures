@@ -174,9 +174,19 @@ const AdminTours = () => {
               <div><Label>Included (RU)</Label><Textarea value={form.included_ru} onChange={e => setForm(f => ({...f, included_ru: e.target.value}))} rows={3} placeholder="Транспорт&#10;Гид&#10;Обед" /></div>
               <div><Label>Not Included (EN)</Label><Textarea value={form.excluded_en} onChange={e => setForm(f => ({...f, excluded_en: e.target.value}))} rows={3} placeholder="Flights&#10;Insurance" /></div>
               <div><Label>Not Included (RU)</Label><Textarea value={form.excluded_ru} onChange={e => setForm(f => ({...f, excluded_ru: e.target.value}))} rows={3} placeholder="Перелёт&#10;Страховка" /></div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <div><Label>Price ($)</Label><Input type="number" value={form.price} onChange={e => setForm(f => ({...f, price: parseInt(e.target.value)||0}))} /></div>
-                <div><Label>Duration (days)</Label><Input type="number" value={form.duration} onChange={e => setForm(f => ({...f, duration: parseInt(e.target.value)||1}))} /></div>
+                <div><Label>Duration</Label><Input type="number" value={form.duration_value} onChange={e => setForm(f => ({...f, duration_value: parseInt(e.target.value)||1}))} /></div>
+                <div>
+                  <Label>Unit</Label>
+                  <Select value={form.duration_unit} onValueChange={v => setForm(f => ({...f, duration_unit: v}))}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="hours">Hours</SelectItem>
+                      <SelectItem value="days">Days</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <div>
                 <Label>City</Label>
