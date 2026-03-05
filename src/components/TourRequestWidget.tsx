@@ -102,7 +102,7 @@ Please confirm availability.`;
             <CalendarIcon className="h-4 w-4 text-muted-foreground" />
             {t('booking.date', 'Date')}
           </Label>
-          <Popover>
+          <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
@@ -118,7 +118,7 @@ Please confirm availability.`;
               <Calendar
                 mode="single"
                 selected={date}
-                onSelect={setDate}
+                onSelect={(d) => { setDate(d); setCalendarOpen(false); }}
                 disabled={(d) => d < new Date()}
                 className={cn('p-3 pointer-events-auto')}
               />
