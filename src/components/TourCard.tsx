@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { getLocalizedText } from '@/lib/i18n-utils';
+import { formatDuration } from '@/lib/duration-utils';
 import { MapPin } from 'lucide-react';
 
 interface TourCardProps {
