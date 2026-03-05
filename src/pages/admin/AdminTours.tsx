@@ -271,7 +271,7 @@ const AdminTours = () => {
                 <TableCell>{(tour.title as any)?.en || ''}</TableCell>
                 <TableCell>{tour.slug}</TableCell>
                 <TableCell>${tour.price}</TableCell>
-                <TableCell>{tour.duration}d</TableCell>
+                <TableCell>{tour.duration_value ?? tour.duration}{tour.duration_unit === 'hours' ? 'h' : 'd'}</TableCell>
                 <TableCell className="flex gap-1">
                   <Button variant="ghost" size="icon" onClick={() => openEdit(tour)}><Pencil className="h-4 w-4" /></Button>
                   <Button variant="ghost" size="icon" onClick={() => { if (confirm(t('admin.confirmDelete'))) deleteMutation.mutate(tour.id); }}><Trash2 className="h-4 w-4" /></Button>
