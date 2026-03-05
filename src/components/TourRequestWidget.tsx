@@ -35,6 +35,7 @@ const TourRequestWidget = ({ tourId, tourTitle, price }: TourRequestWidgetProps)
   const [travelers, setTravelers] = useState(1);
   const [pickup, setPickup] = useState('');
   const [loading, setLoading] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   const buildMessage = () => {
     return `Hello!
