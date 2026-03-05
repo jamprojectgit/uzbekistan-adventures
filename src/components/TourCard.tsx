@@ -43,7 +43,7 @@ const TourCard = ({ tour }: TourCardProps) => {
           <p className="text-sm text-muted-foreground line-clamp-2">{desc}</p>
           <div className="flex items-center justify-between pt-2">
             <span className="font-bold text-primary">${tour.price} <span className="text-xs font-normal text-muted-foreground">{t('tours.perPerson')}</span></span>
-            <span className="text-sm text-muted-foreground">{tour.duration} {tour.duration === 1 ? t('tours.day') : t('tours.days')}</span>
+            <span className="text-sm text-muted-foreground">{formatDuration(tour.duration_value ?? tour.duration, tour.duration_unit ?? 'days')}</span>
           </div>
         </CardContent>
       </Card>
