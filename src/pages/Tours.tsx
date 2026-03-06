@@ -40,6 +40,11 @@ const Tours = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Tours in Uzbekistan — Samarkand, Bukhara, Khiva, Tashkent"
+        description="Browse and book guided tours across Uzbekistan. Explore Samarkand, Bukhara, Khiva, Tashkent and more with experienced local guides."
+        path="/tours"
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">{t('tours.title')}</h1>
 

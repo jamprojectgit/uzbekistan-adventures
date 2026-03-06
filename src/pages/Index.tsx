@@ -69,6 +69,35 @@ const Index = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="UzTravelMarket — Tours, Transfers & Train Tickets in Uzbekistan"
+        description="Uzbekistan travel marketplace offering Uzbekistan tours, private tours in Samarkand, Bukhara, Khiva and Tashkent, Uzbekistan train tickets booking, railway tickets between Uzbekistan and Russia, private transfers across Uzbekistan, and travel services for international tourists."
+        path="/"
+      />
+
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "TravelAgency",
+            "name": "UzTravelMarket",
+            "url": "https://www.uztravelmarket.uz",
+            "description": "Uzbekistan travel marketplace offering Uzbekistan tours, private tours in Samarkand, Bukhara, Khiva and Tashkent, Uzbekistan train tickets booking, railway tickets between Uzbekistan and Russia, private transfers across Uzbekistan, and travel services for international tourists.",
+            "areaServed": {
+              "@type": "Country",
+              "name": "Uzbekistan"
+            },
+            "serviceType": ["Tours", "Train Tickets", "Private Transfers"],
+            "address": {
+              "@type": "PostalAddress",
+              "addressCountry": "UZ"
+            }
+          }),
+        }}
+      />
+
       {/* Hero */}
       <section className="relative bg-primary text-primary-foreground py-24 md:py-32">
         <div className="container mx-auto px-4 text-center">

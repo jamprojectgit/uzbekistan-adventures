@@ -26,6 +26,11 @@ const Transfers = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Private Transfers in Uzbekistan — Airport & City Transfers"
+        description="Book comfortable private transfers across Uzbekistan. Airport pickups, intercity transfers between Samarkand, Bukhara, Khiva, Tashkent and more."
+        path="/transfers"
+      />
       <section className="container mx-auto px-4 py-16">
         <h1 className="text-3xl md:text-4xl font-bold mb-8">{t('transfers.title')}</h1>
 

@@ -20,6 +20,11 @@ const Cities = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Cities of Uzbekistan — Samarkand, Bukhara, Khiva, Tashkent"
+        description="Explore the ancient cities of Uzbekistan. Discover Samarkand, Bukhara, Khiva, Tashkent and plan your perfect trip."
+        path="/cities"
+      />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">{t('cities.title')}</h1>
         {isLoading ? (
