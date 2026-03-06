@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
+import SEOHead from '@/components/SEOHead';
 import ContactButtons from '@/components/ContactButtons';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -71,6 +72,11 @@ const TrainTickets = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Train Tickets in Uzbekistan — Afrosiyob & Sharq Schedule"
+        description="Book train tickets between Uzbekistan cities. Afrosiyob high-speed and Sharq train schedules, Tashkent to Samarkand, Bukhara, Khiva routes."
+        path="/train-tickets"
+      />
       <section className="container mx-auto px-4 py-16">
         <h1 className="text-3xl md:text-4xl font-bold mb-2">{t('trainTickets.title')}</h1>
         <p className="text-muted-foreground mb-8 max-w-2xl">{t('trainTickets.scheduleSubtitle')}</p>

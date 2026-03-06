@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
+import SEOHead from '@/components/SEOHead';
 import ContactButtons from '@/components/ContactButtons';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -25,6 +26,11 @@ const Transfers = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Private Transfers in Uzbekistan — Airport & City Transfers"
+        description="Book comfortable private transfers across Uzbekistan. Airport pickups, intercity transfers between Samarkand, Bukhara, Khiva, Tashkent and more."
+        path="/transfers"
+      />
       <section className="container mx-auto px-4 py-16">
         <h1 className="text-3xl md:text-4xl font-bold mb-8">{t('transfers.title')}</h1>
 

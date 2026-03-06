@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
+import SEOHead from '@/components/SEOHead';
 import TourRequestWidget from '@/components/TourRequestWidget';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -60,6 +61,12 @@ const TourDetail = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title={`${title} — Tour in ${cityName || 'Uzbekistan'}`}
+        description={desc.substring(0, 155)}
+        path={`/tours/${slug}`}
+        type="article"
+      />
       <div className="container mx-auto px-4 py-8">
         <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" /> {t('common.back')}
