@@ -21,7 +21,7 @@ const Cities = () => {
   return (
     <Layout>
       <SEOHead
-        title="Cities of Uzbekistan — Samarkand, Bukhara, Khiva, Tashkent"
+        title="Uzbekistan Cities Guide | Samarkand, Bukhara, Khiva & Tashkent"
         description="Explore the ancient cities of Uzbekistan. Discover Samarkand, Bukhara, Khiva, Tashkent and plan your perfect trip."
         path="/cities"
       />

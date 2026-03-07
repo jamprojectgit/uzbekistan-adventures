@@ -7,7 +7,7 @@ interface SEOHeadProps {
   type?: string;
 }
 
-const BASE_URL = 'https://www.uztravelmarket.uz';
+const BASE_URL = 'https://jamtrips.com';
 
 const SEOHead = ({ title, description, path, type = 'website' }: SEOHeadProps) => {
   const fullTitle = title.includes('JamTrips') ? title : `${title} | JamTrips`;

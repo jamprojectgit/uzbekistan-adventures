@@ -70,7 +70,7 @@ const Index = () => {
   return (
     <Layout>
       <SEOHead
-        title="JamTrips — Tours, Transfers & Train Tickets in Uzbekistan"
+        title="JamTrips | Uzbekistan Tours, Train Tickets & Transfers"
         description="Uzbekistan travel marketplace offering Uzbekistan tours, private tours in Samarkand, Bukhara, Khiva and Tashkent, Uzbekistan train tickets booking, railway tickets between Uzbekistan and Russia, private transfers across Uzbekistan, and travel services for international tourists."
         path="/"
       />
@@ -83,8 +83,15 @@ const Index = () => {
             "@context": "https://schema.org",
             "@type": "TravelAgency",
             "name": "JamTrips",
-            "url": "https://www.uztravelmarket.uz",
+            "url": "https://jamtrips.com",
             "description": "Uzbekistan travel marketplace offering Uzbekistan tours, private tours in Samarkand, Bukhara, Khiva and Tashkent, Uzbekistan train tickets booking, railway tickets between Uzbekistan and Russia, private transfers across Uzbekistan, and travel services for international tourists.",
+            "makesOffer": [
+              { "@type": "Offer", "itemOffered": { "@type": "TouristTrip", "name": "Uzbekistan tours" } },
+              { "@type": "Offer", "itemOffered": { "@type": "TouristTrip", "name": "Private tours" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Train ticket booking" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Private transfers" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Travel services for international tourists" } }
+            ],
             "areaServed": {
               "@type": "Country",
               "name": "Uzbekistan"

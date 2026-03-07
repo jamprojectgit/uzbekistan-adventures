@@ -27,7 +27,7 @@ const Transfers = () => {
   return (
     <Layout>
       <SEOHead
-        title="Private Transfers in Uzbekistan — Airport & City Transfers"
+        title="Uzbekistan Private Transfers | Transport Between Cities"
         description="Book comfortable private transfers across Uzbekistan. Airport pickups, intercity transfers between Samarkand, Bukhara, Khiva, Tashkent and more."
         path="/transfers"
       />

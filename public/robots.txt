@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.uztravelmarket.uz/sitemap.xml
+Sitemap: https://jamtrips.com/sitemap.xml
