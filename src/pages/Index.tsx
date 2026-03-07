@@ -70,7 +70,7 @@ const Index = () => {
   return (
     <Layout>
       <SEOHead
-        title="JamTrips — Tours, Transfers & Train Tickets in Uzbekistan"
+        title="JamTrips | Uzbekistan Tours, Train Tickets & Transfers"
         description="Uzbekistan travel marketplace offering Uzbekistan tours, private tours in Samarkand, Bukhara, Khiva and Tashkent, Uzbekistan train tickets booking, railway tickets between Uzbekistan and Russia, private transfers across Uzbekistan, and travel services for international tourists."
         path="/"
       />
