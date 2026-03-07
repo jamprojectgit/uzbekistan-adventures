@@ -10,7 +10,7 @@ interface SEOHeadProps {
 const BASE_URL = 'https://www.uztravelmarket.uz';
 
 const SEOHead = ({ title, description, path, type = 'website' }: SEOHeadProps) => {
-  const fullTitle = title.includes('UzTravelMarket') ? title : `${title} | UzTravelMarket`;
+  const fullTitle = title.includes('JamTrips') ? title : `${title} | JamTrips`;
   const canonicalUrl = `${BASE_URL}${path}`;
 
   useEffect(() => {

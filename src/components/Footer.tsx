@@ -29,7 +29,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-8 pt-4 border-t border-primary-foreground/20 text-center text-sm opacity-60">
-          © {new Date().getFullYear()} UzTravelMarket. All rights reserved.
+          © {new Date().getFullYear()} JamTrips. All rights reserved.
         </div>
       </div>
     </footer>
