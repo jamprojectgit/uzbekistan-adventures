@@ -5,9 +5,9 @@ import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
 import TourRequestWidget from '@/components/TourRequestWidget';
+import TourGallery from '@/components/TourGallery';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
@@ -76,12 +76,7 @@ const TourDetail = () => {
           {/* Main content */}
           <div className="lg:col-span-2 space-y-6">
             {tour.images && tour.images.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 rounded-lg overflow-hidden">
-                <img src={tour.images[0]} alt={title} className="w-full h-64 md:h-80 object-cover md:col-span-2" />
-                {tour.images.slice(1, 3).map((img: string, i: number) => (
-                  <img key={i} src={img} alt={`${title} ${i + 2}`} className="w-full h-48 object-cover" />
-                ))}
-              </div>
+              <TourGallery images={tour.images} title={title} />
             )}
 
             <div>
