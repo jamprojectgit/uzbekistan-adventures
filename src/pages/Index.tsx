@@ -70,7 +70,7 @@ const Index = () => {
   return (
     <Layout>
       <SEOHead
-        title="UzTravelMarket — Tours, Transfers & Train Tickets in Uzbekistan"
+        title="JamTrips — Tours, Transfers & Train Tickets in Uzbekistan"
         description="Uzbekistan travel marketplace offering Uzbekistan tours, private tours in Samarkand, Bukhara, Khiva and Tashkent, Uzbekistan train tickets booking, railway tickets between Uzbekistan and Russia, private transfers across Uzbekistan, and travel services for international tourists."
         path="/"
       />
@@ -82,7 +82,7 @@ const Index = () => {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "TravelAgency",
-            "name": "UzTravelMarket",
+            "name": "JamTrips",
             "url": "https://www.uztravelmarket.uz",
             "description": "Uzbekistan travel marketplace offering Uzbekistan tours, private tours in Samarkand, Bukhara, Khiva and Tashkent, Uzbekistan train tickets booking, railway tickets between Uzbekistan and Russia, private transfers across Uzbekistan, and travel services for international tourists.",
             "areaServed": {
