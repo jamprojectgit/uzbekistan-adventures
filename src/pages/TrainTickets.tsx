@@ -73,7 +73,7 @@ const TrainTickets = () => {
   return (
     <Layout>
       <SEOHead
-        title="Train Tickets in Uzbekistan — Afrosiyob & Sharq Schedule"
+        title="Uzbekistan Train Tickets | Afrosiyob High-Speed Railway Booking"
         description="Book train tickets between Uzbekistan cities. Afrosiyob high-speed and Sharq train schedules, Tashkent to Samarkand, Bukhara, Khiva routes."
         path="/train-tickets"
       />

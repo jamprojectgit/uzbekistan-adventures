@@ -41,7 +41,7 @@ const Tours = () => {
   return (
     <Layout>
       <SEOHead
-        title="Tours in Uzbekistan — Samarkand, Bukhara, Khiva, Tashkent"
+        title="Uzbekistan Tours | Private Tours in Samarkand, Bukhara & Khiva"
         description="Browse and book guided tours across Uzbekistan. Explore Samarkand, Bukhara, Khiva, Tashkent and more with experienced local guides."
         path="/tours"
       />
