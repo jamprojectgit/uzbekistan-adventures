@@ -10,14 +10,14 @@ import SEOHead from '@/components/SEOHead';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Car, Train } from 'lucide-react';
-import ContactButtons from '@/components/ContactButtons';
 import SearchAutocomplete from '@/components/SearchAutocomplete';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState, lazy, Suspense } from 'react';
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+
+const ContactButtons = lazy(() => import('@/components/ContactButtons'));
 
 const Index = () => {
   const { t } = useTranslation();
@@ -115,32 +115,18 @@ const Index = () => {
       {/* Hero */}
       <section className="relative bg-primary text-primary-foreground py-24 md:py-32">
         <div className="container mx-auto px-4 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold mb-4 tracking-tight"
-          >
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight animate-fade-up">
             {t('home.heroTitle')}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto"
-          >
+          </h1>
+          <p className="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto animate-fade-up animation-delay-100">
             {t('home.heroSubtitle')}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="max-w-md mx-auto flex gap-2"
-          >
+          </p>
+          <div className="max-w-md mx-auto flex gap-2 animate-fade-up animation-delay-200">
             <SearchAutocomplete value={search} onChange={setSearch} />
             <Button asChild variant="secondary">
               <Link to={`/tours${search ? `?search=${encodeURIComponent(search)}` : ''}`}>{t('home.ctaButton')}</Link>
             </Button>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -153,11 +139,18 @@ const Index = () => {
             { name: { en: 'Bukhara', ru: 'Бухара' }, slug: 'bukhara', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/Bukhara/Screenshot%202024-07-30%20135255.jpg' },
             { name: { en: 'Tashkent', ru: 'Ташкент' }, slug: 'tashkent', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/tashkent/04.png' },
             { name: { en: 'Khiva', ru: 'Хива' }, slug: 'khiva', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/khiva/2323.jpg' },
-            { name: { en: 'Shakhrisabz', ru: 'Шахрисабз' }, slug: 'shakhrisabz', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/shakhrisabz/DSC_0736-0-0-0-0-1592546576.jpg' },
-          ].map((city) => (
+            { name: { en: 'Shakhrisabz', ru: 'Шахрисабз' }, slug: 'shakhrisabz', image: 'https://yglewlxfbkbdndnyhetj.supabase.co/storage/v1/object/public/shakhrisabz/DSC_0736-0-0-0-0-1592546776.jpg' },
+          ].map((city, i) => (
             <Link key={city.slug} to={`/tours?city=${city.slug}`} className="group">
               <div className="aspect-square rounded-xl overflow-hidden relative">
-                <OptimizedImage src={city.image} alt={getLocalizedText(city.name)} sizes="(max-width: 640px) 50vw, 20vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                <OptimizedImage
+                  src={city.image}
+                  alt={getLocalizedText(city.name)}
+                  priority={i < 2}
+                  maxWidth={640}
+                  sizes="(max-width: 640px) 50vw, 20vw"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <h3 className="absolute bottom-3 left-3 right-3 text-white font-semibold text-sm md:text-base">{getLocalizedText(city.name)}</h3>
               </div>
@@ -317,7 +310,9 @@ const Index = () => {
       <section className="container mx-auto px-4 py-16 text-center">
         <h2 className="text-3xl font-bold mb-4">{t('home.ctaTitle')}</h2>
         <p className="text-muted-foreground mb-8 max-w-xl mx-auto">{t('home.ctaSubtitle')}</p>
-        <ContactButtons size="lg" className="max-w-md mx-auto" />
+        <Suspense fallback={null}>
+          <ContactButtons size="lg" className="max-w-md mx-auto" />
+        </Suspense>
       </section>
     </Layout>
   );
