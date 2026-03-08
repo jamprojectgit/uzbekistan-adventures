@@ -155,6 +155,8 @@
   },
   "contact": {
     "bookVia": "Contact Us to Book",
+    "chatWhatsApp": "Chat on WhatsApp",
+    "messageTelegram": "Message on Telegram",
     "title": "Contact",
     "defaultMessage": "Hello! I am interested in booking a tour in Uzbekistan. Could you please provide more information?",
     "transferMessage": "Hello! I'm interested in a transfer: {{from}} → {{to}}, {{vehicle}}, ${{price}}",
