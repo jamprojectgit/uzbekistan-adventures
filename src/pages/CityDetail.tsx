@@ -4,10 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
-import TourCard from '@/components/TourCard';
 import OptimizedImage from '@/components/OptimizedImage';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getLocalizedText } from '@/lib/i18n-utils';
+import { lazy, Suspense } from 'react';
+
+const TourCard = lazy(() => import('@/components/TourCard'));
 
 const CityDetail = () => {
   const { slug } = useParams<{ slug: string }>();
