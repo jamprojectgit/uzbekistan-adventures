@@ -146,7 +146,7 @@ const Index = () => {
           ].map((city) => (
             <Link key={city.slug} to={`/tours?city=${city.slug}`} className="group">
               <div className="aspect-square rounded-xl overflow-hidden relative">
-                <OptimizedImage src={city.image} alt={getLocalizedText(city.name)} sizes="(max-width: 640px) 50vw, 20vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                <OptimizedImage src={city.image} alt={getLocalizedText(city.name)} sizes="(max-width: 640px) 50vw, 20vw" priority={city.slug === 'samarkand'} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <h3 className="absolute bottom-3 left-3 right-3 text-white font-semibold text-sm md:text-base">{getLocalizedText(city.name)}</h3>
               </div>
