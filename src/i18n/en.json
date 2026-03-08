@@ -18,9 +18,9 @@
     "featuredTours": "Featured Tours",
     "popularCities": "Popular Cities",
     "transfers": "Transfers",
-    "transfersSubtitle": "Comfortable transfers across Uzbekistan",
+    "transfersSubtitle": "Comfortable private transfers across Uzbekistan",
     "trainTickets": "Train Tickets",
-    "trainTicketsSubtitle": "Travel between cities by train",
+    "trainTicketsSubtitle": "Travel between cities by high-speed and regular trains",
     "ctaTitle": "Ready for an Adventure?",
     "ctaSubtitle": "Book your dream tour in Uzbekistan today",
     "ctaButton": "Explore Tours",
@@ -43,11 +43,13 @@
     "included": "What's Included",
     "excluded": "Not Included",
     "itinerary": "Itinerary",
-    "from": "From"
+    "from": "From",
+    "notFound": "Tour not found"
   },
   "cities": {
     "title": "Explore Cities",
-    "viewTours": "View Tours"
+    "viewTours": "Tours",
+    "notFound": "City not found"
   },
   "transfers": {
     "title": "Transfers",
@@ -60,7 +62,12 @@
     "phone": "Phone Number",
     "confirmBooking": "Confirm Booking",
     "bookingSuccess": "Transfer booked successfully!",
-    "noTransfers": "No transfers available"
+    "noTransfers": "No transfers available",
+    "upTo": "Up to",
+    "passengers": "passengers",
+    "noOptionsYet": "No specific transfer options listed for this route yet.",
+    "routeTitle": "{{from}} → {{to}} Transfer",
+    "routeDesc": "Book a private transfer from {{from}} to {{to}}, Uzbekistan. Choose from sedan, minivan, or minibus options with professional drivers."
   },
   "trainTickets": {
     "title": "Train Tickets",
@@ -81,11 +88,25 @@
     "departure": "Departure",
     "arrival": "Arrival",
     "days": "Days",
-    "price": "Price"
+    "price": "Price",
+    "departureSingular": "departure",
+    "departurePlural": "departures",
+    "routeTitle": "{{from}} → {{to}} Train Tickets",
+    "routeDesc": "Book train tickets from {{from}} to {{to}}, Uzbekistan. Afrosiyab high-speed and Sharq train schedules, prices, and booking assistance.",
+    "noScheduleYet": "No train schedules found for this route yet."
   },
   "booking": {
     "title": "Book This Tour",
-    "date": "Select Date",
+    "date": "Date",
+    "selectDate": "Select date",
+    "startTime": "Start time",
+    "selectTime": "Select time",
+    "travelers": "Travelers",
+    "person": "person",
+    "people": "people",
+    "pickupLocation": "Pickup location",
+    "pickupPlaceholder": "Hotel name, address, airport...",
+    "fillAllFields": "Please fill in all fields",
     "participants": "Participants",
     "totalPrice": "Total Price",
     "submit": "Confirm Booking",
@@ -128,6 +149,17 @@
     "back": "Back"
   },
   "contact": {
-    "bookVia": "Contact Us to Book"
+    "bookVia": "Contact Us to Book",
+    "title": "Contact",
+    "defaultMessage": "Hello! I am interested in booking a tour in Uzbekistan. Could you please provide more information?",
+    "transferMessage": "Hello! I'm interested in a transfer: {{from}} → {{to}}, {{vehicle}}, ${{price}}",
+    "transferMessageShort": "Hello! I'm interested in a transfer: {{from}} → {{to}}",
+    "trainMessage": "Hello! I'm interested in a train ticket: {{train}}, {{from}} → {{to}}, departure {{time}}",
+    "trainMessageShort": "Hello! I'm interested in a train ticket: {{from}} → {{to}}",
+    "tourRequestMessage": "Hello!\n\nI want to request this tour.\n\nTour: {{tour}}\nDate: {{date}}\nStart time: {{time}}\nTravelers: {{travelers}}\nPickup location: {{pickup}}\n\nPlease confirm availability."
+  },
+  "footer": {
+    "contact": "Contact",
+    "rights": "All rights reserved."
   }
 }
