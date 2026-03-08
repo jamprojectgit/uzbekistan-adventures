@@ -149,6 +149,7 @@ export type Database = {
           images: string[] | null
           included: Json | null
           itinerary: Json | null
+          order_number: number | null
           price: number
           slug: string
           title: Json
@@ -165,6 +166,7 @@ export type Database = {
           images?: string[] | null
           included?: Json | null
           itinerary?: Json | null
+          order_number?: number | null
           price?: number
           slug: string
           title?: Json
@@ -181,6 +183,7 @@ export type Database = {
           images?: string[] | null
           included?: Json | null
           itinerary?: Json | null
+          order_number?: number | null
           price?: number
           slug?: string
           title?: Json

@@ -32,12 +32,13 @@ const AdminTours = () => {
     price: 0, duration: 1,
     duration_value: 1, duration_unit: 'days',
     city_id: '',
+    order_number: '' as string | number,
   });
 
   const { data: tours, isLoading } = useQuery({
     queryKey: ['admin-tours'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('tours').select('*, cities(name)');
+      const { data, error } = await supabase.from('tours').select('*, cities(name)').order('order_number', { ascending: true, nullsFirst: false });
       if (error) throw error;
       return data;
     },
@@ -91,6 +92,7 @@ const AdminTours = () => {
         duration_value: form.duration_value,
         duration_unit: form.duration_unit,
         city_id: form.city_id || null,
+        order_number: form.order_number === '' ? null : Number(form.order_number),
         images,
       };
       if (editing) {
@@ -120,7 +122,7 @@ const AdminTours = () => {
   });
 
   const resetForm = () => {
-    setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', itinerary_en: '', itinerary_ru: '', included_en: '', included_ru: '', excluded_en: '', excluded_ru: '', price: 0, duration: 1, duration_value: 1, duration_unit: 'days', city_id: '' });
+    setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', itinerary_en: '', itinerary_ru: '', included_en: '', included_ru: '', excluded_en: '', excluded_ru: '', price: 0, duration: 1, duration_value: 1, duration_unit: 'days', city_id: '', order_number: '' });
     setImages([]);
     setEditing(null);
   };
@@ -144,6 +146,7 @@ const AdminTours = () => {
       duration_value: tour.duration_value ?? tour.duration,
       duration_unit: tour.duration_unit ?? 'days',
       city_id: tour.city_id || '',
+      order_number: tour.order_number ?? '',
     });
     setImages(tour.images || []);
     setEditing(tour);
@@ -174,7 +177,7 @@ const AdminTours = () => {
               <div><Label>Included (RU)</Label><Textarea value={form.included_ru} onChange={e => setForm(f => ({...f, included_ru: e.target.value}))} rows={3} placeholder="Транспорт&#10;Гид&#10;Обед" /></div>
               <div><Label>Not Included (EN)</Label><Textarea value={form.excluded_en} onChange={e => setForm(f => ({...f, excluded_en: e.target.value}))} rows={3} placeholder="Flights&#10;Insurance" /></div>
               <div><Label>Not Included (RU)</Label><Textarea value={form.excluded_ru} onChange={e => setForm(f => ({...f, excluded_ru: e.target.value}))} rows={3} placeholder="Перелёт&#10;Страховка" /></div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-4 gap-3">
                 <div><Label>Price ($)</Label><Input type="number" value={form.price} onChange={e => setForm(f => ({...f, price: parseInt(e.target.value)||0}))} /></div>
                 <div><Label>Duration</Label><Input type="number" value={form.duration_value} onChange={e => setForm(f => ({...f, duration_value: parseInt(e.target.value)||1}))} /></div>
                 <div>
@@ -187,6 +190,7 @@ const AdminTours = () => {
                     </SelectContent>
                   </Select>
                 </div>
+                <div><Label>Order №</Label><Input type="number" value={form.order_number} onChange={e => setForm(f => ({...f, order_number: e.target.value === '' ? '' : parseInt(e.target.value)}))} placeholder="—" /></div>
               </div>
               <div>
                 <Label>City</Label>
@@ -255,6 +259,7 @@ const AdminTours = () => {
               <TableHead>Slug</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Duration</TableHead>
+              <TableHead>Order</TableHead>
               <TableHead className="w-24">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -272,6 +277,7 @@ const AdminTours = () => {
                 <TableCell>{tour.slug}</TableCell>
                 <TableCell>${tour.price}</TableCell>
                 <TableCell>{tour.duration_value ?? tour.duration}{tour.duration_unit === 'hours' ? 'h' : 'd'}</TableCell>
+                <TableCell>{(tour as any).order_number ?? '—'}</TableCell>
                 <TableCell className="flex gap-1">
                   <Button variant="ghost" size="icon" onClick={() => openEdit(tour)}><Pencil className="h-4 w-4" /></Button>
                   <Button variant="ghost" size="icon" onClick={() => { if (confirm(t('admin.confirmDelete'))) deleteMutation.mutate(tour.id); }}><Trash2 className="h-4 w-4" /></Button>

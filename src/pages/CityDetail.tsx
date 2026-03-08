@@ -32,7 +32,8 @@ const CityDetail = () => {
       const { data, error } = await supabase
         .from('tours')
         .select('*, cities(name)')
-        .eq('city_id', city!.id);
+        .eq('city_id', city!.id)
+        .order('order_number', { ascending: true, nullsFirst: false });
       if (error) throw error;
       return data;
     },
