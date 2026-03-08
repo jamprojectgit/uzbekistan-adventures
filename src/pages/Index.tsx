@@ -212,29 +212,46 @@ const Index = () => {
         </div>
         <p className="text-muted-foreground mb-6">{t('home.transfersSubtitle')}</p>
         {transfersLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[1,2,3].map(i => <Skeleton key={i} className="h-48 rounded-lg" />)}
+          <div className="space-y-4">
+            {[1,2].map(i => <Skeleton key={i} className="h-32 rounded-lg" />)}
           </div>
         ) : transfers && transfers.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-             {transfers.map((transfer) => (
-              <Card key={transfer.id}>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <Car className="h-4 w-4 text-primary" />
-                    {transfer.from_city} → {transfer.to_city}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <p className="text-sm text-muted-foreground">{transfer.vehicle_type}</p>
-                </CardContent>
-                 <CardFooter className="flex flex-col gap-2">
-                   <span className="font-bold text-primary w-full">${transfer.price}</span>
-                   <ContactButtons size="sm" message={t('contact.transferMessage', { from: transfer.from_city, to: transfer.to_city, vehicle: transfer.vehicle_type, price: transfer.price })} />
-                 </CardFooter>
-              </Card>
-            ))}
-          </div>
+          (() => {
+            const grouped = new Map<string, typeof transfers>();
+            transfers.forEach(tr => {
+              const key = `${tr.from_city}-${tr.to_city}`;
+              if (!grouped.has(key)) grouped.set(key, []);
+              grouped.get(key)!.push(tr);
+            });
+            return (
+              <div className="space-y-4">
+                {Array.from(grouped.entries()).map(([key, vehicles]) => {
+                  const slug = `${vehicles[0].from_city.toLowerCase().replace(/\s+/g, '-')}-to-${vehicles[0].to_city.toLowerCase().replace(/\s+/g, '-')}-transfer`;
+                  return (
+                    <Card key={key}>
+                      <CardHeader className="pb-2">
+                        <Link to={`/transfers/${slug}`}>
+                          <CardTitle className="text-base flex items-center gap-2 hover:text-primary transition-colors">
+                            <Car className="h-4 w-4 text-primary" />
+                            {vehicles[0].from_city} → {vehicles[0].to_city}
+                          </CardTitle>
+                        </Link>
+                      </CardHeader>
+                      <CardContent className="pb-4">
+                        <div className="flex flex-wrap gap-3">
+                          {vehicles.sort((a, b) => Number(a.price) - Number(b.price)).map(v => (
+                            <span key={v.id} className="text-sm text-muted-foreground">
+                              {v.vehicle_type} — <span className="font-semibold text-primary">${v.price}</span>
+                            </span>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            );
+          })()
         ) : (
           <p className="text-muted-foreground text-center py-8">{t('transfers.noTransfers')}</p>
         )}
