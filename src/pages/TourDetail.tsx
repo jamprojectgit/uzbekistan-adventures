@@ -59,6 +59,8 @@ const TourDetail = () => {
   const included = getLocalizedArray(tour.included);
   const excluded = getLocalizedArray(tour.excluded);
   const cityName = tour.cities ? getLocalizedText(tour.cities.name) : '';
+  const heroImage = tour.images?.[0];
+  const heroPreloadUrl = heroImage ? getOptimizedUrl(heroImage, 1600) : null;
 
   return (
     <Layout>
