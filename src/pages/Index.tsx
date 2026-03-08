@@ -8,7 +8,6 @@ import TourCard from '@/components/TourCard';
 import CityCard from '@/components/CityCard';
 import SEOHead from '@/components/SEOHead';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Car, Train } from 'lucide-react';
 import ContactButtons from '@/components/ContactButtons';
