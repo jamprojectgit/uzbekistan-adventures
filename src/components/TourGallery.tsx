@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import OptimizedImage from '@/components/OptimizedImage';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, Images } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -88,10 +89,11 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                   className="flex-[0_0_100%] min-w-0 relative aspect-[4/3] cursor-pointer"
                   onClick={() => openLightbox(i)}
                 >
-                  <img
+                  <OptimizedImage
                     src={img}
                     alt={`${title} — photo ${i + 1}`}
-                    loading={i === 0 ? 'eager' : 'lazy'}
+                    priority={i === 0}
+                    sizes="100vw"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -125,10 +127,11 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
             className="col-span-3 row-span-2 relative cursor-pointer group"
             onClick={() => openLightbox(0)}
           >
-            <img
+            <OptimizedImage
               src={images[0]}
               alt={`${title} — main photo`}
-              loading="eager"
+              priority
+              sizes="(max-width: 768px) 100vw, 75vw"
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
@@ -143,10 +146,10 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                   className="relative flex-1 min-h-0 cursor-pointer group overflow-hidden"
                   onClick={() => openLightbox(realIndex)}
                 >
-                  <img
+                  <OptimizedImage
                     src={img}
                     alt={`${title} — photo ${realIndex + 1}`}
-                    loading="lazy"
+                    sizes="25vw"
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   {isLast && (
@@ -197,9 +200,11 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            <img
+            <OptimizedImage
               src={images[lightboxIndex]}
               alt={`${title} — photo ${lightboxIndex + 1}`}
+              priority
+              maxWidth={1920}
               className={cn(
                 "select-none transition-transform duration-300 rounded-[10px]",
                 zoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
@@ -235,7 +240,7 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                       i === lightboxIndex ? "border-white opacity-100 scale-105" : "border-transparent opacity-50 hover:opacity-80"
                     )}
                   >
-                    <img src={img} alt={`${title} — thumbnail ${i + 1}`} loading="lazy" className="w-full h-full object-cover" />
+                    <OptimizedImage src={img} alt={`${title} — thumbnail ${i + 1}`} sizes="64px" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>

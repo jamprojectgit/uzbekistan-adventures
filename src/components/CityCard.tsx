@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import OptimizedImage from '@/components/OptimizedImage';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { getLocalizedText } from '@/lib/i18n-utils';
@@ -20,9 +21,10 @@ const CityCard = ({ city }: CityCardProps) => {
     <Link to={`/tours?city=${city.slug}`}>
       <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
         <div className="aspect-[3/2] relative overflow-hidden">
-          <img
+          <OptimizedImage
             src={city.cover_image || '/placeholder.svg'}
             alt={name}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

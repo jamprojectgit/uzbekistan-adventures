@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import OptimizedImage from '@/components/OptimizedImage';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
@@ -46,7 +47,7 @@ const Transfers = () => {
               <Card key={transfer.id} className="flex flex-col">
                 {transfer.image_url && (
                   <div className="h-48 overflow-hidden rounded-t-lg">
-                    <img src={transfer.image_url} alt={`${transfer.from_city} → ${transfer.to_city}`} className="w-full h-full object-cover" />
+                    <OptimizedImage src={transfer.image_url} alt={`${transfer.from_city} → ${transfer.to_city}`} sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-cover" />
                   </div>
                 )}
                 <CardHeader>
