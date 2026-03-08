@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
-import { MapPin, Clock, ChevronRight } from 'lucide-react';
+import { MapPin, Clock, ChevronRight, MessageCircle, Send } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface TourCardProps {
   tour: {
@@ -21,6 +22,8 @@ interface TourCardProps {
   };
 }
 
+const PHONE = '998990152110';
+
 const TourCard = ({ tour }: TourCardProps) => {
   const { t } = useTranslation();
   const title = getLocalizedText(tour.title);
@@ -28,13 +31,19 @@ const TourCard = ({ tour }: TourCardProps) => {
   const cityName = tour.cities ? getLocalizedText(tour.cities.name) : '';
   const image = tour.images?.[0] || '/placeholder.svg';
 
+  const contactMessage = encodeURIComponent(`Hello, I'm interested in this tour: ${title}`);
+  const waUrl = `https://wa.me/${PHONE}?text=${contactMessage}`;
+  const tgUrl = `https://t.me/+${PHONE}?text=${contactMessage}`;
+
   return (
-    <Link to={`/tours/${tour.slug}`}>
-      <Card className="overflow-hidden group hover:shadow-lg transition-shadow h-full">
+    <Card className="overflow-hidden group hover:shadow-lg transition-shadow h-full flex flex-col">
+      <Link to={`/tours/${tour.slug}`}>
         <div className="aspect-[4/3] overflow-hidden">
           <OptimizedImage src={image} alt={title} sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         </div>
-        <CardContent className="p-4 space-y-1.5">
+      </Link>
+      <CardContent className="p-4 space-y-1.5 flex-1 flex flex-col">
+        <Link to={`/tours/${tour.slug}`} className="space-y-1.5 flex-1">
           <h3 className="font-semibold text-lg">{title}</h3>
           {cityName && (
             <p className="text-sm text-muted-foreground flex items-center gap-1">
@@ -51,9 +60,23 @@ const TourCard = ({ tour }: TourCardProps) => {
               <ChevronRight className="h-4 w-4 text-muted-foreground" />
             </span>
           </div>
-        </CardContent>
-      </Card>
-    </Link>
+        </Link>
+        <div className="flex gap-2 pt-2">
+          <Button size="sm" className="bg-[#25D366] hover:bg-[#1da851] text-white flex-1 h-9" asChild>
+            <a href={waUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+              <MessageCircle className="h-4 w-4 mr-1" />
+              WhatsApp
+            </a>
+          </Button>
+          <Button size="sm" className="bg-[#0088cc] hover:bg-[#006da3] text-white flex-1 h-9" asChild>
+            <a href={tgUrl} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>
+              <Send className="h-4 w-4 mr-1" />
+              Telegram
+            </a>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
