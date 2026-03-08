@@ -1,11 +1,9 @@
-import { useState, useCallback } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useState, useCallback, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, Images } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useEffect } from 'react';
 
 interface TourGalleryProps {
   images: string[];
