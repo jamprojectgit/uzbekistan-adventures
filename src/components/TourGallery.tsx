@@ -93,6 +93,7 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                     src={img}
                     alt={`${title} — photo ${i + 1}`}
                     priority={i === 0}
+                    preset={i === 0 ? 'hero' : 'gallery'}
                     sizes="100vw"
                     className="w-full h-full object-cover"
                   />
