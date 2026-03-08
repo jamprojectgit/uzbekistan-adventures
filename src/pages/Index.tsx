@@ -137,7 +137,9 @@ const Index = () => {
             transition={{ delay: 0.2 }}
             className="max-w-md mx-auto flex gap-2"
           >
-            <SearchAutocomplete value={search} onChange={setSearch} />
+            <Suspense fallback={<div className="flex-1 h-10 rounded-md bg-primary-foreground/10 animate-pulse" />}>
+              <SearchAutocomplete value={search} onChange={setSearch} />
+            </Suspense>
             <Button asChild variant="secondary">
               <Link to={`/tours${search ? `?search=${encodeURIComponent(search)}` : ''}`}>{t('home.ctaButton')}</Link>
             </Button>
