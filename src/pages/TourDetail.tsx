@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
+import { getOptimizedUrl } from '@/lib/image-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const TourDetail = () => {
