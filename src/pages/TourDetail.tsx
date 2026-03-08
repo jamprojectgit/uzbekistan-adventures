@@ -4,15 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
+import TourRequestWidget from '@/components/TourRequestWidget';
+import TourGallery from '@/components/TourGallery';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
-import { lazy, Suspense } from 'react';
-
-const TourGallery = lazy(() => import('@/components/TourGallery'));
-const TourRequestWidget = lazy(() => import('@/components/TourRequestWidget'));
 
 const TourDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -110,9 +108,7 @@ const TourDetail = () => {
           {/* Main content */}
           <div className="lg:col-span-2 space-y-6">
             {tour.images && tour.images.length > 0 && (
-              <Suspense fallback={<Skeleton className="h-96 w-full rounded-lg" />}>
-                <TourGallery images={tour.images} title={title} />
-              </Suspense>
+              <TourGallery images={tour.images} title={title} />
             )}
 
             <div>
@@ -164,13 +160,11 @@ const TourDetail = () => {
           {/* Sidebar - Booking Request */}
           <div className="lg:col-span-1">
             <div className="sticky top-20">
-              <Suspense fallback={<Skeleton className="h-96 w-full rounded-lg" />}>
-                <TourRequestWidget
-                  tourId={tour.id}
-                  tourTitle={title}
-                  price={tour.price}
-                />
-              </Suspense>
+              <TourRequestWidget
+                tourId={tour.id}
+                tourTitle={title}
+                price={tour.price}
+              />
             </div>
           </div>
         </div>

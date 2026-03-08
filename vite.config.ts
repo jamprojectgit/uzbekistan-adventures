@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => ({
         manualChunks: {
           vendor: ["react", "react-dom", "react-router-dom"],
           query: ["@tanstack/react-query"],
-          ui: ["embla-carousel-react"],
+          ui: ["framer-motion", "embla-carousel-react"],
         },
       },
     },
