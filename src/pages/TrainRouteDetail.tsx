@@ -17,7 +17,6 @@ const TrainRouteDetail = () => {
   const { routeSlug } = useParams<{ routeSlug: string }>();
   const { t } = useTranslation();
 
-  // Parse slug: "tashkent-to-samarkand-train"
   const { fromCity, toCity } = useMemo(() => {
     const match = routeSlug?.match(/^(.+?)-to-(.+?)-train$/);
     if (!match) return { fromCity: '', toCity: '' };
@@ -42,14 +41,14 @@ const TrainRouteDetail = () => {
     enabled: !!fromCity && !!toCity,
   });
 
-  const title = `${fromCity} to ${toCity} Train`;
-  const desc = `Book train tickets from ${fromCity} to ${toCity}, Uzbekistan. Afrosiyab high-speed and Sharq train schedules, prices, and booking assistance.`;
+  const title = t('trainTickets.routeTitle', { from: fromCity, to: toCity });
+  const desc = t('trainTickets.routeDesc', { from: fromCity, to: toCity });
 
   return (
     <Layout>
       <SEOHead
-        title={`${title} Tickets | Schedule & Prices — Uzbekistan Railway`}
-        description={desc}
+        title={`${fromCity} to ${toCity} Train Tickets | Schedule & Prices — Uzbekistan Railway`}
+        description={`Book train tickets from ${fromCity} to ${toCity}, Uzbekistan. Afrosiyab high-speed and Sharq train schedules, prices, and booking assistance.`}
         path={`/train-tickets/${routeSlug}`}
       />
 
@@ -59,14 +58,8 @@ const TrainRouteDetail = () => {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "TrainTrip",
-            "departureStation": {
-              "@type": "TrainStation",
-              "name": fromCity,
-            },
-            "arrivalStation": {
-              "@type": "TrainStation",
-              "name": toCity,
-            },
+            "departureStation": { "@type": "TrainStation", "name": fromCity },
+            "arrivalStation": { "@type": "TrainStation", "name": toCity },
             "provider": {
               "@type": "TravelAgency",
               "name": "JamTrips",
@@ -87,7 +80,7 @@ const TrainRouteDetail = () => {
       <section className="container mx-auto px-4 py-16">
         <h1 className="text-3xl md:text-4xl font-bold mb-2">
           <Train className="inline h-7 w-7 text-primary mr-2" />
-          {fromCity} → {toCity} Train Tickets
+          {title}
         </h1>
         <p className="text-muted-foreground mb-8 max-w-2xl">{desc}</p>
 
@@ -130,7 +123,7 @@ const TrainRouteDetail = () => {
                     <TableCell>
                       <ContactButtons
                         size="sm"
-                        message={`Здравствуйте! Интересует ЖД билет: ${route.train_type}, ${fromCity} → ${toCity}, отправление ${route.departure_time}`}
+                        message={t('contact.trainMessage', { train: route.train_type, from: fromCity, to: toCity, time: route.departure_time })}
                       />
                     </TableCell>
                   </TableRow>
@@ -140,9 +133,9 @@ const TrainRouteDetail = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">No train schedules found for this route yet.</p>
+            <p className="text-muted-foreground mb-4">{t('trainTickets.noScheduleYet')}</p>
             <ContactButtons
-              message={`Здравствуйте! Интересует ЖД билет: ${fromCity} → ${toCity}`}
+              message={t('contact.trainMessageShort', { from: fromCity, to: toCity })}
             />
           </div>
         )}

@@ -17,17 +17,19 @@ const Footer = () => {
             <div className="flex flex-col gap-2 text-sm opacity-80">
               <Link to="/tours" className="hover:opacity-100 transition-opacity">{t('tours.title')}</Link>
               <Link to="/cities" className="hover:opacity-100 transition-opacity">{t('cities.title')}</Link>
+              <Link to="/transfers" className="hover:opacity-100 transition-opacity">{t('transfers.title')}</Link>
+              <Link to="/train-tickets" className="hover:opacity-100 transition-opacity">{t('trainTickets.title')}</Link>
             </div>
           </div>
           <div>
-            <h4 className="font-semibold mb-3">Контакты</h4>
+            <h4 className="font-semibold mb-3">{t('footer.contact')}</h4>
             <div className="flex flex-col gap-2 text-sm opacity-80">
               <a href="tel:+998990152110" className="hover:opacity-100 transition-opacity">+998 99 015 21 10</a>
             </div>
           </div>
         </div>
         <div className="mt-8 pt-4 border-t border-primary-foreground/20 text-center text-sm opacity-60">
-          © {new Date().getFullYear()} JamTrips. All rights reserved.
+          © {new Date().getFullYear()} JamTrips. {t('footer.rights')}
         </div>
       </div>
     </footer>

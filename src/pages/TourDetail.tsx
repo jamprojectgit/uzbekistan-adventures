@@ -46,7 +46,7 @@ const TourDetail = () => {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-16 text-center">
-          <p className="text-muted-foreground">Tour not found</p>
+          <p className="text-muted-foreground">{t('tours.notFound')}</p>
         </div>
       </Layout>
     );

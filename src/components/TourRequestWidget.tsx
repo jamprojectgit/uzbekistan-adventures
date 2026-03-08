@@ -38,22 +38,18 @@ const TourRequestWidget = ({ tourId, tourTitle, price }: TourRequestWidgetProps)
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   const buildMessage = () => {
-    return `Hello!
-
-I want to request this tour.
-
-Tour: ${tourTitle}
-Date: ${date ? format(date, 'dd.MM.yyyy') : ''}
-Start time: ${time}
-Travelers: ${travelers}
-Pickup location: ${pickup}
-
-Please confirm availability.`;
+    return t('contact.tourRequestMessage', {
+      tour: tourTitle,
+      date: date ? format(date, 'dd.MM.yyyy') : '',
+      time,
+      travelers,
+      pickup,
+    });
   };
 
   const saveAndOpen = async (channel: 'whatsapp' | 'telegram') => {
     if (!date || !time || !pickup) {
-      toast.error(t('booking.fillAllFields', 'Please fill in all fields'));
+      toast.error(t('booking.fillAllFields'));
       return;
     }
 
@@ -100,7 +96,7 @@ Please confirm availability.`;
         <div className="space-y-2">
           <Label className="flex items-center gap-2 text-sm font-semibold">
             <CalendarIcon className="h-4 w-4 text-muted-foreground" />
-            {t('booking.date', 'Date')}
+            {t('booking.date')}
           </Label>
           <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
             <PopoverTrigger asChild>
@@ -111,7 +107,7 @@ Please confirm availability.`;
                   !date && 'text-muted-foreground'
                 )}
               >
-                {date ? format(date, 'PPP') : t('booking.selectDate', 'Select date')}
+                {date ? format(date, 'PPP') : t('booking.selectDate')}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
@@ -130,11 +126,11 @@ Please confirm availability.`;
         <div className="space-y-2">
           <Label className="flex items-center gap-2 text-sm font-semibold">
             <Clock className="h-4 w-4 text-muted-foreground" />
-            {t('booking.startTime', 'Start time')}
+            {t('booking.startTime')}
           </Label>
           <Select value={time} onValueChange={setTime}>
             <SelectTrigger className="h-11">
-              <SelectValue placeholder={t('booking.selectTime', 'Select time')} />
+              <SelectValue placeholder={t('booking.selectTime')} />
             </SelectTrigger>
             <SelectContent>
               {timeSlots.map((slot) => (
@@ -150,7 +146,7 @@ Please confirm availability.`;
         <div className="space-y-2">
           <Label className="flex items-center gap-2 text-sm font-semibold">
             <Users className="h-4 w-4 text-muted-foreground" />
-            {t('booking.travelers', 'Travelers')}
+            {t('booking.travelers')}
           </Label>
           <Select value={travelers.toString()} onValueChange={(v) => setTravelers(parseInt(v))}>
             <SelectTrigger className="h-11">
@@ -159,7 +155,7 @@ Please confirm availability.`;
             <SelectContent>
               {Array.from({ length: 20 }, (_, i) => i + 1).map((n) => (
                 <SelectItem key={n} value={n.toString()}>
-                  {n} {n === 1 ? t('booking.person', 'person') : t('booking.people', 'people')}
+                  {n} {n === 1 ? t('booking.person') : t('booking.people')}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -170,11 +166,11 @@ Please confirm availability.`;
         <div className="space-y-2">
           <Label className="flex items-center gap-2 text-sm font-semibold">
             <MapPin className="h-4 w-4 text-muted-foreground" />
-            {t('booking.pickupLocation', 'Pickup location')}
+            {t('booking.pickupLocation')}
           </Label>
           <Input
             className="h-11"
-            placeholder={t('booking.pickupPlaceholder', 'Hotel name, address, airport...')}
+            placeholder={t('booking.pickupPlaceholder')}
             value={pickup}
             onChange={(e) => setPickup(e.target.value)}
           />
