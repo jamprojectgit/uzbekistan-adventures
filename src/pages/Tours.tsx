@@ -13,6 +13,7 @@ const Tours = () => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const cityFilter = searchParams.get('city') || '';
+  const searchQuery = searchParams.get('search') || '';
 
   const { data: cities } = useQuery({
     queryKey: ['all-cities'],
@@ -23,7 +24,7 @@ const Tours = () => {
     },
   });
 
-  const { data: tours, isLoading } = useQuery({
+  const { data: allTours, isLoading } = useQuery({
     queryKey: ['tours', cityFilter],
     queryFn: async () => {
       let query = supabase.from('tours').select('*, cities(name, slug)');
@@ -36,6 +37,18 @@ const Tours = () => {
       return data;
     },
     enabled: !cityFilter || !!cities,
+  });
+
+  // Client-side search filtering
+  const tours = allTours?.filter((tour) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    const titleEn = ((tour.title as any)?.en || '').toLowerCase();
+    const titleRu = ((tour.title as any)?.ru || '').toLowerCase();
+    const descEn = ((tour.description as any)?.en || '').toLowerCase();
+    const descRu = ((tour.description as any)?.ru || '').toLowerCase();
+    const cityName = tour.cities ? getLocalizedText((tour.cities as any).name).toLowerCase() : '';
+    return titleEn.includes(q) || titleRu.includes(q) || descEn.includes(q) || descRu.includes(q) || cityName.includes(q);
   });
 
   return (
