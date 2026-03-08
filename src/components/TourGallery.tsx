@@ -30,6 +30,16 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
     return () => { emblaApi.off('select', onSelect); };
   }, [emblaApi]);
 
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    if (lightboxOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [lightboxOpen]);
+
   const thumbnails = images.slice(1, maxThumbnails + 1);
   const extraCount = Math.max(0, images.length - maxThumbnails - 1);
 
