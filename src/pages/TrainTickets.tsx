@@ -100,7 +100,7 @@ const TrainTickets = () => {
                       <span>{group.from_city} → {group.to_city}</span>
                     </div>
                     <Badge variant="outline" className="text-xs">
-                      {group.departures.length} {group.departures.length === 1 ? 'departure' : 'departures'}
+                      {group.departures.length} {group.departures.length === 1 ? t('trainTickets.departureSingular') : t('trainTickets.departurePlural')}
                     </Badge>
                   </div>
                 </div>
