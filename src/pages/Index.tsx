@@ -238,7 +238,7 @@ const Index = () => {
                 </CardContent>
                  <CardFooter className="flex flex-col gap-2">
                    <span className="font-bold text-primary w-full">${transfer.price}</span>
-                   <ContactButtons size="sm" message={`Здравствуйте! Интересует трансфер: ${transfer.from_city} → ${transfer.to_city}, $${transfer.price}`} />
+                   <ContactButtons size="sm" message={t('contact.transferMessage', { from: transfer.from_city, to: transfer.to_city, vehicle: transfer.vehicle_type, price: transfer.price })} />
                  </CardFooter>
               </Card>
             ))}
