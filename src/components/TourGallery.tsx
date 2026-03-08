@@ -89,10 +89,11 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                   className="flex-[0_0_100%] min-w-0 relative aspect-[4/3] cursor-pointer"
                   onClick={() => openLightbox(i)}
                 >
-                  <img
+                  <OptimizedImage
                     src={img}
                     alt={`${title} — photo ${i + 1}`}
-                    loading={i === 0 ? 'eager' : 'lazy'}
+                    priority={i === 0}
+                    sizes="100vw"
                     className="w-full h-full object-cover"
                   />
                 </div>
