@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { useMemo } from 'react';
 
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -11,13 +12,30 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   maxWidth?: number;
 }
 
+/** Supabase Storage base to detect transformable URLs */
+const SUPABASE_STORAGE_RE = /^(https:\/\/[^/]+\.supabase\.co\/storage\/v1\/object\/public\/)(.+)$/;
+
+/** Standard responsive breakpoints */
+const SRCSET_WIDTHS = [320, 640, 960, 1280, 1920];
+
 /**
- * Optimized image component with:
- * - lazy loading (default) or eager + high priority
- * - async decoding
- * - responsive sizes hints
- * - max-width constraint (1920px default)
+ * Build a srcSet using Supabase Image Transformation API.
+ * Appends ?width=X&format=webp to storage URLs for on-the-fly resizing.
  */
+function buildSrcSet(src: string, maxWidth: number): string | undefined {
+  const match = src.match(SUPABASE_STORAGE_RE);
+  if (!match) return undefined;
+
+  const [, base, path] = match;
+  // Use render/image endpoint for transforms
+  const transformBase = base.replace('/object/public/', '/render/image/public/');
+
+  return SRCSET_WIDTHS
+    .filter(w => w <= maxWidth)
+    .map(w => `${transformBase}${path}?width=${w}&resize=contain&format=webp ${w}w`)
+    .join(', ');
+}
+
 const OptimizedImage = ({
   src,
   alt,
@@ -28,6 +46,8 @@ const OptimizedImage = ({
   style,
   ...props
 }: OptimizedImageProps) => {
+  const srcSet = useMemo(() => buildSrcSet(src, maxWidth), [src, maxWidth]);
+
   return (
     <img
       src={src}
@@ -35,6 +55,7 @@ const OptimizedImage = ({
       loading={priority ? 'eager' : 'lazy'}
       decoding={priority ? 'sync' : 'async'}
       fetchPriority={priority ? 'high' : undefined}
+      srcSet={srcSet}
       sizes={sizes}
       className={cn('max-w-full', className)}
       style={{ maxWidth: `${maxWidth}px`, ...style }}
