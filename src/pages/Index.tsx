@@ -232,14 +232,16 @@ const Index = () => {
             return (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {entries.map(([key, vehicles]) => {
-                  const slug = `${vehicles[0].from_city.toLowerCase().replace(/\s+/g, '-')}-to-${vehicles[0].to_city.toLowerCase().replace(/\s+/g, '-')}-transfer`;
+                  const fromCity = vehicles[0].from_city.trim();
+                  const toCity = vehicles[0].to_city.trim();
+                  const slug = `${fromCity.toLowerCase().replace(/\s+/g, '-')}-to-${toCity.toLowerCase().replace(/\s+/g, '-')}-transfer`;
                   return (
                     <Card key={key} className="overflow-hidden">
                       <CardHeader className="pb-2">
                         <Link to={`/transfers/${slug}`}>
                           <CardTitle className="text-base flex items-center gap-2 hover:text-primary transition-colors">
                             <Car className="h-4 w-4 text-primary shrink-0" />
-                            {vehicles[0].from_city} → {vehicles[0].to_city}
+                            {fromCity} → {toCity}
                           </CardTitle>
                         </Link>
                       </CardHeader>
