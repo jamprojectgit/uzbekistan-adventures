@@ -4,10 +4,12 @@ import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
-import TourCard from '@/components/TourCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getLocalizedText } from '@/lib/i18n-utils';
+import { lazy, Suspense } from 'react';
+
+const TourCard = lazy(() => import('@/components/TourCard'));
 
 const Tours = () => {
   const { t } = useTranslation();
@@ -92,9 +94,11 @@ const Tours = () => {
             {[1,2,3,4,5,6].map(i => <Skeleton key={i} className="h-80 rounded-lg" />)}
           </div>
         ) : tours && tours.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tours.map(tour => <TourCard key={tour.id} tour={tour} />)}
-          </div>
+          <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{[1,2,3].map(i => <Skeleton key={i} className="h-80 rounded-lg" />)}</div>}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {tours.map(tour => <TourCard key={tour.id} tour={tour} />)}
+            </div>
+          </Suspense>
         ) : (
           <p className="text-center text-muted-foreground py-16">{t('tours.noTours')}</p>
         )}

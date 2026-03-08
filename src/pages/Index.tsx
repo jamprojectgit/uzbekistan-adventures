@@ -4,20 +4,21 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
-import TourCard from '@/components/TourCard';
-import CityCard from '@/components/CityCard';
 import SEOHead from '@/components/SEOHead';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Car, Train } from 'lucide-react';
-import ContactButtons from '@/components/ContactButtons';
-import SearchAutocomplete from '@/components/SearchAutocomplete';
-import { useState } from 'react';
+import { Car } from 'lucide-react';
+import { lazy, Suspense, useState } from 'react';
 import { motion } from 'framer-motion';
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+
+const TourCard = lazy(() => import('@/components/TourCard'));
+const CityCard = lazy(() => import('@/components/CityCard'));
+const ContactButtons = lazy(() => import('@/components/ContactButtons'));
+const SearchAutocomplete = lazy(() => import('@/components/SearchAutocomplete'));
 
 const Index = () => {
   const { t } = useTranslation();
@@ -136,7 +137,9 @@ const Index = () => {
             transition={{ delay: 0.2 }}
             className="max-w-md mx-auto flex gap-2"
           >
-            <SearchAutocomplete value={search} onChange={setSearch} />
+            <Suspense fallback={<div className="flex-1 h-10 rounded-md bg-primary-foreground/10 animate-pulse" />}>
+              <SearchAutocomplete value={search} onChange={setSearch} />
+            </Suspense>
             <Button asChild variant="secondary">
               <Link to={`/tours${search ? `?search=${encodeURIComponent(search)}` : ''}`}>{t('home.ctaButton')}</Link>
             </Button>
@@ -177,11 +180,13 @@ const Index = () => {
             {[1,2,3].map(i => <Skeleton key={i} className="h-80 rounded-lg" />)}
           </div>
         ) : tours && tours.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tours.map((tour) => (
-              <TourCard key={tour.id} tour={tour} />
-            ))}
-          </div>
+          <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{[1,2,3].map(i => <Skeleton key={i} className="h-80 rounded-lg" />)}</div>}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {tours.map((tour) => (
+                <TourCard key={tour.id} tour={tour} />
+              ))}
+            </div>
+          </Suspense>
         ) : (
           <p className="text-muted-foreground text-center py-12">{t('tours.noTours')}</p>
         )}
@@ -199,11 +204,13 @@ const Index = () => {
               {[1,2,3].map(i => <Skeleton key={i} className="h-48 rounded-lg" />)}
             </div>
           ) : cities && cities.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cities.map((city) => (
-                <CityCard key={city.id} city={city} />
-              ))}
-            </div>
+            <Suspense fallback={<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">{[1,2,3].map(i => <Skeleton key={i} className="h-48 rounded-lg" />)}</div>}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {cities.map((city) => (
+                  <CityCard key={city.id} city={city} />
+                ))}
+              </div>
+            </Suspense>
           ) : (
             <p className="text-muted-foreground text-center py-12">{t('tours.noTours')}</p>
           )}
@@ -317,7 +324,9 @@ const Index = () => {
       <section className="container mx-auto px-4 py-16 text-center">
         <h2 className="text-3xl font-bold mb-4">{t('home.ctaTitle')}</h2>
         <p className="text-muted-foreground mb-8 max-w-xl mx-auto">{t('home.ctaSubtitle')}</p>
-        <ContactButtons size="lg" className="max-w-md mx-auto" />
+        <Suspense fallback={<div className="h-12 max-w-md mx-auto rounded-md bg-muted animate-pulse" />}>
+          <ContactButtons size="lg" className="max-w-md mx-auto" />
+        </Suspense>
       </section>
     </Layout>
   );
