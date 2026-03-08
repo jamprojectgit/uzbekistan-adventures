@@ -47,8 +47,9 @@ const Tours = () => {
     const titleRu = ((tour.title as any)?.ru || '').toLowerCase();
     const descEn = ((tour.description as any)?.en || '').toLowerCase();
     const descRu = ((tour.description as any)?.ru || '').toLowerCase();
-    const cityName = tour.cities ? getLocalizedText((tour.cities as any).name).toLowerCase() : '';
-    return titleEn.includes(q) || titleRu.includes(q) || descEn.includes(q) || descRu.includes(q) || cityName.includes(q);
+    const cityNameEn = tour.cities ? (((tour.cities as any).name as any)?.en || '').toLowerCase() : '';
+    const cityNameRu = tour.cities ? (((tour.cities as any).name as any)?.ru || '').toLowerCase() : '';
+    return titleEn.includes(q) || titleRu.includes(q) || descEn.includes(q) || descRu.includes(q) || cityNameEn.includes(q) || cityNameRu.includes(q);
   });
 
   return (
