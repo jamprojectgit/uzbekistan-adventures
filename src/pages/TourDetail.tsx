@@ -2,11 +2,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { lazy, Suspense } from 'react';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
-import TourRequestWidget from '@/components/TourRequestWidget';
-import TourGallery from '@/components/TourGallery';
 import { Skeleton } from '@/components/ui/skeleton';
+
+const TourGallery = lazy(() => import('@/components/TourGallery'));
+const TourRequestWidget = lazy(() => import('@/components/TourRequestWidget'));
 import { Button } from '@/components/ui/button';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
