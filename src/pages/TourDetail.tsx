@@ -164,11 +164,13 @@ const TourDetail = () => {
           {/* Sidebar - Booking Request */}
           <div className="lg:col-span-1">
             <div className="sticky top-20">
-              <TourRequestWidget
-                tourId={tour.id}
-                tourTitle={title}
-                price={tour.price}
-              />
+              <Suspense fallback={<Skeleton className="h-96 w-full rounded-lg" />}>
+                <TourRequestWidget
+                  tourId={tour.id}
+                  tourTitle={title}
+                  price={tour.price}
+                />
+              </Suspense>
             </div>
           </div>
         </div>
