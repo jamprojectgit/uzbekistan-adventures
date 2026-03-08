@@ -4,10 +4,12 @@ import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
-import TourCard from '@/components/TourCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getLocalizedText } from '@/lib/i18n-utils';
+import { lazy, Suspense } from 'react';
+
+const TourCard = lazy(() => import('@/components/TourCard'));
 
 const Tours = () => {
   const { t } = useTranslation();
