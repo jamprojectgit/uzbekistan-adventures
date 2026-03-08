@@ -23,8 +23,6 @@ const Footer = () => {
             <h4 className="font-semibold mb-3">Контакты</h4>
             <div className="flex flex-col gap-2 text-sm opacity-80">
               <a href="tel:+998990152110" className="hover:opacity-100 transition-opacity">+998 99 015 21 10</a>
-              <Link to="/login" className="hover:opacity-100 transition-opacity">{t('nav.login')}</Link>
-              <Link to="/signup" className="hover:opacity-100 transition-opacity">{t('nav.signup')}</Link>
             </div>
           </div>
         </div>
