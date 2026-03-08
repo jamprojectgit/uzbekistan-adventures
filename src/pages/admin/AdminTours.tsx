@@ -32,6 +32,7 @@ const AdminTours = () => {
     price: 0, duration: 1,
     duration_value: 1, duration_unit: 'days',
     city_id: '',
+    order_number: '' as string | number,
   });
 
   const { data: tours, isLoading } = useQuery({
