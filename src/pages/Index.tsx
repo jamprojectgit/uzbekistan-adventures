@@ -47,7 +47,12 @@ const Index = () => {
   const { data: transfers, isLoading: transfersLoading } = useQuery({
     queryKey: ['home-transfers'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('transfers').select('*').limit(4);
+      const { data, error } = await supabase
+        .from('transfers')
+        .select('*')
+        .eq('status', 'published')
+        .order('from_city')
+        .order('price');
       if (error) throw error;
       return data;
     },
