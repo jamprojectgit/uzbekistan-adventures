@@ -299,7 +299,7 @@ const Index = () => {
       <section className="container mx-auto px-4 py-16 text-center">
         <h2 className="text-3xl font-bold mb-4">{t('home.ctaTitle')}</h2>
         <p className="text-muted-foreground mb-8 max-w-xl mx-auto">{t('home.ctaSubtitle')}</p>
-        <ContactButtons size="lg" className="max-w-md mx-auto" message="Здравствуйте! Хочу узнать о турах по Узбекистану" />
+        <ContactButtons size="lg" className="max-w-md mx-auto" />
       </section>
     </Layout>
   );

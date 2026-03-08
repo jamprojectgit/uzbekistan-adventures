@@ -141,7 +141,7 @@ const TrainTickets = () => {
                         <TableCell>
                           <ContactButtons
                             size="sm"
-                            message={`Здравствуйте! Интересует ЖД билет: ${dep.train_type}, ${dep.from_city} → ${dep.to_city}, отправление ${dep.departure_time}`}
+                            message={t('contact.trainMessage', { train: dep.train_type, from: group.from_city, to: group.to_city, time: dep.departure_time })}
                           />
                         </TableCell>
                       </TableRow>
