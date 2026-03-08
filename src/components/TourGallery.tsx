@@ -127,10 +127,11 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
             className="col-span-3 row-span-2 relative cursor-pointer group"
             onClick={() => openLightbox(0)}
           >
-            <img
+            <OptimizedImage
               src={images[0]}
               alt={`${title} — main photo`}
-              loading="eager"
+              priority
+              sizes="(max-width: 768px) 100vw, 75vw"
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
