@@ -92,6 +92,7 @@ const AdminTours = () => {
         duration_value: form.duration_value,
         duration_unit: form.duration_unit,
         city_id: form.city_id || null,
+        order_number: form.order_number === '' ? null : Number(form.order_number),
         images,
       };
       if (editing) {
