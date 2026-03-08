@@ -243,7 +243,7 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                       i === lightboxIndex ? "border-white opacity-100 scale-105" : "border-transparent opacity-50 hover:opacity-80"
                     )}
                   >
-                    <OptimizedImage src={img} alt={`${title} — thumbnail ${i + 1}`} sizes="64px" className="w-full h-full object-cover" />
+                    <OptimizedImage src={img} alt={`${title} — thumbnail ${i + 1}`} preset="thumbnail" sizes="64px" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
