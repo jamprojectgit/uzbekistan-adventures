@@ -19,17 +19,17 @@ const ContactButtons = ({ message, className = '', size = 'default' }: ContactBu
   const tgUrl = `https://t.me/+${PHONE}?text=${encodedMessage}`;
 
   return (
-    <div className={`flex gap-2 ${className}`}>
+    <div className={`flex flex-col sm:flex-row gap-3 ${className}`}>
       <Button size={size} className="bg-[#25D366] hover:bg-[#1da851] text-white flex-1" asChild>
         <a href={waUrl} target="_blank" rel="noopener noreferrer">
-          <MessageCircle className="h-4 w-4 mr-2" />
-          WhatsApp
+          <MessageCircle className="h-5 w-5 mr-2" />
+          {t('contact.whatsappButton', 'Chat on WhatsApp')}
         </a>
       </Button>
       <Button size={size} className="bg-[#0088cc] hover:bg-[#006da3] text-white flex-1" asChild>
         <a href={tgUrl} target="_blank" rel="noopener noreferrer">
-          <Send className="h-4 w-4 mr-2" />
-          Telegram
+          <Send className="h-5 w-5 mr-2" />
+          {t('contact.telegramButton', 'Message on Telegram')}
         </a>
       </Button>
     </div>

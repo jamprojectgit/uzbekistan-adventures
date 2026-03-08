@@ -155,6 +155,8 @@
   },
   "contact": {
     "bookVia": "Связаться для бронирования",
+    "whatsappButton": "Написать в WhatsApp",
+    "telegramButton": "Написать в Telegram",
     "title": "Контакты",
     "defaultMessage": "Здравствуйте! Я хотел бы узнать подробнее о турах по Узбекистану.",
     "transferMessage": "Здравствуйте! Интересует трансфер: {{from}} → {{to}}, {{vehicle}}, ${{price}}",
