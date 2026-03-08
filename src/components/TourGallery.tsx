@@ -158,12 +158,17 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
         </div>
       )}
 
-      {/* Lightbox */}
-      <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent
-          className="max-w-[100vw] max-h-[100vh] w-screen h-screen p-0 border-0 bg-black/95 rounded-none [&>button]:hidden"
+      {/* Fullscreen Lightbox */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 w-screen h-screen flex items-center justify-center bg-black/90 z-[9999]"
+          style={{ top: 0, left: 0 }}
+          onClick={(e) => { if (e.target === e.currentTarget) setLightboxOpen(false); }}
           onKeyDown={handleKeyDown}
+          tabIndex={0}
+          ref={(el) => el?.focus()}
         >
+          {/* Top bar */}
           <div className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-3 md:p-4">
             <span className="text-white/80 text-sm font-medium">
               {lightboxIndex + 1} / {images.length}
@@ -178,8 +183,9 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
             </div>
           </div>
 
+          {/* Main image */}
           <div
-            className="flex items-center justify-center w-full h-full"
+            className="flex items-center justify-center w-full h-full px-2"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
@@ -187,15 +193,16 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
               src={images[lightboxIndex]}
               alt={`${title} — photo ${lightboxIndex + 1}`}
               className={cn(
-                "max-h-[85vh] max-w-[90vw] object-contain transition-transform duration-300 select-none",
-                zoomed && "scale-150 cursor-zoom-out",
-                !zoomed && "cursor-zoom-in"
+                "select-none transition-transform duration-300 rounded-[10px]",
+                zoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
               )}
+              style={{ maxWidth: '95vw', maxHeight: '90vh', objectFit: 'contain' }}
               onClick={() => setZoomed((z) => !z)}
               draggable={false}
             />
           </div>
 
+          {/* Navigation arrows */}
           {images.length > 1 && (
             <>
               <Button variant="ghost" size="icon" className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white hover:bg-white/10 h-10 w-10 md:h-12 md:w-12 rounded-full z-20" onClick={() => navigateLightbox(-1)}>
@@ -207,6 +214,7 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
             </>
           )}
 
+          {/* Bottom thumbnails */}
           {images.length > 1 && (
             <div className="absolute bottom-0 left-0 right-0 z-20 p-3 md:p-4">
               <div className="flex justify-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
@@ -225,8 +233,8 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
               </div>
             </div>
           )}
-        </DialogContent>
-      </Dialog>
+        </div>
+      )}
     </>
   );
 };
