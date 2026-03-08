@@ -200,9 +200,11 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            <img
+            <OptimizedImage
               src={images[lightboxIndex]}
               alt={`${title} — photo ${lightboxIndex + 1}`}
+              priority
+              maxWidth={1920}
               className={cn(
                 "select-none transition-transform duration-300 rounded-[10px]",
                 zoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
