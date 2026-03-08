@@ -1,13 +1,63 @@
 import { useTranslation } from 'react-i18next';
-import OptimizedImage from '@/components/OptimizedImage';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
 import ContactButtons from '@/components/ContactButtons';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Car, MapPin, Users } from 'lucide-react';
+import { Car, MapPin, Users, Briefcase } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+interface Transfer {
+  id: string;
+  from_city: string;
+  to_city: string;
+  vehicle_type: string;
+  max_passengers: number;
+  price: number;
+  currency: string;
+  description: string | null;
+  image_url: string | null;
+  status: string;
+}
+
+interface RouteGroup {
+  key: string;
+  from_city: string;
+  to_city: string;
+  slug: string;
+  vehicles: Transfer[];
+}
+
+const vehicleIcons: Record<string, string> = {
+  Sedan: '🚗',
+  Minivan: '🚐',
+  Minibus: '🚌',
+};
+
+const luggageEstimate: Record<string, string> = {
+  Sedan: '2-3',
+  Minivan: '4-6',
+  Minibus: '8-12',
+};
+
+function groupByRoute(transfers: Transfer[]): RouteGroup[] {
+  const map = new Map<string, RouteGroup>();
+  for (const t of transfers) {
+    const key = `${t.from_city}-${t.to_city}`;
+    if (!map.has(key)) {
+      const slug = `${t.from_city.toLowerCase().replace(/\s+/g, '-')}-to-${t.to_city.toLowerCase().replace(/\s+/g, '-')}-transfer`;
+      map.set(key, { key, from_city: t.from_city, to_city: t.to_city, slug, vehicles: [] });
+    }
+    map.get(key)!.vehicles.push(t);
+  }
+  // Sort vehicles by price within each group
+  for (const group of map.values()) {
+    group.vehicles.sort((a, b) => Number(a.price) - Number(b.price));
+  }
+  return Array.from(map.values());
+}
 
 const Transfers = () => {
   const { t } = useTranslation();
@@ -19,11 +69,14 @@ const Transfers = () => {
         .from('transfers')
         .select('*')
         .eq('status', 'published')
-        .order('created_at', { ascending: false });
+        .order('from_city')
+        .order('price');
       if (error) throw error;
-      return data;
+      return data as Transfer[];
     },
   });
+
+  const routes = transfers ? groupByRoute(transfers) : [];
 
   return (
     <Layout>
@@ -36,46 +89,99 @@ const Transfers = () => {
         <h1 className="text-3xl md:text-4xl font-bold mb-8">{t('transfers.title')}</h1>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="space-y-6">
             {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-64 rounded-lg" />
+              <Skeleton key={i} className="h-48 rounded-lg" />
             ))}
           </div>
-        ) : transfers && transfers.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {transfers.map((transfer) => (
-              <Card key={transfer.id} className="flex flex-col">
-                {transfer.image_url && (
-                  <div className="h-48 overflow-hidden rounded-t-lg">
-                    <OptimizedImage src={transfer.image_url} alt={`${transfer.from_city} → ${transfer.to_city}`} sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="w-full h-full object-cover" />
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <MapPin className="h-5 w-5 text-primary" />
-                    {transfer.from_city} → {transfer.to_city}
-                  </CardTitle>
+        ) : routes.length > 0 ? (
+          <div className="space-y-6">
+            {routes.map((route) => (
+              <Card key={route.key}>
+                <CardHeader className="pb-4">
+                  <Link to={`/transfers/${route.slug}`}>
+                    <CardTitle className="flex items-center gap-2 text-xl hover:text-primary transition-colors">
+                      <MapPin className="h-5 w-5 text-primary shrink-0" />
+                      {route.from_city} → {route.to_city}
+                    </CardTitle>
+                  </Link>
                 </CardHeader>
-                <CardContent className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Car className="h-4 w-4" />
-                    <span>{transfer.vehicle_type}</span>
+                <CardContent className="pt-0">
+                  {/* Desktop table */}
+                  <div className="hidden md:block overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-border text-muted-foreground">
+                          <th className="text-left pb-3 font-medium">{t('transfers.vehicleType')}</th>
+                          <th className="text-left pb-3 font-medium">{t('transfers.passengersCol')}</th>
+                          <th className="text-left pb-3 font-medium">{t('transfers.luggageCol')}</th>
+                          <th className="text-left pb-3 font-medium">{t('trainTickets.price')}</th>
+                          <th className="text-right pb-3 font-medium">{t('contact.bookVia')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {route.vehicles.map((v) => (
+                          <tr key={v.id} className="border-b border-border last:border-0">
+                            <td className="py-3 font-medium">
+                              <span className="mr-2">{vehicleIcons[v.vehicle_type] || '🚗'}</span>
+                              {v.vehicle_type}
+                            </td>
+                            <td className="py-3">
+                              <span className="flex items-center gap-1.5 text-muted-foreground">
+                                <Users className="h-4 w-4" />
+                                {t('transfers.upTo')} {v.max_passengers}
+                              </span>
+                            </td>
+                            <td className="py-3">
+                              <span className="flex items-center gap-1.5 text-muted-foreground">
+                                <Briefcase className="h-4 w-4" />
+                                {luggageEstimate[v.vehicle_type] || '2-3'} {t('transfers.bags')}
+                              </span>
+                            </td>
+                            <td className="py-3">
+                              <span className="text-lg font-bold text-primary">${v.price}</span>
+                            </td>
+                            <td className="py-3">
+                              <ContactButtons
+                                size="sm"
+                                className="justify-end"
+                                message={t('contact.transferMessage', { from: route.from_city, to: route.to_city, vehicle: v.vehicle_type, price: v.price })}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Users className="h-4 w-4" />
-                    <span>{t('transfers.upTo')} {transfer.max_passengers} {t('transfers.passengers')}</span>
+
+                  {/* Mobile stacked */}
+                  <div className="md:hidden space-y-4">
+                    {route.vehicles.map((v) => (
+                      <div key={v.id} className="rounded-lg border border-border p-4 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="font-medium text-base">
+                            {vehicleIcons[v.vehicle_type] || '🚗'} {v.vehicle_type}
+                          </span>
+                          <span className="text-lg font-bold text-primary">${v.price}</span>
+                        </div>
+                        <div className="flex gap-4 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1.5">
+                            <Users className="h-4 w-4" />
+                            {t('transfers.upTo')} {v.max_passengers}
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <Briefcase className="h-4 w-4" />
+                            {luggageEstimate[v.vehicle_type] || '2-3'} {t('transfers.bags')}
+                          </span>
+                        </div>
+                        <ContactButtons
+                          size="sm"
+                          message={t('contact.transferMessage', { from: route.from_city, to: route.to_city, vehicle: v.vehicle_type, price: v.price })}
+                        />
+                      </div>
+                    ))}
                   </div>
-                  {transfer.description && (
-                    <p className="text-sm text-muted-foreground">{transfer.description}</p>
-                  )}
                 </CardContent>
-                <CardFooter className="flex flex-col gap-3">
-                  <span className="text-xl font-bold text-primary w-full">${transfer.price}</span>
-                  <ContactButtons
-                    size="sm"
-                    message={t('contact.transferMessage', { from: transfer.from_city, to: transfer.to_city, vehicle: transfer.vehicle_type, price: transfer.price })}
-                  />
-                </CardFooter>
               </Card>
             ))}
           </div>
