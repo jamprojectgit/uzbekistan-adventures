@@ -4,10 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
-import TourCard from '@/components/TourCard';
 import OptimizedImage from '@/components/OptimizedImage';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getLocalizedText } from '@/lib/i18n-utils';
+import { lazy, Suspense } from 'react';
+
+const TourCard = lazy(() => import('@/components/TourCard'));
 
 const CityDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -124,9 +126,11 @@ const CityDetail = () => {
             {[1, 2, 3].map(i => <Skeleton key={i} className="h-80 rounded-lg" />)}
           </div>
         ) : tours && tours.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tours.map(tour => <TourCard key={tour.id} tour={tour} />)}
-          </div>
+          <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{[1,2,3].map(i => <Skeleton key={i} className="h-80 rounded-lg" />)}</div>}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {tours.map(tour => <TourCard key={tour.id} tour={tour} />)}
+            </div>
+          </Suspense>
         ) : (
           <p className="text-muted-foreground text-center py-12">{t('tours.noTours')}</p>
         )}
