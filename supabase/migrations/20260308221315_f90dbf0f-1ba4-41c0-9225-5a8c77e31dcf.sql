@@ -1,0 +1,1 @@
+ALTER TABLE public.tours ADD COLUMN order_number integer DEFAULT NULL;
