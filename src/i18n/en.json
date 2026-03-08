@@ -21,8 +21,8 @@
     "transfersSubtitle": "Comfortable private transfers across Uzbekistan",
     "trainTickets": "Train Tickets",
     "trainTicketsSubtitle": "Travel between cities by high-speed and regular trains",
-    "ctaTitle": "Ready for an Adventure?",
-    "ctaSubtitle": "Book your dream tour in Uzbekistan today",
+    "ctaTitle": "Ready to discover Uzbekistan? 🇺🇿",
+    "ctaSubtitle": "Have a question or looking for a custom multi-day itinerary?\n\nWe can help organize your trip across Uzbekistan — from day tours to full Silk Road journeys.\n\nSend us a message on WhatsApp or Telegram and we'll help you plan your perfect trip.",
     "ctaButton": "Explore Tours",
     "viewAll": "View All",
     "toursByCity": "Tours by City"
@@ -155,6 +155,8 @@
   },
   "contact": {
     "bookVia": "Contact Us to Book",
+    "chatWhatsApp": "Chat on WhatsApp",
+    "messageTelegram": "Message on Telegram",
     "title": "Contact",
     "defaultMessage": "Hello! I am interested in booking a tour in Uzbekistan. Could you please provide more information?",
     "transferMessage": "Hello! I'm interested in a transfer: {{from}} → {{to}}, {{vehicle}}, ${{price}}",
