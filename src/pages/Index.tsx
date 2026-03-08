@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Car } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
-import { motion } from 'framer-motion';
+
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -116,34 +116,20 @@ const Index = () => {
       {/* Hero */}
       <section className="relative bg-primary text-primary-foreground py-24 md:py-32">
         <div className="container mx-auto px-4 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold mb-4 tracking-tight"
-          >
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
             {t('home.heroTitle')}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto"
-          >
+          </h1>
+          <p className="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto">
             {t('home.heroSubtitle')}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="max-w-md mx-auto flex gap-2"
-          >
+          </p>
+          <div className="max-w-md mx-auto flex gap-2">
             <Suspense fallback={<div className="flex-1 h-10 rounded-md bg-primary-foreground/10 animate-pulse" />}>
               <SearchAutocomplete value={search} onChange={setSearch} />
             </Suspense>
             <Button asChild variant="secondary">
               <Link to={`/tours${search ? `?search=${encodeURIComponent(search)}` : ''}`}>{t('home.ctaButton')}</Link>
             </Button>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -160,7 +146,7 @@ const Index = () => {
           ].map((city) => (
             <Link key={city.slug} to={`/tours?city=${city.slug}`} className="group">
               <div className="aspect-square rounded-xl overflow-hidden relative">
-                <OptimizedImage src={city.image} alt={getLocalizedText(city.name)} sizes="(max-width: 640px) 50vw, 20vw" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                <OptimizedImage src={city.image} alt={getLocalizedText(city.name)} sizes="(max-width: 640px) 50vw, 20vw" priority={city.slug === 'samarkand'} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <h3 className="absolute bottom-3 left-3 right-3 text-white font-semibold text-sm md:text-base">{getLocalizedText(city.name)}</h3>
               </div>
