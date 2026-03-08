@@ -151,6 +151,7 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                   <OptimizedImage
                     src={img}
                     alt={`${title} — photo ${realIndex + 1}`}
+                    preset="thumbnail"
                     sizes="25vw"
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
