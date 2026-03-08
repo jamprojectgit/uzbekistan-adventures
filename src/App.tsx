@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 const Tours = lazy(() => import("./pages/Tours"));
 const TourDetail = lazy(() => import("./pages/TourDetail"));
 const Cities = lazy(() => import("./pages/Cities"));
+const CityDetail = lazy(() => import("./pages/CityDetail"));
 const MyBookings = lazy(() => import("./pages/MyBookings"));
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
@@ -23,7 +24,9 @@ const AdminBookings = lazy(() => import("./pages/admin/AdminBookings"));
 const AdminTransfers = lazy(() => import("./pages/admin/AdminTransfers"));
 const AdminTrainRoutes = lazy(() => import("./pages/admin/AdminTrainRoutes"));
 const Transfers = lazy(() => import("./pages/Transfers"));
+const TransferDetail = lazy(() => import("./pages/TransferDetail"));
 const TrainTickets = lazy(() => import("./pages/TrainTickets"));
+const TrainRouteDetail = lazy(() => import("./pages/TrainRouteDetail"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -47,9 +50,12 @@ const App = () => (
               <Route path="/tours" element={<Tours />} />
               <Route path="/tours/:slug" element={<TourDetail />} />
               <Route path="/cities" element={<Cities />} />
+              <Route path="/cities/:slug" element={<CityDetail />} />
               <Route path="/my-bookings" element={<MyBookings />} />
               <Route path="/transfers" element={<Transfers />} />
+              <Route path="/transfers/:routeSlug" element={<TransferDetail />} />
               <Route path="/train-tickets" element={<TrainTickets />} />
+              <Route path="/train-tickets/:routeSlug" element={<TrainRouteDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/admin" element={<AdminLayout />}>
