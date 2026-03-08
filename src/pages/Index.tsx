@@ -8,10 +8,10 @@ import TourCard from '@/components/TourCard';
 import CityCard from '@/components/CityCard';
 import SEOHead from '@/components/SEOHead';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Search, Car, Train } from 'lucide-react';
+import { Car, Train } from 'lucide-react';
 import ContactButtons from '@/components/ContactButtons';
+import SearchAutocomplete from '@/components/SearchAutocomplete';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { getLocalizedText } from '@/lib/i18n-utils';
@@ -130,17 +130,9 @@ const Index = () => {
             transition={{ delay: 0.2 }}
             className="max-w-md mx-auto flex gap-2"
           >
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder={t('home.searchPlaceholder')}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 bg-background text-foreground"
-              />
-            </div>
+            <SearchAutocomplete value={search} onChange={setSearch} />
             <Button asChild variant="secondary">
-              <Link to={`/tours${search ? `?q=${search}` : ''}`}>{t('home.ctaButton')}</Link>
+              <Link to={`/tours${search ? `?search=${encodeURIComponent(search)}` : ''}`}>{t('home.ctaButton')}</Link>
             </Button>
           </motion.div>
         </div>
