@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import OptimizedImage from '@/components/OptimizedImage';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { getLocalizedText } from '@/lib/i18n-utils';

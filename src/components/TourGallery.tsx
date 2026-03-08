@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import OptimizedImage from '@/components/OptimizedImage';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, Images } from 'lucide-react';
 import { cn } from '@/lib/utils';

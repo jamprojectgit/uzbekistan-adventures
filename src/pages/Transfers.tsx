@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import OptimizedImage from '@/components/OptimizedImage';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
