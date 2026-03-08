@@ -204,11 +204,13 @@ const Index = () => {
               {[1,2,3].map(i => <Skeleton key={i} className="h-48 rounded-lg" />)}
             </div>
           ) : cities && cities.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cities.map((city) => (
-                <CityCard key={city.id} city={city} />
-              ))}
-            </div>
+            <Suspense fallback={<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">{[1,2,3].map(i => <Skeleton key={i} className="h-48 rounded-lg" />)}</div>}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {cities.map((city) => (
+                  <CityCard key={city.id} city={city} />
+                ))}
+              </div>
+            </Suspense>
           ) : (
             <p className="text-muted-foreground text-center py-12">{t('tours.noTours')}</p>
           )}
