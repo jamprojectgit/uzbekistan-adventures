@@ -146,10 +146,10 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                   className="relative flex-1 min-h-0 cursor-pointer group overflow-hidden"
                   onClick={() => openLightbox(realIndex)}
                 >
-                  <img
+                  <OptimizedImage
                     src={img}
                     alt={`${title} — photo ${realIndex + 1}`}
-                    loading="lazy"
+                    sizes="25vw"
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   {isLast && (
