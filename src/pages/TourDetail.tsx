@@ -110,7 +110,9 @@ const TourDetail = () => {
           {/* Main content */}
           <div className="lg:col-span-2 space-y-6">
             {tour.images && tour.images.length > 0 && (
-              <TourGallery images={tour.images} title={title} />
+              <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
+                <TourGallery images={tour.images} title={title} />
+              </Suspense>
             )}
 
             <div>
