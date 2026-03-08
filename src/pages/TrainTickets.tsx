@@ -90,9 +90,9 @@ const TrainTickets = () => {
         ) : (
           <div className="space-y-6">
             {grouped.map((group) => (
-              <div key={group.key} className="rounded-lg border border-border overflow-hidden">
-                <div className="flex items-center justify-between bg-muted/50 px-4 py-3">
-                  <div className="flex items-center gap-3">
+              <div key={group.key} className="rounded-[14px] border border-border overflow-hidden shadow-[0_6px_20px_rgba(0,0,0,0.04)]">
+                <div className="flex items-center justify-between bg-muted/50 px-4 py-3.5">
+                  <div className="flex items-center gap-3 flex-wrap">
                     <Train className="h-5 w-5 text-primary" />
                     <div>
                       <span className="font-semibold">{group.train_type}</span>
@@ -118,29 +118,34 @@ const TrainTickets = () => {
                       {group.departures.some(r => r.price > 0) && (
                         <TableHead>{t('trainTickets.price')}</TableHead>
                       )}
-                      <TableHead className="w-56"></TableHead>
+                      <TableHead className="w-auto md:w-56"></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {group.departures.map((dep) => (
-                      <TableRow key={dep.id}>
-                        <TableCell className="font-mono">{dep.departure_time}</TableCell>
-                        <TableCell className="font-mono">{dep.arrival_time}</TableCell>
-                        <TableCell>
-                          {dep.operating_days !== 'Daily' ? (
-                            <Badge variant="secondary" className="text-xs">{dep.operating_days}</Badge>
-                          ) : (
-                            <span className="text-muted-foreground text-sm">{dep.operating_days}</span>
-                          )}
+                      <TableRow key={dep.id} className="border-b border-[hsl(216,20%,95%)]">
+                        <TableCell className="py-3.5 px-3 font-semibold text-[17px] tracking-tight">{dep.departure_time}</TableCell>
+                        <TableCell className="py-3.5 px-3 font-semibold text-[17px] tracking-tight">{dep.arrival_time}</TableCell>
+                        <TableCell className="py-3.5 px-3">
+                          <span className="inline-block bg-muted text-muted-foreground text-xs font-medium rounded-lg px-2.5 py-1">
+                            {dep.operating_days}
+                          </span>
                         </TableCell>
                         {group.departures.some(r => r.price > 0) && (
-                          <TableCell className="font-semibold text-primary">
-                            {dep.price > 0 ? `$${dep.price}` : '—'}
+                          <TableCell className="py-3.5 px-3">
+                            {dep.price > 0 ? (
+                              <span className="inline-block bg-secondary text-primary font-semibold text-sm rounded-lg px-2.5 py-1">
+                                ${dep.price}
+                              </span>
+                            ) : (
+                              <span className="text-muted-foreground">—</span>
+                            )}
                           </TableCell>
                         )}
-                        <TableCell>
+                        <TableCell className="py-3.5 px-3">
                           <ContactButtons
                             size="sm"
+                            className="train-contact-btns"
                             message={t('contact.trainMessage', { train: dep.train_type, from: group.from_city, to: group.to_city, time: dep.departure_time })}
                           />
                         </TableCell>
