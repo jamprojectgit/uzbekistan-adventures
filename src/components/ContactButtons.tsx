@@ -23,13 +23,13 @@ const ContactButtons = ({ message, className = '', size = 'default' }: ContactBu
       <Button size={size} className="bg-[#25D366] hover:bg-[#1da851] text-white flex-1" asChild>
         <a href={waUrl} target="_blank" rel="noopener noreferrer">
           <MessageCircle className="h-4 w-4 mr-2" />
-          {t('contact.chatWhatsApp')}
+          WhatsApp
         </a>
       </Button>
       <Button size={size} className="bg-[#0088cc] hover:bg-[#006da3] text-white flex-1" asChild>
         <a href={tgUrl} target="_blank" rel="noopener noreferrer">
           <Send className="h-4 w-4 mr-2" />
-          {t('contact.messageTelegram')}
+          Telegram
         </a>
       </Button>
     </div>
