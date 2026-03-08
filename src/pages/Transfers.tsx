@@ -63,7 +63,7 @@ const Transfers = () => {
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Users className="h-4 w-4" />
-                    <span>{t('transfers.upTo')} {transfer.max_passengers} {t('transfers.people')}</span>
+                    <span>{t('transfers.upTo')} {transfer.max_passengers} {t('transfers.passengers')}</span>
                   </div>
                   {transfer.description && (
                     <p className="text-sm text-muted-foreground">{transfer.description}</p>
