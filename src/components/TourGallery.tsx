@@ -93,6 +93,7 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                     src={img}
                     alt={`${title} — photo ${i + 1}`}
                     priority={i === 0}
+                    preset={i === 0 ? 'hero' : 'gallery'}
                     sizes="100vw"
                     className="w-full h-full object-cover"
                   />
@@ -131,6 +132,7 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
               src={images[0]}
               alt={`${title} — main photo`}
               priority
+              preset="hero"
               sizes="(max-width: 768px) 100vw, 75vw"
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
             />
@@ -149,6 +151,7 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                   <OptimizedImage
                     src={img}
                     alt={`${title} — photo ${realIndex + 1}`}
+                    preset="thumbnail"
                     sizes="25vw"
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
@@ -240,7 +243,7 @@ const TourGallery = ({ images, title, maxThumbnails = 4 }: TourGalleryProps) => 
                       i === lightboxIndex ? "border-white opacity-100 scale-105" : "border-transparent opacity-50 hover:opacity-80"
                     )}
                   >
-                    <OptimizedImage src={img} alt={`${title} — thumbnail ${i + 1}`} sizes="64px" className="w-full h-full object-cover" />
+                    <OptimizedImage src={img} alt={`${title} — thumbnail ${i + 1}`} preset="thumbnail" sizes="64px" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>

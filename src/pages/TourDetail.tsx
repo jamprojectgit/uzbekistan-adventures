@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
+import { getOptimizedUrl } from '@/lib/image-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 const TourDetail = () => {
@@ -58,6 +59,8 @@ const TourDetail = () => {
   const included = getLocalizedArray(tour.included);
   const excluded = getLocalizedArray(tour.excluded);
   const cityName = tour.cities ? getLocalizedText(tour.cities.name) : '';
+  const heroImage = tour.images?.[0];
+  const heroPreloadUrl = heroImage ? getOptimizedUrl(heroImage, 1600) : null;
 
   return (
     <Layout>
@@ -67,6 +70,9 @@ const TourDetail = () => {
         path={`/tours/${slug}`}
         type="article"
       />
+      {heroPreloadUrl && (
+        <link rel="preload" as="image" href={heroPreloadUrl} type="image/webp" />
+      )}
       <div className="container mx-auto px-4 py-8">
         <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" /> {t('common.back')}
