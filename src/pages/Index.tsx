@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Car } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
-import { motion } from 'framer-motion';
+
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
