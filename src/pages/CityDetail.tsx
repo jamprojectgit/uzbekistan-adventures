@@ -54,7 +54,7 @@ const CityDetail = () => {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-16 text-center">
-          <p className="text-muted-foreground">City not found</p>
+          <p className="text-muted-foreground">{t('cities.notFound')}</p>
         </div>
       </Layout>
     );

@@ -10,12 +10,13 @@ interface ContactButtonsProps {
 
 const PHONE = '998990152110';
 
-const ContactButtons = ({ message = '', className = '', size = 'default' }: ContactButtonsProps) => {
+const ContactButtons = ({ message, className = '', size = 'default' }: ContactButtonsProps) => {
   const { t } = useTranslation();
-  const encodedMessage = encodeURIComponent(message);
+  const finalMessage = message || t('contact.defaultMessage');
+  const encodedMessage = encodeURIComponent(finalMessage);
 
-  const waUrl = `https://wa.me/${PHONE}${encodedMessage ? `?text=${encodedMessage}` : ''}`;
-  const tgUrl = `https://t.me/+${PHONE}${encodedMessage ? `?text=${encodedMessage}` : ''}`;
+  const waUrl = `https://wa.me/${PHONE}?text=${encodedMessage}`;
+  const tgUrl = `https://t.me/+${PHONE}?text=${encodedMessage}`;
 
   return (
     <div className={`flex gap-2 ${className}`}>

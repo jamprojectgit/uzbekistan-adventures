@@ -15,7 +15,6 @@ const TransferDetail = () => {
   const { routeSlug } = useParams<{ routeSlug: string }>();
   const { t } = useTranslation();
 
-  // Parse slug: "tashkent-to-samarkand-transfer"
   const { fromCity, toCity } = useMemo(() => {
     const match = routeSlug?.match(/^(.+?)-to-(.+?)-transfer$/);
     if (!match) return { fromCity: '', toCity: '' };
@@ -38,14 +37,14 @@ const TransferDetail = () => {
     enabled: !!fromCity && !!toCity,
   });
 
-  const title = `${fromCity} to ${toCity} Transfer`;
-  const desc = `Book a private transfer from ${fromCity} to ${toCity}, Uzbekistan. Choose from sedan, minivan, or minibus options with professional drivers.`;
+  const title = t('transfers.routeTitle', { from: fromCity, to: toCity });
+  const desc = t('transfers.routeDesc', { from: fromCity, to: toCity });
 
   return (
     <Layout>
       <SEOHead
-        title={`${title} | Private Car Service in Uzbekistan`}
-        description={desc}
+        title={`${fromCity} to ${toCity} Transfer | Private Car Service in Uzbekistan`}
+        description={`Book a private transfer from ${fromCity} to ${toCity}, Uzbekistan. Choose from sedan, minivan, or minibus options with professional drivers.`}
         path={`/transfers/${routeSlug}`}
       />
 
@@ -55,8 +54,8 @@ const TransferDetail = () => {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Service",
-            "name": title,
-            "description": desc,
+            "name": `${fromCity} to ${toCity} Transfer`,
+            "description": `Book a private transfer from ${fromCity} to ${toCity}, Uzbekistan.`,
             "provider": {
               "@type": "TravelAgency",
               "name": "JamTrips",
@@ -82,7 +81,7 @@ const TransferDetail = () => {
       <section className="container mx-auto px-4 py-16">
         <h1 className="text-3xl md:text-4xl font-bold mb-2">
           <MapPin className="inline h-7 w-7 text-primary mr-2" />
-          {fromCity} → {toCity} Transfer
+          {title}
         </h1>
         <p className="text-muted-foreground mb-8 max-w-2xl">{desc}</p>
 
@@ -113,7 +112,7 @@ const TransferDetail = () => {
                 <CardContent className="flex-1 space-y-2">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Users className="h-4 w-4" />
-                    <span>Up to {transfer.max_passengers} passengers</span>
+                    <span>{t('transfers.upTo')} {transfer.max_passengers} {t('transfers.passengers')}</span>
                   </div>
                   {transfer.description && (
                     <p className="text-sm text-muted-foreground">{transfer.description}</p>
@@ -123,7 +122,7 @@ const TransferDetail = () => {
                   <span className="text-xl font-bold text-primary w-full">${transfer.price}</span>
                   <ContactButtons
                     size="sm"
-                    message={`Здравствуйте! Интересует трансфер: ${fromCity} → ${toCity}, ${transfer.vehicle_type}, $${transfer.price}`}
+                    message={t('contact.transferMessage', { from: fromCity, to: toCity, vehicle: transfer.vehicle_type, price: transfer.price })}
                   />
                 </CardFooter>
               </Card>
@@ -131,9 +130,9 @@ const TransferDetail = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">No specific transfer options listed for this route yet.</p>
+            <p className="text-muted-foreground mb-4">{t('transfers.noOptionsYet')}</p>
             <ContactButtons
-              message={`Здравствуйте! Интересует трансфер: ${fromCity} → ${toCity}`}
+              message={t('contact.transferMessageShort', { from: fromCity, to: toCity })}
             />
           </div>
         )}
