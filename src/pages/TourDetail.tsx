@@ -67,6 +67,38 @@ const TourDetail = () => {
         path={`/tours/${slug}`}
         type="article"
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "TouristTrip",
+            "name": title,
+            "description": desc.substring(0, 300),
+            "url": `https://jamtrips.com/tours/${slug}`,
+            "touristType": "Leisure",
+            ...(tour.images?.[0] && { image: tour.images[0] }),
+            "offers": {
+              "@type": "Offer",
+              "price": tour.price,
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock",
+            },
+            "provider": {
+              "@type": "TravelAgency",
+              "name": "JamTrips",
+              "url": "https://jamtrips.com",
+            },
+            ...(cityName && {
+              "itinerary": {
+                "@type": "Place",
+                "name": cityName,
+                "address": { "@type": "PostalAddress", "addressCountry": "UZ" },
+              },
+            }),
+          }),
+        }}
+      />
       <div className="container mx-auto px-4 py-8">
         <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" /> {t('common.back')}

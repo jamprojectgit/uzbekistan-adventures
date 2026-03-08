@@ -18,7 +18,7 @@ const CityCard = ({ city }: CityCardProps) => {
   const name = getLocalizedText(city.name);
 
   return (
-    <Link to={`/tours?city=${city.slug}`}>
+    <Link to={`/cities/${city.slug}`}>
       <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
         <div className="aspect-[3/2] relative overflow-hidden">
           <OptimizedImage
