@@ -29,6 +29,7 @@ const Index = () => {
       const { data, error } = await supabase
         .from('tours')
         .select('*, cities(name)')
+        .order('order_number', { ascending: true, nullsFirst: false })
         .limit(6);
       if (error) throw error;
       return data;

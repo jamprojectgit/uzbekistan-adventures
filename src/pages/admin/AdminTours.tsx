@@ -37,7 +37,7 @@ const AdminTours = () => {
   const { data: tours, isLoading } = useQuery({
     queryKey: ['admin-tours'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('tours').select('*, cities(name)');
+      const { data, error } = await supabase.from('tours').select('*, cities(name)').order('order_number', { ascending: true, nullsFirst: false });
       if (error) throw error;
       return data;
     },
