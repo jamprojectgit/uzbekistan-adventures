@@ -51,7 +51,7 @@ const App = () => (
               <Route path="/tours/:slug" element={<TourDetail />} />
               <Route path="/cities" element={<Cities />} />
               <Route path="/cities/:slug" element={<CityDetail />} />
-              <Route path="/my-bookings" element={<MyBookings />} />
+              {/* My Bookings hidden from public - admin can still access */}
               <Route path="/transfers" element={<Transfers />} />
               <Route path="/transfers/:routeSlug" element={<TransferDetail />} />
               <Route path="/train-tickets" element={<TrainTickets />} />
