@@ -224,20 +224,21 @@ const Index = () => {
           (() => {
             const grouped = new Map<string, typeof transfers>();
             transfers.forEach(tr => {
-              const key = `${tr.from_city}-${tr.to_city}`;
+              const key = `${tr.from_city.trim().toLowerCase()}-${tr.to_city.trim().toLowerCase()}`;
               if (!grouped.has(key)) grouped.set(key, []);
               grouped.get(key)!.push(tr);
             });
+            const entries = Array.from(grouped.entries()).slice(0, 4);
             return (
-              <div className="space-y-4">
-                {Array.from(grouped.entries()).map(([key, vehicles]) => {
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {entries.map(([key, vehicles]) => {
                   const slug = `${vehicles[0].from_city.toLowerCase().replace(/\s+/g, '-')}-to-${vehicles[0].to_city.toLowerCase().replace(/\s+/g, '-')}-transfer`;
                   return (
-                    <Card key={key}>
+                    <Card key={key} className="overflow-hidden">
                       <CardHeader className="pb-2">
                         <Link to={`/transfers/${slug}`}>
                           <CardTitle className="text-base flex items-center gap-2 hover:text-primary transition-colors">
-                            <Car className="h-4 w-4 text-primary" />
+                            <Car className="h-4 w-4 text-primary shrink-0" />
                             {vehicles[0].from_city} → {vehicles[0].to_city}
                           </CardTitle>
                         </Link>

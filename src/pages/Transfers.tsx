@@ -45,14 +45,13 @@ const luggageEstimate: Record<string, string> = {
 function groupByRoute(transfers: Transfer[]): RouteGroup[] {
   const map = new Map<string, RouteGroup>();
   for (const t of transfers) {
-    const key = `${t.from_city}-${t.to_city}`;
+    const key = `${t.from_city.trim().toLowerCase()}-${t.to_city.trim().toLowerCase()}`;
     if (!map.has(key)) {
       const slug = `${t.from_city.toLowerCase().replace(/\s+/g, '-')}-to-${t.to_city.toLowerCase().replace(/\s+/g, '-')}-transfer`;
       map.set(key, { key, from_city: t.from_city, to_city: t.to_city, slug, vehicles: [] });
     }
     map.get(key)!.vehicles.push(t);
   }
-  // Sort vehicles by price within each group
   for (const group of map.values()) {
     group.vehicles.sort((a, b) => Number(a.price) - Number(b.price));
   }
