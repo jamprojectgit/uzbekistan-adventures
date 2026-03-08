@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /signup
+Disallow: /my-bookings
 
 Sitemap: https://jamtrips.com/sitemap.xml
