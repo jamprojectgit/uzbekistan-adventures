@@ -116,34 +116,20 @@ const Index = () => {
       {/* Hero */}
       <section className="relative bg-primary text-primary-foreground py-24 md:py-32">
         <div className="container mx-auto px-4 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold mb-4 tracking-tight"
-          >
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
             {t('home.heroTitle')}
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto"
-          >
+          </h1>
+          <p className="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto">
             {t('home.heroSubtitle')}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="max-w-md mx-auto flex gap-2"
-          >
+          </p>
+          <div className="max-w-md mx-auto flex gap-2">
             <Suspense fallback={<div className="flex-1 h-10 rounded-md bg-primary-foreground/10 animate-pulse" />}>
               <SearchAutocomplete value={search} onChange={setSearch} />
             </Suspense>
             <Button asChild variant="secondary">
               <Link to={`/tours${search ? `?search=${encodeURIComponent(search)}` : ''}`}>{t('home.ctaButton')}</Link>
             </Button>
-          </motion.div>
+          </div>
         </div>
       </section>
 
