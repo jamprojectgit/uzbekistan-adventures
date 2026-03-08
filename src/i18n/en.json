@@ -67,7 +67,12 @@
     "passengers": "passengers",
     "noOptionsYet": "No specific transfer options listed for this route yet.",
     "routeTitle": "{{from}} → {{to}} Transfer",
-    "routeDesc": "Book a private transfer from {{from}} to {{to}}, Uzbekistan. Choose from sedan, minivan, or minibus options with professional drivers."
+    "routeDesc": "Book a private transfer from {{from}} to {{to}}, Uzbekistan. Choose from sedan, minivan, or minibus options with professional drivers.",
+    "vehicleType": "Vehicle",
+    "vehicleOptions": "Vehicle Options",
+    "passengersCol": "Passengers",
+    "luggageCol": "Luggage",
+    "bags": "bags"
   },
   "trainTickets": {
     "title": "Train Tickets",
