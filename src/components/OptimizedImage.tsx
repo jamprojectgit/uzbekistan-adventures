@@ -11,28 +11,13 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   maxWidth?: number;
 }
 
-const BREAKPOINTS = [400, 800, 1200, 1600];
-const SUPABASE_STORAGE_HOST = 'yckbiauwtyrozzxatxjb.supabase.co/storage/v1';
-
-function isSupabaseStorageUrl(src: string): boolean {
-  return src.includes(SUPABASE_STORAGE_HOST);
-}
-
-function buildTransformUrl(src: string, width: number): string {
-  // Convert /object/public/ to /render/image/public/ with width & format params
-  const base = src.replace('/object/public/', '/render/image/public/');
-  const sep = base.includes('?') ? '&' : '?';
-  return `${base}${sep}width=${width}&format=webp`;
-}
-
-function buildSrcSet(src: string, maxWidth: number): string | undefined {
-  if (!isSupabaseStorageUrl(src)) return undefined;
-  return BREAKPOINTS
-    .filter((w) => w <= maxWidth)
-    .map((w) => `${buildTransformUrl(src, w)} ${w}w`)
-    .join(', ');
-}
-
+/**
+ * Optimized image component with:
+ * - lazy loading (default) or eager + high priority
+ * - async decoding
+ * - responsive sizes hints
+ * - max-width constraint (1920px default)
+ */
 const OptimizedImage = ({
   src,
   alt,
@@ -43,15 +28,9 @@ const OptimizedImage = ({
   style,
   ...props
 }: OptimizedImageProps) => {
-  const srcSet = buildSrcSet(src, maxWidth);
-  const optimizedSrc = isSupabaseStorageUrl(src)
-    ? buildTransformUrl(src, Math.min(maxWidth, BREAKPOINTS[BREAKPOINTS.length - 1]))
-    : src;
-
   return (
     <img
-      src={optimizedSrc}
-      srcSet={srcSet}
+      src={src}
       alt={alt}
       loading={priority ? 'eager' : 'lazy'}
       decoding={priority ? 'sync' : 'async'}
