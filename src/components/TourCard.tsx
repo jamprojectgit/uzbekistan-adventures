@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
 import { MapPin, Clock, ChevronRight } from 'lucide-react';
+import ShareButton from '@/components/ShareButton';
 
 interface TourCardProps {
   tour: {
@@ -31,8 +32,9 @@ const TourCard = ({ tour }: TourCardProps) => {
   return (
     <Link to={`/tours/${tour.slug}`}>
       <Card className="overflow-hidden group hover:shadow-lg transition-shadow h-full">
-        <div className="aspect-[4/3] overflow-hidden">
+        <div className="aspect-[4/3] overflow-hidden relative">
           <OptimizedImage src={image} alt={title} maxWidth={800} sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+          <ShareButton title={title} url={`${window.location.origin}/tours/${tour.slug}`} className="absolute top-2 right-2 w-8 h-8 z-10" size={16} />
         </div>
         <CardContent className="p-4 space-y-1.5">
           <h3 className="font-semibold text-lg">{title}</h3>
