@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
+import ShareButton from '@/components/ShareButton';
 
 const TourDetail = () => {
   const { slug } = useParams<{ slug: string }>();

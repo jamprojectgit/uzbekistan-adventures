@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
 import { MapPin, Clock, ChevronRight } from 'lucide-react';
+import ShareButton from '@/components/ShareButton';
 
 interface TourCardProps {
   tour: {
