@@ -117,7 +117,10 @@ const TourDetail = () => {
             )}
 
             <div>
-              <h1 className="text-3xl font-bold mb-2">{title}</h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-3xl font-bold">{title}</h1>
+                <ShareButton title={title} url={`${window.location.origin}/tours/${slug}`} className="w-9 h-9 shrink-0" size={18} />
+              </div>
               <div className="flex items-center gap-4 text-muted-foreground mb-4">
                 {cityName && <span className="flex items-center gap-1"><MapPin className="h-4 w-4" /> {cityName}</span>}
                 <span className="flex items-center gap-1"><Clock className="h-4 w-4" /> {formatDuration(tour.duration_value ?? tour.duration, tour.duration_unit ?? 'days')}</span>
