@@ -71,7 +71,7 @@ const TransferDetail = () => {
             "provider": {
               "@type": "TravelAgency",
               "name": "JamTrips",
-              "url": "https://jamtrips.com",
+              "url": "https://www.jamtrips.com",
             },
             "areaServed": {
               "@type": "Country",

@@ -91,7 +91,7 @@ const Index = () => {
             "@context": "https://schema.org",
             "@type": "TravelAgency",
             "name": "JamTrips",
-            "url": "https://jamtrips.com",
+            "url": "https://www.jamtrips.com",
             "description": "Uzbekistan travel marketplace offering Uzbekistan tours, private tours in Samarkand, Bukhara, Khiva and Tashkent, Uzbekistan train tickets booking, railway tickets between Uzbekistan and Russia, private transfers across Uzbekistan, and travel services for international tourists.",
             "makesOffer": [
               { "@type": "Offer", "itemOffered": { "@type": "TouristTrip", "name": "Uzbekistan tours" } },

@@ -86,7 +86,7 @@ const CityDetail = () => {
               "@type": "Country",
               "name": "Uzbekistan",
             },
-            "url": `https://jamtrips.com/cities/${slug}`,
+            "url": `https://www.jamtrips.com/cities/${slug}`,
           }),
         }}
       />

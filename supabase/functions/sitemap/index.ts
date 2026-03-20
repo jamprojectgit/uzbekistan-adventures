@@ -6,7 +6,7 @@ const corsHeaders = {
   'Content-Type': 'application/xml; charset=utf-8',
 };
 
-const BASE_URL = 'https://jamtrips.com';
+const BASE_URL = 'https://www.jamtrips.com';
 
 const staticPages = [
   { path: '/', priority: '1.0', changefreq: 'daily' },
