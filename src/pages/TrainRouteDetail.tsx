@@ -79,6 +79,13 @@ const TrainRouteDetail = () => {
       />
 
       <section className="container mx-auto px-4 py-16">
+        <Breadcrumbs
+          items={[
+            { label: t('nav.trainTickets'), href: '/train-tickets' },
+            { label: `${fromCity} → ${toCity}` },
+          ]}
+          className="mb-6"
+        />
         <h1 className="text-3xl md:text-4xl font-bold mb-2">
           <Train className="inline h-7 w-7 text-primary mr-2" />
           {title}

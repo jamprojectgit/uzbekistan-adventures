@@ -110,6 +110,13 @@ const CityDetail = () => {
       )}
 
       <div className="container mx-auto px-4 py-8">
+        <Breadcrumbs
+          items={[
+            { label: t('nav.cities'), href: '/cities' },
+            { label: name },
+          ]}
+          className="mb-6"
+        />
         {!city.cover_image && (
           <h1 className="text-3xl md:text-4xl font-bold mb-6">{name}</h1>
         )}

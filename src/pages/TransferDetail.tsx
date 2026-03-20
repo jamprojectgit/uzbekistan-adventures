@@ -92,6 +92,13 @@ const TransferDetail = () => {
       />
 
       <section className="container mx-auto px-4 py-16">
+        <Breadcrumbs
+          items={[
+            { label: t('nav.transfers'), href: '/transfers' },
+            { label: `${fromCity} → ${toCity}` },
+          ]}
+          className="mb-6"
+        />
         <h1 className="text-3xl md:text-4xl font-bold mb-2">
           <MapPin className="inline h-7 w-7 text-primary mr-2" />
           {title}
