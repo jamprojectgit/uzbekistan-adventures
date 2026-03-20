@@ -63,7 +63,7 @@ const TrainRouteDetail = () => {
             "provider": {
               "@type": "TravelAgency",
               "name": "JamTrips",
-              "url": "https://jamtrips.com",
+              "url": "https://www.jamtrips.com",
             },
             ...(routes && routes.length > 0 && {
               offers: routes.map(r => ({
