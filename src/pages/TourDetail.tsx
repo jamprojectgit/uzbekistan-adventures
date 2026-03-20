@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { lazy, Suspense } from 'react';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const TourGallery = lazy(() => import('@/components/TourGallery'));
@@ -25,7 +26,7 @@ const TourDetail = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('tours')
-        .select('*, cities(name)')
+        .select('*, cities(name, slug)')
         .eq('slug', slug)
         .single();
       if (error) throw error;
@@ -103,6 +104,14 @@ const TourDetail = () => {
         }}
       />
       <div className="container mx-auto px-4 py-8">
+        <Breadcrumbs
+          items={[
+            { label: t('nav.tours'), href: '/tours' },
+            ...(cityName && tour.cities?.slug ? [{ label: cityName, href: `/cities/${tour.cities.slug}` }] : []),
+            { label: title },
+          ]}
+          className="mb-4"
+        />
         <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" /> {t('common.back')}
         </Button>

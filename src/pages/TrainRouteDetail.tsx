@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import ContactButtons from '@/components/ContactButtons';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -78,6 +79,13 @@ const TrainRouteDetail = () => {
       />
 
       <section className="container mx-auto px-4 py-16">
+        <Breadcrumbs
+          items={[
+            { label: t('nav.trainTickets'), href: '/train-tickets' },
+            { label: `${fromCity} → ${toCity}` },
+          ]}
+          className="mb-6"
+        />
         <h1 className="text-3xl md:text-4xl font-bold mb-2">
           <Train className="inline h-7 w-7 text-primary mr-2" />
           {title}

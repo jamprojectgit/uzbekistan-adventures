@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import ContactButtons from '@/components/ContactButtons';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -91,6 +92,13 @@ const TransferDetail = () => {
       />
 
       <section className="container mx-auto px-4 py-16">
+        <Breadcrumbs
+          items={[
+            { label: t('nav.transfers'), href: '/transfers' },
+            { label: `${fromCity} → ${toCity}` },
+          ]}
+          className="mb-6"
+        />
         <h1 className="text-3xl md:text-4xl font-bold mb-2">
           <MapPin className="inline h-7 w-7 text-primary mr-2" />
           {title}

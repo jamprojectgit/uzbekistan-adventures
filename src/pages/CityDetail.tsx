@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import OptimizedImage from '@/components/OptimizedImage';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getLocalizedText } from '@/lib/i18n-utils';
@@ -109,6 +110,13 @@ const CityDetail = () => {
       )}
 
       <div className="container mx-auto px-4 py-8">
+        <Breadcrumbs
+          items={[
+            { label: t('nav.cities'), href: '/cities' },
+            { label: name },
+          ]}
+          className="mb-6"
+        />
         {!city.cover_image && (
           <h1 className="text-3xl md:text-4xl font-bold mb-6">{name}</h1>
         )}
