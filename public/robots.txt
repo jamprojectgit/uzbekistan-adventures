@@ -5,4 +5,4 @@ Disallow: /login
 Disallow: /signup
 Disallow: /my-bookings
 
-Sitemap: https://jamtrips.com/sitemap.xml
+Sitemap: https://www.jamtrips.com/sitemap.xml
