@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { lazy, Suspense } from 'react';
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const TourGallery = lazy(() => import('@/components/TourGallery'));
