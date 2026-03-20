@@ -78,7 +78,7 @@ const TourDetail = () => {
             "@type": "TouristTrip",
             "name": title,
             "description": desc.substring(0, 300),
-            "url": `https://jamtrips.com/tours/${slug}`,
+            "url": `https://www.jamtrips.com/tours/${slug}`,
             "touristType": "Leisure",
             ...(tour.images?.[0] && { image: tour.images[0] }),
             "offers": {
