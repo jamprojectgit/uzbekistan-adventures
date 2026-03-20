@@ -107,7 +107,7 @@ const TourDetail = () => {
         <Breadcrumbs
           items={[
             { label: t('nav.tours'), href: '/tours' },
-            ...(cityName ? [{ label: cityName, href: `/cities/${tour.cities ? (tour as any).cities.slug || '' : ''}`.replace(/\/$/, '') }] : []),
+            ...(cityName && tour.cities?.slug ? [{ label: cityName, href: `/cities/${tour.cities.slug}` }] : []),
             { label: title },
           ]}
           className="mb-4"
