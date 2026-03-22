@@ -45,7 +45,8 @@
     "excluded": "Not Included",
     "itinerary": "Itinerary",
     "from": "From",
-    "notFound": "Tour not found"
+    "notFound": "Tour not found",
+    "availableTours": "Available Tours"
   },
   "cities": {
     "title": "Explore Cities",
