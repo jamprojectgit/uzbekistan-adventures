@@ -118,7 +118,7 @@ const TourDetail = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-8">
             {tour.images && tour.images.length > 0 && (
               <Suspense fallback={<Skeleton className="h-96 w-full rounded-xl" />}>
                 <TourGallery images={tour.images} title={title} />
@@ -126,26 +126,26 @@ const TourDetail = () => {
             )}
 
             <div>
-              <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold">{title}</h1>
+              <div className="flex items-center gap-3 mb-2">
+                <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{title}</h1>
                 <ShareButton title={title} url={`${window.location.origin}/tours/${slug}`} className="w-9 h-9 shrink-0" size={18} />
               </div>
-              <div className="flex items-center gap-4 text-muted-foreground mb-4">
-                {cityName && <span className="flex items-center gap-1"><MapPin className="h-4 w-4" /> {cityName}</span>}
-                <span className="flex items-center gap-1"><Clock className="h-4 w-4" /> {formatDuration(tour.duration_value ?? tour.duration, tour.duration_unit ?? 'days')}</span>
+              <div className="flex flex-wrap items-center gap-3 md:gap-4 text-muted-foreground mb-5">
+                {cityName && <span className="flex items-center gap-1.5 text-sm"><MapPin className="h-4 w-4" /> {cityName}</span>}
+                <span className="flex items-center gap-1.5 text-sm"><Clock className="h-4 w-4" /> {formatDuration(tour.duration_value ?? tour.duration, tour.duration_unit ?? 'days')}</span>
                 <span className="font-bold text-primary text-lg">${tour.price} {t('tours.perPerson')}</span>
               </div>
-              <p className="text-foreground leading-relaxed whitespace-pre-wrap">{desc}</p>
+              <p className="text-foreground leading-relaxed whitespace-pre-wrap text-[0.938rem]">{desc}</p>
             </div>
 
             {/* Included / Excluded */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {included.length > 0 && (
                 <div>
-                  <h2 className="font-semibold mb-3 text-lg">{t('tours.included')}</h2>
-                  <ul className="space-y-2">
+                  <h2 className="text-xl font-semibold mb-4 pb-2 border-b border-border">{t('tours.included')}</h2>
+                  <ul className="space-y-2.5">
                     {included.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm">
+                      <li key={i} className="flex items-start gap-2 text-sm leading-snug">
                         <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 shrink-0" /> {item}
                       </li>
                     ))}
@@ -154,10 +154,10 @@ const TourDetail = () => {
               )}
               {excluded.length > 0 && (
                 <div>
-                  <h2 className="font-semibold mb-3 text-lg">{t('tours.excluded')}</h2>
-                  <ul className="space-y-2">
+                  <h2 className="text-xl font-semibold mb-4 pb-2 border-b border-border">{t('tours.excluded')}</h2>
+                  <ul className="space-y-2.5">
                     {excluded.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm">
+                      <li key={i} className="flex items-start gap-2 text-sm leading-snug">
                         <XCircle className="h-4 w-4 text-destructive mt-0.5 shrink-0" /> {item}
                       </li>
                     ))}
@@ -168,8 +168,8 @@ const TourDetail = () => {
 
             {itinerary && (
               <div>
-                <h2 className="font-semibold mb-3 text-lg">{t('tours.itinerary')}</h2>
-                <div className="bg-muted rounded-lg p-4 whitespace-pre-wrap text-sm">{itinerary}</div>
+                <h2 className="text-xl font-semibold mb-4 pb-2 border-b border-border">{t('tours.itinerary')}</h2>
+                <div className="bg-muted rounded-lg p-5 whitespace-pre-wrap text-sm leading-relaxed">{itinerary}</div>
               </div>
             )}
           </div>
