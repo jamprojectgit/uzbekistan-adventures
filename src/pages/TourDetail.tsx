@@ -154,7 +154,7 @@ const TourDetail = () => {
               )}
               {excluded.length > 0 && (
                 <div>
-                  <h3 className="font-semibold mb-3">{t('tours.excluded')}</h3>
+                  <h2 className="font-semibold mb-3 text-lg">{t('tours.excluded')}</h2>
                   <ul className="space-y-2">
                     {excluded.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm">
