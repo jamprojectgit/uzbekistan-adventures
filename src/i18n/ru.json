@@ -51,7 +51,8 @@
   "cities": {
     "title": "Города",
     "viewTours": "Туры",
-    "notFound": "Город не найден"
+    "notFound": "Город не найден",
+    "explore": "Направления"
   },
   "transfers": {
     "title": "Трансферы",

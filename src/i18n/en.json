@@ -51,7 +51,8 @@
   "cities": {
     "title": "Explore Cities",
     "viewTours": "Tours",
-    "notFound": "City not found"
+    "notFound": "City not found",
+    "explore": "Explore Destinations"
   },
   "transfers": {
     "title": "Transfers",
