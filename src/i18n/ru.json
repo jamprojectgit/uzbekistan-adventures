@@ -45,7 +45,8 @@
     "excluded": "Не включено",
     "itinerary": "Маршрут",
     "from": "От",
-    "notFound": "Тур не найден"
+    "notFound": "Тур не найден",
+    "availableTours": "Доступные туры"
   },
   "cities": {
     "title": "Города",
