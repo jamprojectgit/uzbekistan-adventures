@@ -101,10 +101,10 @@ const Transfers = () => {
               <Card key={route.key}>
                 <CardHeader className="pb-4">
                   <Link to={`/transfers/${route.slug}`}>
-                    <CardTitle className="flex items-center gap-2 text-xl hover:text-primary transition-colors">
+                    <h2 className="flex items-center gap-2 text-xl font-semibold hover:text-primary transition-colors">
                       <MapPin className="h-5 w-5 text-primary shrink-0" />
                       {route.from_city} → {route.to_city}
-                    </CardTitle>
+                    </h2>
                   </Link>
                 </CardHeader>
                 <CardContent className="pt-0">

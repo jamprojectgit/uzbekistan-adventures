@@ -94,11 +94,9 @@ const TrainTickets = () => {
                 <div className="flex items-center justify-between bg-muted/50 px-4 py-3">
                   <div className="flex items-center gap-3">
                     <Train className="h-5 w-5 text-primary" />
-                    <div>
-                      <span className="font-semibold">{group.train_type}</span>
-                      <span className="mx-2 text-muted-foreground">—</span>
-                      <span>{group.from_city} → {group.to_city}</span>
-                    </div>
+                    <h2 className="text-base font-semibold">
+                      {group.train_type} — {group.from_city} → {group.to_city}
+                    </h2>
                     <Badge variant="outline" className="text-xs">
                       {group.departures.length} {group.departures.length === 1 ? t('trainTickets.departureSingular') : t('trainTickets.departurePlural')}
                     </Badge>

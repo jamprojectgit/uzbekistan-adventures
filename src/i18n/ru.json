@@ -45,12 +45,14 @@
     "excluded": "Не включено",
     "itinerary": "Маршрут",
     "from": "От",
-    "notFound": "Тур не найден"
+    "notFound": "Тур не найден",
+    "availableTours": "Доступные туры"
   },
   "cities": {
     "title": "Города",
     "viewTours": "Туры",
-    "notFound": "Город не найден"
+    "notFound": "Город не найден",
+    "explore": "Направления"
   },
   "transfers": {
     "title": "Трансферы",

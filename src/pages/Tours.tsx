@@ -89,6 +89,7 @@ const Tours = () => {
           </Select>
         </div>
 
+        <h2 className="text-xl font-semibold mb-4">{t('tours.availableTours')}</h2>
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1,2,3,4,5,6].map(i => <Skeleton key={i} className="h-80 rounded-lg" />)}

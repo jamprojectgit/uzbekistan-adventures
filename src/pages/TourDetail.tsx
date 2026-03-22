@@ -142,7 +142,7 @@ const TourDetail = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {included.length > 0 && (
                 <div>
-                  <h3 className="font-semibold mb-3">{t('tours.included')}</h3>
+                  <h2 className="font-semibold mb-3 text-lg">{t('tours.included')}</h2>
                   <ul className="space-y-2">
                     {included.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm">
@@ -154,7 +154,7 @@ const TourDetail = () => {
               )}
               {excluded.length > 0 && (
                 <div>
-                  <h3 className="font-semibold mb-3">{t('tours.excluded')}</h3>
+                  <h2 className="font-semibold mb-3 text-lg">{t('tours.excluded')}</h2>
                   <ul className="space-y-2">
                     {excluded.map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm">
@@ -168,7 +168,7 @@ const TourDetail = () => {
 
             {itinerary && (
               <div>
-                <h3 className="font-semibold mb-3">{t('tours.itinerary')}</h3>
+                <h2 className="font-semibold mb-3 text-lg">{t('tours.itinerary')}</h2>
                 <div className="bg-muted rounded-lg p-4 whitespace-pre-wrap text-sm">{itinerary}</div>
               </div>
             )}
