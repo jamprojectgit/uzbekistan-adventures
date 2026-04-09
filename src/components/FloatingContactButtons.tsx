@@ -5,7 +5,7 @@ const FloatingContactButtons = () => {
     <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-[9999] flex flex-col gap-3 pb-[env(safe-area-inset-bottom)]">
       {/* Telegram */}
       <a
-        href="https://t.me/jamtrips"
+        href="https://t.me/+998990152110"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Telegram"
