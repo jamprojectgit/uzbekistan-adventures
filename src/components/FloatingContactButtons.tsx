@@ -1,7 +1,7 @@
 import { Phone, Send, MessageCircle } from 'lucide-react';
 
 const trackGoal = (goal: string) => {
-  try { window.ym?.(108500728, 'reachGoal', goal); } catch {}
+  try { (window as any).ym?.(108500728, 'reachGoal', goal); } catch {}
 };
 
 const FloatingContactButtons = () => {

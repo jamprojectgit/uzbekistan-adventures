@@ -24,7 +24,7 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-3">{t('footer.contact')}</h4>
             <div className="flex flex-col gap-2 text-sm opacity-80">
-              <a href="tel:+998990152110" className="hover:opacity-100 transition-opacity" onClick={() => { try { window.ym?.(108500728, 'reachGoal', 'phone_click'); } catch {} }}>+998 99 015 21 10</a>
+              <a href="tel:+998990152110" className="hover:opacity-100 transition-opacity" onClick={() => { try { (window as any).ym?.(108500728, 'reachGoal', 'phone_click'); } catch {} }}>+998 99 015 21 10</a>
             </div>
           </div>
         </div>

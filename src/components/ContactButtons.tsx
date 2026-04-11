@@ -19,7 +19,7 @@ const ContactButtons = ({ message, className = '', size = 'default' }: ContactBu
   const tgUrl = `https://t.me/+${PHONE}?text=${encodedMessage}`;
 
   const trackGoal = (goal: string) => {
-    try { window.ym?.(108500728, 'reachGoal', goal); } catch {}
+    try { (window as any).ym?.(108500728, 'reachGoal', goal); } catch {}
   };
 
   return (

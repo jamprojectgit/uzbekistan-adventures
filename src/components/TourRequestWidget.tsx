@@ -71,7 +71,7 @@ const TourRequestWidget = ({ tourId, tourTitle, price }: TourRequestWidgetProps)
     const msg = encodeURIComponent(buildMessage());
 
     try {
-      window.ym?.(108500728, 'reachGoal', channel === 'whatsapp' ? 'whatsapp_click' : 'telegram_click');
+      (window as any).ym?.(108500728, 'reachGoal', channel === 'whatsapp' ? 'whatsapp_click' : 'telegram_click');
     } catch {}
 
     if (channel === 'whatsapp') {
