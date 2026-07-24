@@ -182,6 +182,7 @@ const TourDetail = () => {
                   tourId={tour.id}
                   tourTitle={title}
                   price={tour.price}
+                  priceGroupSize={(tour as any).price_group_size ?? 1}
                 />
               </Suspense>
             </div>
