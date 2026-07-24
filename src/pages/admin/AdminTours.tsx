@@ -148,6 +148,7 @@ const AdminTours = () => {
       duration_unit: tour.duration_unit ?? 'days',
       city_id: tour.city_id || '',
       order_number: tour.order_number ?? '',
+      price_group_size: (tour as any).price_group_size ?? 1,
     });
     setImages(tour.images || []);
     setEditing(tour);
