@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
+import { getPriceLabel } from '@/lib/price-utils';
 import { MapPin, Clock, ChevronRight } from 'lucide-react';
 import ShareButton from '@/components/ShareButton';
 
