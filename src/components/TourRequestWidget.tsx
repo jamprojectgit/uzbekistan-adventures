@@ -38,6 +38,10 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
   const [loading, setLoading] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
 
+  const groupSize = Math.max(1, priceGroupSize || 1);
+  const groups = Math.ceil(travelers / groupSize);
+  const totalPrice = groups * price;
+
   const buildMessage = () => {
     return t('contact.tourRequestMessage', {
       tour: tourTitle,
@@ -45,6 +49,7 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
       time,
       travelers,
       pickup,
+      total: totalPrice,
     });
   };
 
