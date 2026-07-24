@@ -195,6 +195,7 @@ const AdminTours = () => {
                 </div>
                 <div><Label>Order №</Label><Input type="number" value={form.order_number} onChange={e => setForm(f => ({...f, order_number: e.target.value === '' ? '' : parseInt(e.target.value)}))} placeholder="—" /></div>
               </div>
+              <div><Label>Price applies to (travelers)</Label><Input type="number" min={1} value={form.price_group_size} onChange={e => setForm(f => ({...f, price_group_size: Math.max(1, parseInt(e.target.value) || 1)}))} /></div>
               <div>
                 <Label>City</Label>
                 <Select value={form.city_id} onValueChange={v => setForm(f => ({...f, city_id: v}))}>
