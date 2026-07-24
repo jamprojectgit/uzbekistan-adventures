@@ -50,7 +50,7 @@ const TourCard = ({ tour }: TourCardProps) => {
           </p>
           <p className="text-sm text-muted-foreground line-clamp-2">{desc}</p>
           <div className="pt-1.5 flex items-center justify-between">
-            <span className="font-bold text-primary">${tour.price} <span className="text-xs font-normal text-muted-foreground">{t('tours.perPerson')}</span></span>
+            <span className="font-bold text-primary">${tour.price} <span className="text-xs font-normal text-muted-foreground">{getPriceLabel(t, tour.price_group_size)}</span></span>
             <span className="flex items-center justify-center w-[42px] h-[42px] rounded-full bg-primary shadow-md group-hover:shadow-lg transition-shadow">
               <ChevronRight className="h-5 w-5 text-primary-foreground" />
             </span>
