@@ -29,7 +29,7 @@ const timeSlots = Array.from({ length: 28 }, (_, i) => {
   return `${h}:${minute}`;
 });
 
-const TourRequestWidget = ({ tourId, tourTitle, price }: TourRequestWidgetProps) => {
+const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: TourRequestWidgetProps) => {
   const { t } = useTranslation();
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState('');
