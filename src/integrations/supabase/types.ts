@@ -151,6 +151,7 @@ export type Database = {
           itinerary: Json | null
           order_number: number | null
           price: number
+          price_group_size: number
           slug: string
           title: Json
         }
@@ -168,6 +169,7 @@ export type Database = {
           itinerary?: Json | null
           order_number?: number | null
           price?: number
+          price_group_size?: number
           slug: string
           title?: Json
         }
@@ -185,6 +187,7 @@ export type Database = {
           itinerary?: Json | null
           order_number?: number | null
           price?: number
+          price_group_size?: number
           slug?: string
           title?: Json
         }

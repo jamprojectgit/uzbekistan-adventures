@@ -1,0 +1,1 @@
+ALTER TABLE public.tours ADD COLUMN IF NOT EXISTS price_group_size integer NOT NULL DEFAULT 1;
