@@ -33,6 +33,7 @@ const AdminTours = () => {
     duration_value: 1, duration_unit: 'days',
     city_id: '',
     order_number: '' as string | number,
+    price_group_size: 1,
   });
 
   const { data: tours, isLoading } = useQuery({
@@ -93,6 +94,7 @@ const AdminTours = () => {
         duration_unit: form.duration_unit,
         city_id: form.city_id || null,
         order_number: form.order_number === '' ? null : Number(form.order_number),
+        price_group_size: Math.max(1, Number(form.price_group_size) || 1),
         images,
       };
       if (editing) {
@@ -122,7 +124,7 @@ const AdminTours = () => {
   });
 
   const resetForm = () => {
-    setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', itinerary_en: '', itinerary_ru: '', included_en: '', included_ru: '', excluded_en: '', excluded_ru: '', price: 0, duration: 1, duration_value: 1, duration_unit: 'days', city_id: '', order_number: '' });
+    setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', itinerary_en: '', itinerary_ru: '', included_en: '', included_ru: '', excluded_en: '', excluded_ru: '', price: 0, duration: 1, duration_value: 1, duration_unit: 'days', city_id: '', order_number: '', price_group_size: 1 });
     setImages([]);
     setEditing(null);
   };
@@ -147,6 +149,7 @@ const AdminTours = () => {
       duration_unit: tour.duration_unit ?? 'days',
       city_id: tour.city_id || '',
       order_number: tour.order_number ?? '',
+      price_group_size: (tour as any).price_group_size ?? 1,
     });
     setImages(tour.images || []);
     setEditing(tour);
@@ -192,6 +195,7 @@ const AdminTours = () => {
                 </div>
                 <div><Label>Order №</Label><Input type="number" value={form.order_number} onChange={e => setForm(f => ({...f, order_number: e.target.value === '' ? '' : parseInt(e.target.value)}))} placeholder="—" /></div>
               </div>
+              <div><Label>Price applies to (travelers)</Label><Input type="number" min={1} value={form.price_group_size} onChange={e => setForm(f => ({...f, price_group_size: Math.max(1, parseInt(e.target.value) || 1)}))} /></div>
               <div>
                 <Label>City</Label>
                 <Select value={form.city_id} onValueChange={v => setForm(f => ({...f, city_id: v}))}>

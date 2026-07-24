@@ -17,6 +17,7 @@ interface TourRequestWidgetProps {
   tourId: string;
   tourTitle: string;
   price: number;
+  priceGroupSize?: number;
 }
 
 const PHONE = '998990152110';
@@ -28,7 +29,7 @@ const timeSlots = Array.from({ length: 28 }, (_, i) => {
   return `${h}:${minute}`;
 });
 
-const TourRequestWidget = ({ tourId, tourTitle, price }: TourRequestWidgetProps) => {
+const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: TourRequestWidgetProps) => {
   const { t } = useTranslation();
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState('');
@@ -37,6 +38,10 @@ const TourRequestWidget = ({ tourId, tourTitle, price }: TourRequestWidgetProps)
   const [loading, setLoading] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
 
+  const groupSize = Math.max(1, priceGroupSize || 1);
+  const groups = Math.ceil(travelers / groupSize);
+  const totalPrice = groups * price;
+
   const buildMessage = () => {
     return t('contact.tourRequestMessage', {
       tour: tourTitle,
@@ -44,6 +49,7 @@ const TourRequestWidget = ({ tourId, tourTitle, price }: TourRequestWidgetProps)
       time,
       travelers,
       pickup,
+      total: totalPrice,
     });
   };
 
@@ -91,7 +97,9 @@ const TourRequestWidget = ({ tourId, tourTitle, price }: TourRequestWidgetProps)
       <div className="bg-primary px-6 py-4">
         <div className="flex items-baseline gap-1">
           <span className="text-3xl font-bold text-primary-foreground">${price}</span>
-          <span className="text-primary-foreground/80 text-sm">{t('tours.perPerson')}</span>
+          <span className="text-primary-foreground/80 text-sm">
+            {groupSize > 1 ? t('tours.forUpTo', { count: groupSize }) : t('tours.perPerson')}
+          </span>
         </div>
       </div>
 
@@ -178,6 +186,12 @@ const TourRequestWidget = ({ tourId, tourTitle, price }: TourRequestWidgetProps)
             value={pickup}
             onChange={(e) => setPickup(e.target.value)}
           />
+        </div>
+
+        {/* Total */}
+        <div className="flex items-center justify-between pt-3 border-t border-border">
+          <span className="text-sm font-semibold">{t('booking.totalPrice')}</span>
+          <span className="text-xl font-bold text-primary">${totalPrice}</span>
         </div>
 
         {/* Buttons */}

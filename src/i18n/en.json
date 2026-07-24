@@ -39,6 +39,7 @@
     "hours": "hours",
     "hour": "hour",
     "perPerson": "per person",
+    "forUpTo": "for up to {{count}} travelers",
     "bookNow": "Book Now",
     "noTours": "No tours found",
     "included": "What's Included",
