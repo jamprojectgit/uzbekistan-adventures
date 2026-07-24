@@ -139,6 +139,13 @@ const TourDetail = () => {
               <p className="text-foreground leading-relaxed whitespace-pre-wrap text-[0.938rem]">{desc}</p>
             </div>
 
+            {itinerary && (
+              <div>
+                <h2 className="text-xl font-semibold mb-4 pb-2 border-b border-border">{t('tours.itinerary')}</h2>
+                <div className="bg-muted rounded-lg p-5 whitespace-pre-wrap text-sm leading-relaxed">{itinerary}</div>
+              </div>
+            )}
+
             {/* Included / Excluded */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {included.length > 0 && (
@@ -166,13 +173,6 @@ const TourDetail = () => {
                 </div>
               )}
             </div>
-
-            {itinerary && (
-              <div>
-                <h2 className="text-xl font-semibold mb-4 pb-2 border-b border-border">{t('tours.itinerary')}</h2>
-                <div className="bg-muted rounded-lg p-5 whitespace-pre-wrap text-sm leading-relaxed">{itinerary}</div>
-              </div>
-            )}
           </div>
 
           {/* Sidebar - Booking Request */}
