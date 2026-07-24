@@ -13,6 +13,7 @@ const TourRequestWidget = lazy(() => import('@/components/TourRequestWidget'));
 import { Button } from '@/components/ui/button';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
+import { getPriceLabel } from '@/lib/price-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
 import ShareButton from '@/components/ShareButton';
 
@@ -133,7 +134,7 @@ const TourDetail = () => {
               <div className="flex flex-wrap items-center gap-3 md:gap-4 text-muted-foreground mb-5">
                 {cityName && <span className="flex items-center gap-1.5 text-sm"><MapPin className="h-4 w-4" /> {cityName}</span>}
                 <span className="flex items-center gap-1.5 text-sm"><Clock className="h-4 w-4" /> {formatDuration(tour.duration_value ?? tour.duration, tour.duration_unit ?? 'days')}</span>
-                <span className="font-bold text-primary text-lg">${tour.price} {((tour as any).price_group_size ?? 1) > 1 ? t('tours.forUpTo', { count: (tour as any).price_group_size }) : t('tours.perPerson')}</span>
+                <span className="font-bold text-primary text-lg">${tour.price} {getPriceLabel(t, (tour as any).price_group_size)}</span>
               </div>
               <p className="text-foreground leading-relaxed whitespace-pre-wrap text-[0.938rem]">{desc}</p>
             </div>

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 import { getLocalizedText } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
+import { getPriceLabel } from '@/lib/price-utils';
 import { MapPin, Clock, ChevronRight } from 'lucide-react';
 import ShareButton from '@/components/ShareButton';
 
@@ -14,6 +15,7 @@ interface TourCardProps {
     slug: string;
     description: unknown;
     price: number;
+    price_group_size?: number | null;
     duration: number;
     duration_value?: number | null;
     duration_unit?: string | null;
@@ -48,7 +50,7 @@ const TourCard = ({ tour }: TourCardProps) => {
           </p>
           <p className="text-sm text-muted-foreground line-clamp-2">{desc}</p>
           <div className="pt-1.5 flex items-center justify-between">
-            <span className="font-bold text-primary">${tour.price} <span className="text-xs font-normal text-muted-foreground">{t('tours.perPerson')}</span></span>
+            <span className="font-bold text-primary">${tour.price} <span className="text-xs font-normal text-muted-foreground">{getPriceLabel(t, tour.price_group_size)}</span></span>
             <span className="flex items-center justify-center w-[42px] h-[42px] rounded-full bg-primary shadow-md group-hover:shadow-lg transition-shadow">
               <ChevronRight className="h-5 w-5 text-primary-foreground" />
             </span>
