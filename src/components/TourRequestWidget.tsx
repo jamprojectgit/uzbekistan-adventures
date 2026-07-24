@@ -188,6 +188,12 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
           />
         </div>
 
+        {/* Total */}
+        <div className="flex items-center justify-between pt-3 border-t border-border">
+          <span className="text-sm font-semibold">{t('booking.totalPrice')}</span>
+          <span className="text-xl font-bold text-primary">${totalPrice}</span>
+        </div>
+
         {/* Buttons */}
         <div className="space-y-3 pt-2">
           <Button
