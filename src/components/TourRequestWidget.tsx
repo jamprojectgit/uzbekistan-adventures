@@ -97,7 +97,9 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
       <div className="bg-primary px-6 py-4">
         <div className="flex items-baseline gap-1">
           <span className="text-3xl font-bold text-primary-foreground">${price}</span>
-          <span className="text-primary-foreground/80 text-sm">{t('tours.perPerson')}</span>
+          <span className="text-primary-foreground/80 text-sm">
+            {groupSize > 1 ? t('tours.forUpTo', { count: groupSize }) : t('tours.perPerson')}
+          </span>
         </div>
       </div>
 
