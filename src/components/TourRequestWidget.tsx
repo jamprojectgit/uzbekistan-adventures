@@ -17,6 +17,7 @@ interface TourRequestWidgetProps {
   tourId: string;
   tourTitle: string;
   price: number;
+  priceGroupSize?: number;
 }
 
 const PHONE = '998990152110';
