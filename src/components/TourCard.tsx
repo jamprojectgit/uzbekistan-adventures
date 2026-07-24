@@ -15,6 +15,7 @@ interface TourCardProps {
     slug: string;
     description: unknown;
     price: number;
+    price_group_size?: number | null;
     duration: number;
     duration_value?: number | null;
     duration_unit?: string | null;
