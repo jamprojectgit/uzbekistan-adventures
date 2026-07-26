@@ -12,6 +12,8 @@ import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import PaymentNote from '@/components/PaymentNote';
+
 
 interface BookingFormProps {
   tourId: string;
@@ -97,10 +99,14 @@ const BookingForm = ({ tourId, price }: BookingFormProps) => {
             />
           </div>
 
-          <div className="flex justify-between items-center py-3 border-t border-border">
-            <span className="font-medium">{t('booking.totalPrice')}</span>
-            <span className="text-xl font-bold text-primary">${totalPrice}</span>
+          <div className="py-3 border-t border-border">
+            <div className="flex justify-between items-center">
+              <span className="font-medium">{t('booking.totalPrice')}</span>
+              <span className="text-xl font-bold text-primary">${totalPrice}</span>
+            </div>
+            <PaymentNote />
           </div>
+
 
           <Button type="submit" className="w-full" disabled={loading || !date}>
             {loading ? t('common.loading') : t('booking.submit')}

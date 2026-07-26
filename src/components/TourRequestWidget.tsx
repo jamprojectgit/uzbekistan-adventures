@@ -12,6 +12,8 @@ import { CalendarIcon, MapPin, Users, Clock, MessageCircle, Send } from 'lucide-
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import PaymentNote from '@/components/PaymentNote';
+
 
 interface TourRequestWidgetProps {
   tourId: string;
@@ -101,7 +103,9 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
             {groupSize > 1 ? t('tours.forUpTo', { count: groupSize }) : t('tours.perPerson')}
           </span>
         </div>
+        <PaymentNote className="text-primary-foreground/80" />
       </div>
+
 
       <CardContent className="p-6 space-y-5">
         {/* Date */}
@@ -189,10 +193,14 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
         </div>
 
         {/* Total */}
-        <div className="flex items-center justify-between pt-3 border-t border-border">
-          <span className="text-sm font-semibold">{t('booking.totalPrice')}</span>
-          <span className="text-xl font-bold text-primary">${totalPrice}</span>
+        <div className="pt-3 border-t border-border">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold">{t('booking.totalPrice')}</span>
+            <span className="text-xl font-bold text-primary">${totalPrice}</span>
+          </div>
+          <PaymentNote />
         </div>
+
 
         {/* Buttons */}
         <div className="space-y-3 pt-2">
