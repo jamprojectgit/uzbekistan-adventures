@@ -101,7 +101,9 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
             {groupSize > 1 ? t('tours.forUpTo', { count: groupSize }) : t('tours.perPerson')}
           </span>
         </div>
+        <PaymentNote className="text-primary-foreground/80" />
       </div>
+
 
       <CardContent className="p-6 space-y-5">
         {/* Date */}

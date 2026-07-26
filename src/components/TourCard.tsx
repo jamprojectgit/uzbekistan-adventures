@@ -7,6 +7,8 @@ import { formatDuration } from '@/lib/duration-utils';
 import { getPriceLabel } from '@/lib/price-utils';
 import { MapPin, Clock, ChevronRight } from 'lucide-react';
 import ShareButton from '@/components/ShareButton';
+import PaymentNote from '@/components/PaymentNote';
+
 
 interface TourCardProps {
   tour: {
@@ -55,7 +57,9 @@ const TourCard = ({ tour }: TourCardProps) => {
               <ChevronRight className="h-5 w-5 text-primary-foreground" />
             </span>
           </div>
+          <PaymentNote />
         </CardContent>
+
       </Card>
     </Link>
   );
