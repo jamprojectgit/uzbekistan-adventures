@@ -168,7 +168,7 @@
     "tourRequestMessage": "Hello!\n\nI want to request this tour.\n\nTour: {{tour}}\nDate: {{date}}\nStart time: {{time}}\nTravelers: {{travelers}}\nPickup location: {{pickup}}\n\nPlease confirm availability."
   },
   "payment": {
-    "cashRub": "💳 Cash payment in Russian rubles (RUB) is available."
+    "cashRub": "💳 Payment in Russian rubles is available."
   },
   "footer": {
     "contact": "Contact",
