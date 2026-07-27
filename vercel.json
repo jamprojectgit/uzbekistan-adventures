@@ -1,6 +1,11 @@
 {
+  "cleanUrls": true,
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "https://yckbiauwtyrozzxatxjb.supabase.co/functions/v1/sitemap" },
+    { "source": "/cities/:slug", "destination": "/cities/:slug/index.html" },
+    { "source": "/tours/:slug", "destination": "/tours/:slug/index.html" },
+    { "source": "/transfers/:slug", "destination": "/transfers/:slug/index.html" },
+    { "source": "/train-tickets/:slug", "destination": "/train-tickets/:slug/index.html" },
     { "source": "/(.*)", "destination": "/" }
   ],
   "headers": [
