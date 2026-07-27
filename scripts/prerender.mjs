@@ -103,7 +103,7 @@ async function collectRoutes() {
 
   const [cities, tours, transfers, trains] = await Promise.all([
     select('cities', 'select=slug,name,description,cover_image'),
-    select('tours', 'select=slug,title,description,cover_image,cities(name)'),
+    select('tours', 'select=slug,title,description,images,cities(name)'),
     select('transfers', 'select=from_city,to_city&status=eq.published'),
     select('train_routes', 'select=from_city,to_city&status=eq.published'),
   ]);
@@ -130,7 +130,7 @@ async function collectRoutes() {
       title: `${title} — Tour in ${cityName}`,
       description:
         localized(tour.description) || `${title} — book this tour in ${cityName} with JamTrips.`,
-      image: tour.cover_image,
+      image: Array.isArray(tour.images) ? tour.images[0] : undefined,
       type: 'article',
     });
   }
