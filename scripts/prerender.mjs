@@ -11,12 +11,26 @@
  * SEOHead keeps updating the head on client-side navigation.
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const DIST = path.resolve('dist');
 const BASE_URL = 'https://www.jamtrips.com';
 const MAX_DESCRIPTION = 158;
+
+// Env comes from the build environment; fall back to a local .env file.
+function loadEnvFile() {
+  try {
+    const raw = readFileSync(path.resolve('.env'), 'utf8');
+    for (const line of raw.split('\n')) {
+      const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
+      if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+    }
+  } catch {
+    /* no .env — rely on the build environment */
+  }
+}
+loadEnvFile();
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
