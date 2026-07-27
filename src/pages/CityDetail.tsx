@@ -71,7 +71,7 @@ const CityDetail = () => {
     <Layout>
       <SEOHead
         title={`${name} Travel Guide | Tours & Things to Do in ${name}, Uzbekistan`}
-        description={description ? description.substring(0, 155) : `Explore ${name}, Uzbekistan. Book tours, transfers, and activities in ${name}.`}
+        description={description || `Explore ${name}, Uzbekistan. Book tours, transfers, and activities in ${name}.`}
         path={`/cities/${slug}`}
       />
 

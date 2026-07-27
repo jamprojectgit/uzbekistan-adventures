@@ -70,7 +70,7 @@ const TourDetail = () => {
     <Layout>
       <SEOHead
         title={`${title} — Tour in ${cityName || 'Uzbekistan'}`}
-        description={desc.substring(0, 155)}
+        description={desc || `${title} — book this tour in ${cityName || 'Uzbekistan'} with JamTrips.`}
         path={`/tours/${slug}`}
         type="article"
       />
