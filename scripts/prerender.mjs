@@ -75,7 +75,7 @@ async function select(table, query) {
 
 // Sitewide organization node (also present statically in index.html).
 const ORGANIZATION_REF = { '@id': `${BASE_URL}/#organization`, '@type': 'TravelAgency', name: 'JamTrips' };
-const ORGANIZATION = ORGANIZATION_REF;
+
 
 const breadcrumb = (items) => ({
   '@context': 'https://schema.org',
@@ -147,7 +147,6 @@ async function collectRoutes() {
       description,
       image: city.cover_image,
       jsonLd: [
-        ORGANIZATION,
         {
           '@context': 'https://schema.org',
           '@type': 'City',
