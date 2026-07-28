@@ -327,6 +327,9 @@ function applyMeta(html, route) {
       );
   }
 
+  // Per-page JSON-LD, injected into the same page's <head>.
+  out = out.replace('<!-- PRERENDER_JSONLD -->', renderJsonLd(route.jsonLd));
+
   return out;
 }
 
