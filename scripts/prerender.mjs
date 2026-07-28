@@ -73,6 +73,30 @@ async function select(table, query) {
   return res.json();
 }
 
+// Sitewide organization node (also present statically in index.html).
+const ORGANIZATION_REF = { '@id': `${BASE_URL}/#organization`, '@type': 'TravelAgency', name: 'JamTrips' };
+const ORGANIZATION = ORGANIZATION_REF;
+
+const breadcrumb = (items) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    item: `${BASE_URL}${item.path}`,
+  })),
+});
+
+const renderJsonLd = (blocks) =>
+  (blocks || [])
+    .map(
+      (block) =>
+        `<script type="application/ld+json">${JSON.stringify(block).replace(/</g, '\\u003c')}</script>`,
+    )
+    .join('\n    ');
+
+
 async function collectRoutes() {
   const routes = [
     {
