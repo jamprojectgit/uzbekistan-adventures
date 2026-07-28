@@ -103,21 +103,42 @@ async function collectRoutes() {
 
   const [cities, tours, transfers, trains] = await Promise.all([
     select('cities', 'select=slug,name,description,cover_image'),
-    select('tours', 'select=slug,title,description,images,cities(name)'),
+    select('tours', 'select=slug,title,description,images,price,price_group_size,duration,cities(name,slug)'),
     select('transfers', 'select=from_city,to_city&status=eq.published'),
-    select('train_routes', 'select=from_city,to_city&status=eq.published'),
+    select(
+      'train_routes',
+      'select=from_city,to_city,train_type,departure_time,arrival_time,price,currency,operating_days&status=eq.published',
+    ),
   ]);
 
   for (const city of cities) {
     if (!city.slug) continue;
     const name = localized(city.name);
+    const description =
+      localized(city.description) ||
+      `Explore ${name}, Uzbekistan. Book tours, transfers, and activities in ${name}.`;
     routes.push({
       path: `/cities/${city.slug}`,
       title: `${name} Travel Guide | Tours & Things to Do in ${name}, Uzbekistan`,
-      description:
-        localized(city.description) ||
-        `Explore ${name}, Uzbekistan. Book tours, transfers, and activities in ${name}.`,
+      description,
       image: city.cover_image,
+      jsonLd: [
+        ORGANIZATION,
+        {
+          '@context': 'https://schema.org',
+          '@type': 'City',
+          name,
+          description: truncateAtWord(description, 300),
+          containedInPlace: { '@type': 'Country', name: 'Uzbekistan' },
+          url: `${BASE_URL}/cities/${city.slug}`,
+          ...(city.cover_image ? { image: city.cover_image } : {}),
+        },
+        breadcrumb([
+          { name: 'Home', path: '/' },
+          { name: 'Cities', path: '/cities' },
+          { name, path: `/cities/${city.slug}` },
+        ]),
+      ],
     });
   }
 
@@ -125,13 +146,48 @@ async function collectRoutes() {
     if (!tour.slug) continue;
     const title = localized(tour.title);
     const cityName = localized(tour.cities?.name) || 'Uzbekistan';
+    const description =
+      localized(tour.description) || `${title} — book this tour in ${cityName} with JamTrips.`;
+    const image = Array.isArray(tour.images) ? tour.images[0] : undefined;
     routes.push({
       path: `/tours/${tour.slug}`,
       title: `${title} — Tour in ${cityName}`,
-      description:
-        localized(tour.description) || `${title} — book this tour in ${cityName} with JamTrips.`,
-      image: Array.isArray(tour.images) ? tour.images[0] : undefined,
+      description,
+      image,
       type: 'article',
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'TouristTrip',
+          name: title,
+          description: truncateAtWord(description, 300),
+          url: `${BASE_URL}/tours/${tour.slug}`,
+          touristType: 'Leisure',
+          ...(image ? { image } : {}),
+          ...(tour.price
+            ? {
+                offers: {
+                  '@type': 'Offer',
+                  price: tour.price,
+                  priceCurrency: 'USD',
+                  availability: 'https://schema.org/InStock',
+                  url: `${BASE_URL}/tours/${tour.slug}`,
+                },
+              }
+            : {}),
+          itinerary: {
+            '@type': 'Place',
+            name: cityName,
+            address: { '@type': 'PostalAddress', addressCountry: 'UZ' },
+          },
+          provider: ORGANIZATION_REF,
+        },
+        breadcrumb([
+          { name: 'Home', path: '/' },
+          { name: 'Tours', path: '/tours' },
+          { name: title, path: `/tours/${tour.slug}` },
+        ]),
+      ],
     });
   }
 
@@ -147,17 +203,49 @@ async function collectRoutes() {
     });
   }
 
-  const seenTrain = new Set();
+  const trainsBySlug = new Map();
   for (const r of trains) {
     const slug = `${slugify(r.from_city)}-to-${slugify(r.to_city)}-train`;
-    if (seenTrain.has(slug)) continue;
-    seenTrain.add(slug);
+    if (!trainsBySlug.has(slug)) trainsBySlug.set(slug, []);
+    trainsBySlug.get(slug).push(r);
+  }
+  for (const [slug, list] of trainsBySlug) {
+    const r = list[0];
+    const offers = list
+      .filter((x) => Number(x.price) > 0)
+      .map((x) => ({
+        '@type': 'Offer',
+        price: x.price,
+        priceCurrency: x.currency || 'USD',
+        availability: 'https://schema.org/InStock',
+        description: `${x.train_type} — departs ${x.departure_time}, arrives ${x.arrival_time} (${x.operating_days})`,
+      }));
     routes.push({
       path: `/train-tickets/${slug}`,
       title: `${r.from_city} to ${r.to_city} Train Tickets | Schedule & Prices — Uzbekistan Railway`,
       description: `Book train tickets from ${r.from_city} to ${r.to_city}, Uzbekistan. Afrosiyab high-speed and Sharq train schedules, prices, and booking assistance.`,
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'TrainTrip',
+          name: `${r.from_city} to ${r.to_city} train`,
+          url: `${BASE_URL}/train-tickets/${slug}`,
+          departureStation: { '@type': 'TrainStation', name: r.from_city },
+          arrivalStation: { '@type': 'TrainStation', name: r.to_city },
+          ...(r.departure_time ? { departureTime: r.departure_time } : {}),
+          ...(r.arrival_time ? { arrivalTime: r.arrival_time } : {}),
+          provider: ORGANIZATION_REF,
+          ...(offers.length ? { offers } : {}),
+        },
+        breadcrumb([
+          { name: 'Home', path: '/' },
+          { name: 'Train tickets', path: '/train-tickets' },
+          { name: `${r.from_city} → ${r.to_city}`, path: `/train-tickets/${slug}` },
+        ]),
+      ],
     });
   }
+
 
   return routes;
 }
