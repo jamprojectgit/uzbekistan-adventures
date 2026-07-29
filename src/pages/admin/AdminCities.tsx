@@ -126,12 +126,14 @@ const AdminCities = () => {
 
   const resetForm = () => {
     setForm({ name_en: '', name_ru: '', slug: '', description_en: '', description_ru: '', cover_image: '' });
+    setImageMeta(null);
     setEditing(null);
   };
 
   const openEdit = (city: any) => {
     const name = city.name as any;
     const desc = city.description as any;
+    setImageMeta(null);
     setForm({
       name_en: name?.en || '', name_ru: name?.ru || '',
       slug: city.slug,
@@ -141,6 +143,7 @@ const AdminCities = () => {
     setEditing(city);
     setOpen(true);
   };
+
 
   return (
     <div>
