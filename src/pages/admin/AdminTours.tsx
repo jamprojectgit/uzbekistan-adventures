@@ -11,7 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
 import { useState, useRef } from 'react';
-import { Pencil, Trash2, Plus, Upload, X, ImageIcon } from 'lucide-react';
+import { Pencil, Trash2, Plus, Upload, X, ImageIcon, Zap, Check, Loader2 } from 'lucide-react';
+import { formatBytes, compressImage, getRemoteSize, MAX_IMAGE_BYTES } from '@/lib/image-utils';
+
+type ImageMeta = { size: number; originalSize?: number; optimized?: boolean };
 
 const AdminTours = () => {
   const { t } = useTranslation();
@@ -19,6 +22,8 @@ const AdminTours = () => {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [images, setImages] = useState<string[]>([]);
+  const [imageMeta, setImageMeta] = useState<Record<string, ImageMeta>>({});
+  const [optimizing, setOptimizing] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -57,6 +62,7 @@ const AdminTours = () => {
   const uploadImages = async (files: FileList) => {
     setUploading(true);
     const newUrls: string[] = [];
+    const newMeta: Record<string, ImageMeta> = {};
     try {
       for (const file of Array.from(files)) {
         const ext = file.name.split('.').pop();
@@ -65,13 +71,54 @@ const AdminTours = () => {
         if (error) throw error;
         const { data: urlData } = supabase.storage.from('tour-images').getPublicUrl(path);
         newUrls.push(urlData.publicUrl);
+        newMeta[urlData.publicUrl] = { size: file.size };
       }
       setImages(prev => [...prev, ...newUrls]);
+      setImageMeta(prev => ({ ...prev, ...newMeta }));
       toast.success(`${newUrls.length} фото загружено`);
     } catch (e: any) {
       toast.error(e.message);
     } finally {
       setUploading(false);
+    }
+  };
+
+  const loadSizes = async (urls: string[]) => {
+    const entries = await Promise.all(
+      urls.map(async (url) => [url, { size: await getRemoteSize(url) }] as const),
+    );
+    setImageMeta(prev => {
+      const next = { ...prev };
+      entries.forEach(([url, meta]) => { if (!next[url]) next[url] = meta; });
+      return next;
+    });
+  };
+
+  const optimizeImage = async (url: string) => {
+    setOptimizing(url);
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Не удалось загрузить изображение');
+      const original = await res.blob();
+      const originalSize = imageMeta[url]?.originalSize ?? imageMeta[url]?.size ?? original.size;
+      const { blob, type, ext } = await compressImage(original, MAX_IMAGE_BYTES);
+
+      const path = `${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage.from('tour-images').upload(path, blob, { contentType: type });
+      if (error) throw error;
+      const { data: urlData } = supabase.storage.from('tour-images').getPublicUrl(path);
+      const newUrl = urlData.publicUrl;
+
+      setImages(prev => prev.map(u => (u === url ? newUrl : u)));
+      setImageMeta(prev => ({
+        ...prev,
+        [newUrl]: { size: blob.size, originalSize, optimized: true },
+      }));
+      toast.success(`Изображение успешно оптимизировано: ${formatBytes(originalSize)} → ${formatBytes(blob.size)}`);
+    } catch (e: any) {
+      toast.error(e.message || 'Ошибка оптимизации');
+    } finally {
+      setOptimizing(null);
     }
   };
 
@@ -126,6 +173,7 @@ const AdminTours = () => {
   const resetForm = () => {
     setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', itinerary_en: '', itinerary_ru: '', included_en: '', included_ru: '', excluded_en: '', excluded_ru: '', price: 0, duration: 1, duration_value: 1, duration_unit: 'days', city_id: '', order_number: '', price_group_size: 1 });
     setImages([]);
+    setImageMeta({});
     setEditing(null);
   };
 
@@ -152,6 +200,8 @@ const AdminTours = () => {
       price_group_size: (tour as any).price_group_size ?? 1,
     });
     setImages(tour.images || []);
+    setImageMeta({});
+    if (tour.images?.length) loadSizes(tour.images);
     setEditing(tour);
     setOpen(true);
   };
@@ -229,18 +279,56 @@ const AdminTours = () => {
                 </Button>
                 {images.length > 0 && (
                   <div className="grid grid-cols-3 gap-2 mt-2">
-                    {images.map((url, i) => (
-                      <div key={i} className="relative group aspect-square rounded-md overflow-hidden border">
-                        <img src={url} alt="" className="w-full h-full object-cover" />
-                        <button
-                          type="button"
-                          onClick={() => removeImage(i)}
-                          className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </div>
-                    ))}
+                    {images.map((url, i) => {
+                      const meta = imageMeta[url];
+                      const size = meta?.size ?? 0;
+                      const tooBig = size > MAX_IMAGE_BYTES;
+                      const busy = optimizing === url;
+                      return (
+                        <div key={url + i} className="space-y-1">
+                          <div className="relative group aspect-square rounded-md overflow-hidden border">
+                            <img src={url} alt="" className="w-full h-full object-cover" />
+                            <button
+                              type="button"
+                              onClick={() => removeImage(i)}
+                              className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                          <div className="text-[11px] leading-tight text-muted-foreground">
+                            {meta?.optimized && meta.originalSize ? (
+                              <span>
+                                <span className="line-through">{formatBytes(meta.originalSize)}</span>{' '}
+                                <span className="text-primary font-medium">{formatBytes(size)}</span>
+                              </span>
+                            ) : (
+                              <span className={tooBig ? 'text-destructive font-medium' : ''}>
+                                {size ? formatBytes(size) : '…'}
+                              </span>
+                            )}
+                          </div>
+                          {meta?.optimized && (
+                            <div className="flex items-center gap-1 text-[11px] text-primary">
+                              <Check className="h-3 w-3" /> Оптимизировано
+                            </div>
+                          )}
+                          {tooBig && (
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="secondary"
+                              className="w-full h-7 text-[11px]"
+                              disabled={busy}
+                              onClick={() => optimizeImage(url)}
+                            >
+                              {busy ? <Loader2 className="h-3 w-3 mr-1 animate-spin" /> : <Zap className="h-3 w-3 mr-1" />}
+                              {busy ? 'Сжатие...' : 'Оптимизировать'}
+                            </Button>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
