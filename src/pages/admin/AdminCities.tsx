@@ -163,7 +163,77 @@ const AdminCities = () => {
               <div><Label>Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({...f, slug: e.target.value}))} required /></div>
               <div><Label>Description (EN)</Label><Textarea value={form.description_en} onChange={e => setForm(f => ({...f, description_en: e.target.value}))} /></div>
               <div><Label>Description (RU)</Label><Textarea value={form.description_ru} onChange={e => setForm(f => ({...f, description_ru: e.target.value}))} /></div>
-              <div><Label>Cover Image URL</Label><Input value={form.cover_image} onChange={e => setForm(f => ({...f, cover_image: e.target.value}))} /></div>
+              <div>
+                <Label>Cover Image URL</Label>
+                <Input
+                  value={form.cover_image}
+                  onChange={e => { setImageMeta(null); setForm(f => ({ ...f, cover_image: e.target.value })); }}
+                />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => e.target.files?.[0] && uploadCover(e.target.files[0])}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full mt-2"
+                  disabled={uploading}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  {uploading ? 'Загрузка...' : 'Загрузить фото'}
+                </Button>
+                {coverUrl && (
+                  <div className="mt-2 flex gap-3 items-start">
+                    <div className="relative group h-24 w-24 shrink-0 rounded-md overflow-hidden border">
+                      <img src={coverUrl} alt="" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => { setForm(f => ({ ...f, cover_image: '' })); setImageMeta(null); }}
+                        className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                    <div className="space-y-1 flex-1">
+                      <div className="text-[11px] leading-tight text-muted-foreground">
+                        {imageMeta?.optimized && imageMeta.originalSize ? (
+                          <span>
+                            <span className="line-through">{formatBytes(imageMeta.originalSize)}</span>{' '}
+                            <span className="text-primary font-medium">{formatBytes(imageMeta.size)}</span>
+                          </span>
+                        ) : (
+                          <span className={(imageMeta?.size ?? 0) > MAX_IMAGE_BYTES ? 'text-destructive font-medium' : ''}>
+                            {imageMeta?.size ? formatBytes(imageMeta.size) : '…'}
+                          </span>
+                        )}
+                      </div>
+                      {imageMeta?.optimized && (
+                        <div className="flex items-center gap-1 text-[11px] text-primary">
+                          <Check className="h-3 w-3" /> Оптимизировано
+                        </div>
+                      )}
+                      {(imageMeta?.size ?? 0) > MAX_IMAGE_BYTES && (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="secondary"
+                          className="h-7 text-[11px]"
+                          disabled={optimizing}
+                          onClick={optimizeCover}
+                        >
+                          {optimizing ? <Loader2 className="h-3 w-3 mr-1 animate-spin" /> : <Zap className="h-3 w-3 mr-1" />}
+                          {optimizing ? 'Сжатие...' : 'Оптимизировать'}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="flex gap-2 pt-2">
                 <Button type="submit" disabled={saveMutation.isPending}>{t('admin.save')}</Button>
                 <Button type="button" variant="outline" onClick={() => { setOpen(false); resetForm(); }}>{t('admin.cancel')}</Button>
