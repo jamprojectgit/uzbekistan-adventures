@@ -9,8 +9,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
-import { useState } from 'react';
-import { Pencil, Trash2, Plus } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Pencil, Trash2, Plus, Upload, X, Zap, Check, Loader2 } from 'lucide-react';
+import { formatBytes, compressImage, getRemoteSize, MAX_IMAGE_BYTES } from '@/lib/image-utils';
+
+type ImageMeta = { size: number; originalSize?: number; optimized?: boolean };
 
 const AdminCities = () => {
   const { t } = useTranslation();
@@ -18,6 +21,65 @@ const AdminCities = () => {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [form, setForm] = useState({ name_en: '', name_ru: '', slug: '', description_en: '', description_ru: '', cover_image: '' });
+  const [imageMeta, setImageMeta] = useState<ImageMeta | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [optimizing, setOptimizing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const coverUrl = form.cover_image;
+
+  useEffect(() => {
+    if (!coverUrl) { setImageMeta(null); return; }
+    let active = true;
+    if (imageMeta) return;
+    getRemoteSize(coverUrl).then(size => { if (active) setImageMeta(prev => prev ?? { size }); });
+    return () => { active = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coverUrl]);
+
+  const uploadCover = async (file: File) => {
+    setUploading(true);
+    try {
+      const ext = file.name.split('.').pop();
+      const path = `cities/${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage.from('tour-images').upload(path, file);
+      if (error) throw error;
+      const { data: urlData } = supabase.storage.from('tour-images').getPublicUrl(path);
+      setForm(f => ({ ...f, cover_image: urlData.publicUrl }));
+      setImageMeta({ size: file.size });
+      toast.success('Фото загружено');
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const optimizeCover = async () => {
+    if (!coverUrl) return;
+    setOptimizing(true);
+    try {
+      const res = await fetch(coverUrl);
+      if (!res.ok) throw new Error('Не удалось загрузить изображение');
+      const original = await res.blob();
+      const originalSize = imageMeta?.originalSize ?? imageMeta?.size ?? original.size;
+      const { blob, type, ext } = await compressImage(original, MAX_IMAGE_BYTES);
+
+      const path = `cities/${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage.from('tour-images').upload(path, blob, { contentType: type });
+      if (error) throw error;
+      const { data: urlData } = supabase.storage.from('tour-images').getPublicUrl(path);
+
+      setForm(f => ({ ...f, cover_image: urlData.publicUrl }));
+      setImageMeta({ size: blob.size, originalSize, optimized: true });
+      toast.success(`Изображение успешно оптимизировано: ${formatBytes(originalSize)} → ${formatBytes(blob.size)}`);
+    } catch (e: any) {
+      toast.error(e.message || 'Ошибка оптимизации');
+    } finally {
+      setOptimizing(false);
+    }
+  };
+
 
   const { data: cities, isLoading } = useQuery({
     queryKey: ['admin-cities'],
@@ -64,12 +126,14 @@ const AdminCities = () => {
 
   const resetForm = () => {
     setForm({ name_en: '', name_ru: '', slug: '', description_en: '', description_ru: '', cover_image: '' });
+    setImageMeta(null);
     setEditing(null);
   };
 
   const openEdit = (city: any) => {
     const name = city.name as any;
     const desc = city.description as any;
+    setImageMeta(null);
     setForm({
       name_en: name?.en || '', name_ru: name?.ru || '',
       slug: city.slug,
@@ -79,6 +143,7 @@ const AdminCities = () => {
     setEditing(city);
     setOpen(true);
   };
+
 
   return (
     <div>
@@ -98,7 +163,77 @@ const AdminCities = () => {
               <div><Label>Slug</Label><Input value={form.slug} onChange={e => setForm(f => ({...f, slug: e.target.value}))} required /></div>
               <div><Label>Description (EN)</Label><Textarea value={form.description_en} onChange={e => setForm(f => ({...f, description_en: e.target.value}))} /></div>
               <div><Label>Description (RU)</Label><Textarea value={form.description_ru} onChange={e => setForm(f => ({...f, description_ru: e.target.value}))} /></div>
-              <div><Label>Cover Image URL</Label><Input value={form.cover_image} onChange={e => setForm(f => ({...f, cover_image: e.target.value}))} /></div>
+              <div>
+                <Label>Cover Image URL</Label>
+                <Input
+                  value={form.cover_image}
+                  onChange={e => { setImageMeta(null); setForm(f => ({ ...f, cover_image: e.target.value })); }}
+                />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => e.target.files?.[0] && uploadCover(e.target.files[0])}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full mt-2"
+                  disabled={uploading}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  {uploading ? 'Загрузка...' : 'Загрузить фото'}
+                </Button>
+                {coverUrl && (
+                  <div className="mt-2 flex gap-3 items-start">
+                    <div className="relative group h-24 w-24 shrink-0 rounded-md overflow-hidden border">
+                      <img src={coverUrl} alt="" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => { setForm(f => ({ ...f, cover_image: '' })); setImageMeta(null); }}
+                        className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                    <div className="space-y-1 flex-1">
+                      <div className="text-[11px] leading-tight text-muted-foreground">
+                        {imageMeta?.optimized && imageMeta.originalSize ? (
+                          <span>
+                            <span className="line-through">{formatBytes(imageMeta.originalSize)}</span>{' '}
+                            <span className="text-primary font-medium">{formatBytes(imageMeta.size)}</span>
+                          </span>
+                        ) : (
+                          <span className={(imageMeta?.size ?? 0) > MAX_IMAGE_BYTES ? 'text-destructive font-medium' : ''}>
+                            {imageMeta?.size ? formatBytes(imageMeta.size) : '…'}
+                          </span>
+                        )}
+                      </div>
+                      {imageMeta?.optimized && (
+                        <div className="flex items-center gap-1 text-[11px] text-primary">
+                          <Check className="h-3 w-3" /> Оптимизировано
+                        </div>
+                      )}
+                      {(imageMeta?.size ?? 0) > MAX_IMAGE_BYTES && (
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant="secondary"
+                          className="h-7 text-[11px]"
+                          disabled={optimizing}
+                          onClick={optimizeCover}
+                        >
+                          {optimizing ? <Loader2 className="h-3 w-3 mr-1 animate-spin" /> : <Zap className="h-3 w-3 mr-1" />}
+                          {optimizing ? 'Сжатие...' : 'Оптимизировать'}
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="flex gap-2 pt-2">
                 <Button type="submit" disabled={saveMutation.isPending}>{t('admin.save')}</Button>
                 <Button type="button" variant="outline" onClick={() => { setOpen(false); resetForm(); }}>{t('admin.cancel')}</Button>
