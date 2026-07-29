@@ -9,8 +9,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
-import { useState } from 'react';
-import { Pencil, Trash2, Plus } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Pencil, Trash2, Plus, Upload, X, Zap, Check, Loader2 } from 'lucide-react';
+import { formatBytes, compressImage, getRemoteSize, MAX_IMAGE_BYTES } from '@/lib/image-utils';
+
+type ImageMeta = { size: number; originalSize?: number; optimized?: boolean };
 
 const AdminCities = () => {
   const { t } = useTranslation();
@@ -18,6 +21,65 @@ const AdminCities = () => {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [form, setForm] = useState({ name_en: '', name_ru: '', slug: '', description_en: '', description_ru: '', cover_image: '' });
+  const [imageMeta, setImageMeta] = useState<ImageMeta | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [optimizing, setOptimizing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const coverUrl = form.cover_image;
+
+  useEffect(() => {
+    if (!coverUrl) { setImageMeta(null); return; }
+    let active = true;
+    if (imageMeta) return;
+    getRemoteSize(coverUrl).then(size => { if (active) setImageMeta(prev => prev ?? { size }); });
+    return () => { active = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coverUrl]);
+
+  const uploadCover = async (file: File) => {
+    setUploading(true);
+    try {
+      const ext = file.name.split('.').pop();
+      const path = `cities/${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage.from('tour-images').upload(path, file);
+      if (error) throw error;
+      const { data: urlData } = supabase.storage.from('tour-images').getPublicUrl(path);
+      setForm(f => ({ ...f, cover_image: urlData.publicUrl }));
+      setImageMeta({ size: file.size });
+      toast.success('Фото загружено');
+    } catch (e: any) {
+      toast.error(e.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const optimizeCover = async () => {
+    if (!coverUrl) return;
+    setOptimizing(true);
+    try {
+      const res = await fetch(coverUrl);
+      if (!res.ok) throw new Error('Не удалось загрузить изображение');
+      const original = await res.blob();
+      const originalSize = imageMeta?.originalSize ?? imageMeta?.size ?? original.size;
+      const { blob, type, ext } = await compressImage(original, MAX_IMAGE_BYTES);
+
+      const path = `cities/${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage.from('tour-images').upload(path, blob, { contentType: type });
+      if (error) throw error;
+      const { data: urlData } = supabase.storage.from('tour-images').getPublicUrl(path);
+
+      setForm(f => ({ ...f, cover_image: urlData.publicUrl }));
+      setImageMeta({ size: blob.size, originalSize, optimized: true });
+      toast.success(`Изображение успешно оптимизировано: ${formatBytes(originalSize)} → ${formatBytes(blob.size)}`);
+    } catch (e: any) {
+      toast.error(e.message || 'Ошибка оптимизации');
+    } finally {
+      setOptimizing(false);
+    }
+  };
+
 
   const { data: cities, isLoading } = useQuery({
     queryKey: ['admin-cities'],
