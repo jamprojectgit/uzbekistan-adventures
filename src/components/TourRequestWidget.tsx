@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { CalendarIcon, MapPin, Users, Clock, MessageCircle, Send } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
 import PaymentNote from '@/components/PaymentNote';
 
 
@@ -31,13 +29,12 @@ const timeSlots = Array.from({ length: 28 }, (_, i) => {
   return `${h}:${minute}`;
 });
 
-const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: TourRequestWidgetProps) => {
+const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1 }: TourRequestWidgetProps) => {
   const { t } = useTranslation();
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState('');
   const [travelers, setTravelers] = useState(1);
   const [pickup, setPickup] = useState('');
-  const [loading, setLoading] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   const groupSize = Math.max(1, priceGroupSize || 1);
