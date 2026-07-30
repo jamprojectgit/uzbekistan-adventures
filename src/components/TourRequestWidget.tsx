@@ -55,39 +55,12 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
     });
   };
 
-  const saveAndOpen = (channel: 'whatsapp' | 'telegram') => {
-    if (!date || !time || !pickup) {
-      toast.error(t('booking.fillAllFields'));
-      return;
-    }
+  const msg = encodeURIComponent(buildMessage());
+  const waUrl = `https://wa.me/${PHONE}?text=${msg}`;
+  const tgUrl = `https://t.me/+${PHONE}?text=${msg}`;
 
-    const msg = encodeURIComponent(buildMessage());
-    const url =
-      channel === 'whatsapp'
-        ? `https://wa.me/${PHONE}?text=${msg}`
-        : `https://t.me/+${PHONE}?text=${msg}`;
-
-    // Open synchronously inside the user gesture (Safari blocks window.open after await)
-    window.open(url, '_blank', 'noopener,noreferrer');
-
-    try {
-      (window as any).ym?.(108500728, 'reachGoal', channel === 'whatsapp' ? 'whatsapp_click' : 'telegram_click');
-    } catch {}
-
-    // Persist in background — does not gate the redirect
-    void supabase
-      .from('tour_requests')
-      .insert({
-        tour_id: tourId,
-        tour_title: tourTitle,
-        date: format(date, 'yyyy-MM-dd'),
-        time,
-        travelers,
-        pickup_location: pickup,
-      })
-      .then(({ error }) => {
-        if (error) console.error('Error saving tour request:', error);
-      });
+  const trackGoal = (goal: string) => {
+    try { (window as any).ym?.(108500728, 'reachGoal', goal); } catch {}
   };
 
   const isValid = date && time && pickup;
