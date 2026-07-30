@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { CalendarIcon, MapPin, Users, Clock, MessageCircle, Send } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
 import PaymentNote from '@/components/PaymentNote';
 
 
@@ -31,13 +29,12 @@ const timeSlots = Array.from({ length: 28 }, (_, i) => {
   return `${h}:${minute}`;
 });
 
-const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: TourRequestWidgetProps) => {
+const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1 }: TourRequestWidgetProps) => {
   const { t } = useTranslation();
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState('');
   const [travelers, setTravelers] = useState(1);
   const [pickup, setPickup] = useState('');
-  const [loading, setLoading] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   const groupSize = Math.max(1, priceGroupSize || 1);
@@ -55,39 +52,12 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
     });
   };
 
-  const saveAndOpen = (channel: 'whatsapp' | 'telegram') => {
-    if (!date || !time || !pickup) {
-      toast.error(t('booking.fillAllFields'));
-      return;
-    }
+  const msg = encodeURIComponent(buildMessage());
+  const waUrl = `https://wa.me/${PHONE}?text=${msg}`;
+  const tgUrl = `https://t.me/+${PHONE}?text=${msg}`;
 
-    const msg = encodeURIComponent(buildMessage());
-    const url =
-      channel === 'whatsapp'
-        ? `https://wa.me/${PHONE}?text=${msg}`
-        : `https://t.me/+${PHONE}?text=${msg}`;
-
-    // Open synchronously inside the user gesture (Safari blocks window.open after await)
-    window.open(url, '_blank', 'noopener,noreferrer');
-
-    try {
-      (window as any).ym?.(108500728, 'reachGoal', channel === 'whatsapp' ? 'whatsapp_click' : 'telegram_click');
-    } catch {}
-
-    // Persist in background — does not gate the redirect
-    void supabase
-      .from('tour_requests')
-      .insert({
-        tour_id: tourId,
-        tour_title: tourTitle,
-        date: format(date, 'yyyy-MM-dd'),
-        time,
-        travelers,
-        pickup_location: pickup,
-      })
-      .then(({ error }) => {
-        if (error) console.error('Error saving tour request:', error);
-      });
+  const trackGoal = (goal: string) => {
+    try { (window as any).ym?.(108500728, 'reachGoal', goal); } catch {}
   };
 
   const isValid = date && time && pickup;
@@ -204,20 +174,38 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
         {/* Buttons */}
         <div className="space-y-3 pt-2">
           <Button
+            asChild={!!isValid}
             className="w-full h-12 text-base font-semibold bg-[#25D366] hover:bg-[#1da851] text-white"
-            disabled={!isValid || loading}
-            onClick={() => saveAndOpen('whatsapp')}
+            disabled={!isValid}
           >
-            <MessageCircle className="h-5 w-5 mr-2" />
-            WhatsApp
+            {isValid ? (
+              <a href={waUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('whatsapp_click')}>
+                <MessageCircle className="h-5 w-5 mr-2" />
+                WhatsApp
+              </a>
+            ) : (
+              <span>
+                <MessageCircle className="h-5 w-5 mr-2" />
+                WhatsApp
+              </span>
+            )}
           </Button>
           <Button
+            asChild={!!isValid}
             className="w-full h-12 text-base font-semibold bg-[#0088cc] hover:bg-[#006da3] text-white"
-            disabled={!isValid || loading}
-            onClick={() => saveAndOpen('telegram')}
+            disabled={!isValid}
           >
-            <Send className="h-5 w-5 mr-2" />
-            Telegram
+            {isValid ? (
+              <a href={tgUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click')}>
+                <Send className="h-5 w-5 mr-2" />
+                Telegram
+              </a>
+            ) : (
+              <span>
+                <Send className="h-5 w-5 mr-2" />
+                Telegram
+              </span>
+            )}
           </Button>
         </div>
       </CardContent>
