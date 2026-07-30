@@ -177,20 +177,38 @@ const TourRequestWidget = ({ tourId, tourTitle, price, priceGroupSize = 1 }: Tou
         {/* Buttons */}
         <div className="space-y-3 pt-2">
           <Button
+            asChild={!!isValid}
             className="w-full h-12 text-base font-semibold bg-[#25D366] hover:bg-[#1da851] text-white"
-            disabled={!isValid || loading}
-            onClick={() => saveAndOpen('whatsapp')}
+            disabled={!isValid}
           >
-            <MessageCircle className="h-5 w-5 mr-2" />
-            WhatsApp
+            {isValid ? (
+              <a href={waUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('whatsapp_click')}>
+                <MessageCircle className="h-5 w-5 mr-2" />
+                WhatsApp
+              </a>
+            ) : (
+              <span>
+                <MessageCircle className="h-5 w-5 mr-2" />
+                WhatsApp
+              </span>
+            )}
           </Button>
           <Button
+            asChild={!!isValid}
             className="w-full h-12 text-base font-semibold bg-[#0088cc] hover:bg-[#006da3] text-white"
-            disabled={!isValid || loading}
-            onClick={() => saveAndOpen('telegram')}
+            disabled={!isValid}
           >
-            <Send className="h-5 w-5 mr-2" />
-            Telegram
+            {isValid ? (
+              <a href={tgUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackGoal('telegram_click')}>
+                <Send className="h-5 w-5 mr-2" />
+                Telegram
+              </a>
+            ) : (
+              <span>
+                <Send className="h-5 w-5 mr-2" />
+                Telegram
+              </span>
+            )}
           </Button>
         </div>
       </CardContent>
