@@ -29,7 +29,7 @@ const TourDetail = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('tours')
-        .select('*, cities(name, slug)')
+        .select('*, cities(name, slug), tour_price_tiers(*)')
         .eq('slug', slug)
         .single();
       if (error) throw error;

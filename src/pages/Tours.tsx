@@ -29,7 +29,7 @@ const Tours = () => {
   const { data: allTours, isLoading } = useQuery({
     queryKey: ['tours', cityFilter],
     queryFn: async () => {
-      let query = supabase.from('tours').select('*, cities(name, slug)').order('order_number', { ascending: true, nullsFirst: false });
+      let query = supabase.from('tours').select('*, cities(name, slug), tour_price_tiers(*)').order('order_number', { ascending: true, nullsFirst: false });
       if (cityFilter) {
         const city = cities?.find(c => c.slug === cityFilter);
         if (city) query = query.eq('city_id', city.id);
