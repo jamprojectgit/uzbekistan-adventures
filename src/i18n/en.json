@@ -47,7 +47,12 @@
     "itinerary": "Itinerary",
     "from": "From",
     "notFound": "Tour not found",
-    "availableTours": "Available Tours"
+    "availableTours": "Available Tours",
+    "perGroup": "per group",
+    "groupPricing": "Group Pricing",
+    "travelersCol": "Travelers",
+    "priceCol": "Price",
+    "priceOnRequest": "Price on request"
   },
   "cities": {
     "title": "Explore Cities",
