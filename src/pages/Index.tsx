@@ -29,7 +29,7 @@ const Index = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('tours')
-        .select('*, cities(name)')
+        .select('*, cities(name), tour_price_tiers(*)')
         .order('order_number', { ascending: true, nullsFirst: false })
         .limit(6);
       if (error) throw error;

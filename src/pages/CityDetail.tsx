@@ -34,7 +34,7 @@ const CityDetail = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('tours')
-        .select('*, cities(name)')
+        .select('*, cities(name), tour_price_tiers(*)')
         .eq('city_id', city!.id)
         .order('order_number', { ascending: true, nullsFirst: false });
       if (error) throw error;

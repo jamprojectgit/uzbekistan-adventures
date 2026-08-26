@@ -103,6 +103,44 @@ export type Database = {
         }
         Relationships: []
       }
+      tour_price_tiers: {
+        Row: {
+          created_at: string
+          id: string
+          max_people: number
+          min_people: number
+          price: number
+          tour_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          max_people: number
+          min_people: number
+          price?: number
+          tour_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          max_people?: number
+          min_people?: number
+          price?: number
+          tour_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tour_price_tiers_tour_id_fkey"
+            columns: ["tour_id"]
+            isOneToOne: false
+            referencedRelation: "tours"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tour_requests: {
         Row: {
           created_at: string
@@ -152,6 +190,7 @@ export type Database = {
           order_number: number | null
           price: number
           price_group_size: number
+          pricing_type: string
           slug: string
           title: Json
         }
@@ -170,6 +209,7 @@ export type Database = {
           order_number?: number | null
           price?: number
           price_group_size?: number
+          pricing_type?: string
           slug: string
           title?: Json
         }
@@ -188,6 +228,7 @@ export type Database = {
           order_number?: number | null
           price?: number
           price_group_size?: number
+          pricing_type?: string
           slug?: string
           title?: Json
         }

@@ -47,7 +47,12 @@
     "itinerary": "Маршрут",
     "from": "От",
     "notFound": "Тур не найден",
-    "availableTours": "Доступные туры"
+    "availableTours": "Доступные туры",
+    "perGroup": "за группу",
+    "groupPricing": "Групповые цены",
+    "travelersCol": "Путешественники",
+    "priceCol": "Цена",
+    "priceOnRequest": "Цена по запросу"
   },
   "cities": {
     "title": "Города",
