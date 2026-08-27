@@ -11,6 +11,7 @@ import { CalendarIcon, MapPin, Users, Clock, MessageCircle, Send } from 'lucide-
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import PaymentNote from '@/components/PaymentNote';
+import { calcTotalPrice, getDisplayPrice, getPriceLabel, type PriceTier } from '@/lib/price-utils';
 
 
 interface TourRequestWidgetProps {
@@ -18,6 +19,8 @@ interface TourRequestWidgetProps {
   tourTitle: string;
   price: number;
   priceGroupSize?: number;
+  pricingType?: string | null;
+  tiers?: PriceTier[] | null;
 }
 
 const PHONE = '998990152110';
@@ -29,7 +32,7 @@ const timeSlots = Array.from({ length: 28 }, (_, i) => {
   return `${h}:${minute}`;
 });
 
-const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1 }: TourRequestWidgetProps) => {
+const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1, pricingType, tiers }: TourRequestWidgetProps) => {
   const { t } = useTranslation();
   const [date, setDate] = useState<Date>();
   const [time, setTime] = useState('');
@@ -37,9 +40,9 @@ const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1 }: TourRequest
   const [pickup, setPickup] = useState('');
   const [calendarOpen, setCalendarOpen] = useState(false);
 
-  const groupSize = Math.max(1, priceGroupSize || 1);
-  const groups = Math.ceil(travelers / groupSize);
-  const totalPrice = groups * price;
+  const displayPrice = getDisplayPrice({ pricingType, price, tiers });
+  const priceLabel = getPriceLabel(t, priceGroupSize, pricingType);
+  const totalPrice = calcTotalPrice({ pricingType, price, priceGroupSize, tiers, travelers });
 
   const buildMessage = () => {
     return t('contact.tourRequestMessage', {
@@ -48,7 +51,7 @@ const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1 }: TourRequest
       time,
       travelers,
       pickup,
-      total: totalPrice,
+      total: totalPrice ?? t('tours.priceOnRequest'),
     });
   };
 
@@ -67,10 +70,8 @@ const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1 }: TourRequest
       {/* Price header */}
       <div className="bg-primary px-6 py-4">
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-bold text-primary-foreground">${price}</span>
-          <span className="text-primary-foreground/80 text-sm">
-            {groupSize > 1 ? t('tours.forUpTo', { count: groupSize }) : t('tours.perPerson')}
-          </span>
+          <span className="text-3xl font-bold text-primary-foreground">${displayPrice}</span>
+          <span className="text-primary-foreground/80 text-sm">{priceLabel}</span>
         </div>
         <PaymentNote className="text-primary-foreground/80" />
       </div>
@@ -165,7 +166,9 @@ const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1 }: TourRequest
         <div className="pt-3 border-t border-border">
           <div className="flex items-center justify-between">
             <span className="text-sm font-semibold">{t('booking.totalPrice')}</span>
-            <span className="text-xl font-bold text-primary">${totalPrice}</span>
+            <span className="text-xl font-bold text-primary">
+              {totalPrice === null ? t('tours.priceOnRequest') : `$${totalPrice}`}
+            </span>
           </div>
           <PaymentNote />
         </div>
