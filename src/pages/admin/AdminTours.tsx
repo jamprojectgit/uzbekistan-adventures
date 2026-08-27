@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { useState, useRef } from 'react';
 import { Pencil, Trash2, Plus, Upload, X, ImageIcon, Zap, Check, Loader2 } from 'lucide-react';
 import { formatBytes, compressImage, getRemoteSize, MAX_IMAGE_BYTES } from '@/lib/image-utils';
+import { sortTiers, validateTiers, getPricingType, type PriceTier } from '@/lib/price-utils';
 
 type ImageMeta = { size: number; originalSize?: number; optimized?: boolean };
 
@@ -26,6 +27,8 @@ const AdminTours = () => {
   const [optimizing, setOptimizing] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [pricingType, setPricingType] = useState<'per_person' | 'per_group'>('per_person');
+  const [tiers, setTiers] = useState<PriceTier[]>([]);
 
   const [form, setForm] = useState({
     title_en: '', title_ru: '',
@@ -44,7 +47,7 @@ const AdminTours = () => {
   const { data: tours, isLoading } = useQuery({
     queryKey: ['admin-tours'],
     queryFn: async () => {
-      const { data, error } = await supabase.from('tours').select('*, cities(name)').order('order_number', { ascending: true, nullsFirst: false });
+      const { data, error } = await supabase.from('tours').select('*, cities(name), tour_price_tiers(*)').order('order_number', { ascending: true, nullsFirst: false });
       if (error) throw error;
       return data;
     },
@@ -142,14 +145,39 @@ const AdminTours = () => {
         city_id: form.city_id || null,
         order_number: form.order_number === '' ? null : Number(form.order_number),
         price_group_size: Math.max(1, Number(form.price_group_size) || 1),
+        pricing_type: pricingType,
         images,
       };
+
+      const normalized = tiers.map(tr => ({
+        min_people: Number(tr.min_people) || 0,
+        max_people: Number(tr.max_people) || 0,
+        price: Number(tr.price) || 0,
+      }));
+      if (pricingType === 'per_group') {
+        const err = validateTiers(normalized);
+        if (err) throw new Error(err);
+      }
+
+      let tourId = editing?.id as string | undefined;
       if (editing) {
         const { error } = await supabase.from('tours').update(payload).eq('id', editing.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('tours').insert(payload);
+        const { data, error } = await supabase.from('tours').insert(payload).select('id').single();
         if (error) throw error;
+        tourId = data.id;
+      }
+
+      if (tourId) {
+        const { error: delError } = await supabase.from('tour_price_tiers').delete().eq('tour_id', tourId);
+        if (delError) throw delError;
+        if (pricingType === 'per_group' && normalized.length) {
+          const { error: insError } = await supabase
+            .from('tour_price_tiers')
+            .insert(normalized.map(tr => ({ ...tr, tour_id: tourId! })));
+          if (insError) throw insError;
+        }
       }
     },
     onSuccess: () => {
@@ -174,6 +202,8 @@ const AdminTours = () => {
     setForm({ title_en: '', title_ru: '', slug: '', description_en: '', description_ru: '', itinerary_en: '', itinerary_ru: '', included_en: '', included_ru: '', excluded_en: '', excluded_ru: '', price: 0, duration: 1, duration_value: 1, duration_unit: 'days', city_id: '', order_number: '', price_group_size: 1 });
     setImages([]);
     setImageMeta({});
+    setPricingType('per_person');
+    setTiers([]);
     setEditing(null);
   };
 
@@ -199,6 +229,10 @@ const AdminTours = () => {
       order_number: tour.order_number ?? '',
       price_group_size: (tour as any).price_group_size ?? 1,
     });
+    setPricingType(getPricingType(tour.pricing_type));
+    setTiers(sortTiers((tour.tour_price_tiers || []) as PriceTier[]).map((tr: PriceTier) => ({
+      min_people: tr.min_people, max_people: tr.max_people, price: tr.price,
+    })));
     setImages(tour.images || []);
     setImageMeta({});
     if (tour.images?.length) loadSizes(tour.images);
@@ -245,7 +279,54 @@ const AdminTours = () => {
                 </div>
                 <div><Label>Order №</Label><Input type="number" value={form.order_number} onChange={e => setForm(f => ({...f, order_number: e.target.value === '' ? '' : parseInt(e.target.value)}))} placeholder="—" /></div>
               </div>
-              <div><Label>Price applies to (travelers)</Label><Input type="number" min={1} value={form.price_group_size} onChange={e => setForm(f => ({...f, price_group_size: Math.max(1, parseInt(e.target.value) || 1)}))} /></div>
+              <div>
+                <Label>Pricing type</Label>
+                <Select value={pricingType} onValueChange={v => setPricingType(v as 'per_person' | 'per_group')}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="per_person">Per Person</SelectItem>
+                    <SelectItem value="per_group">Per Group</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {pricingType === 'per_person' ? (
+                <div><Label>Price applies to (travelers)</Label><Input type="number" min={1} value={form.price_group_size} onChange={e => setForm(f => ({...f, price_group_size: Math.max(1, parseInt(e.target.value) || 1)}))} /></div>
+              ) : (
+                <div className="space-y-2 rounded-lg border border-border p-3">
+                  <Label>Group pricing ranges</Label>
+                  {tiers.length === 0 && <p className="text-xs text-muted-foreground">Диапазоны не заданы</p>}
+                  {tiers.map((tier, i) => (
+                    <div key={i} className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 items-end">
+                      <div>
+                        <Label className="text-xs">From</Label>
+                        <Input type="number" min={1} value={tier.min_people}
+                          onChange={e => setTiers(prev => prev.map((tr, idx) => idx === i ? { ...tr, min_people: parseInt(e.target.value) || 0 } : tr))} />
+                      </div>
+                      <div>
+                        <Label className="text-xs">To</Label>
+                        <Input type="number" min={1} value={tier.max_people}
+                          onChange={e => setTiers(prev => prev.map((tr, idx) => idx === i ? { ...tr, max_people: parseInt(e.target.value) || 0 } : tr))} />
+                      </div>
+                      <div>
+                        <Label className="text-xs">Price ($)</Label>
+                        <Input type="number" min={0} value={tier.price}
+                          onChange={e => setTiers(prev => prev.map((tr, idx) => idx === i ? { ...tr, price: parseInt(e.target.value) || 0 } : tr))} />
+                      </div>
+                      <Button type="button" variant="ghost" size="icon" onClick={() => setTiers(prev => prev.filter((_, idx) => idx !== i))}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                  <Button type="button" variant="outline" size="sm" onClick={() => setTiers(prev => {
+                    const last = prev[prev.length - 1];
+                    const start = last ? last.max_people + 1 : 1;
+                    return [...prev, { min_people: start, max_people: start, price: 0 }];
+                  })}>
+                    <Plus className="h-4 w-4 mr-1" /> Add pricing rule
+                  </Button>
+                </div>
+              )}
               <div>
                 <Label>City</Label>
                 <Select value={form.city_id} onValueChange={v => setForm(f => ({...f, city_id: v}))}>
