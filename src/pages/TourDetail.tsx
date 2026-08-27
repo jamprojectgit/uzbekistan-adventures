@@ -13,7 +13,7 @@ const TourRequestWidget = lazy(() => import('@/components/TourRequestWidget'));
 import { Button } from '@/components/ui/button';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
-import { getPriceLabel } from '@/lib/price-utils';
+import { getPriceLabel, getDisplayPrice, sortTiers, formatTierRange, getPricingType, type PriceTier } from '@/lib/price-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
 import ShareButton from '@/components/ShareButton';
 import PaymentNote from '@/components/PaymentNote';
@@ -65,6 +65,9 @@ const TourDetail = () => {
   const included = getLocalizedArray(tour.included);
   const excluded = getLocalizedArray(tour.excluded);
   const cityName = tour.cities ? getLocalizedText(tour.cities.name) : '';
+  const tiers = sortTiers(((tour as any).tour_price_tiers || []) as PriceTier[]);
+  const pricingType = getPricingType((tour as any).pricing_type);
+  const displayPrice = getDisplayPrice({ pricingType, price: tour.price, tiers });
 
   return (
     <Layout>
@@ -136,12 +139,37 @@ const TourDetail = () => {
               <div className="flex flex-wrap items-center gap-3 md:gap-4 text-muted-foreground mb-5">
                 {cityName && <span className="flex items-center gap-1.5 text-sm"><MapPin className="h-4 w-4" /> {cityName}</span>}
                 <span className="flex items-center gap-1.5 text-sm"><Clock className="h-4 w-4" /> {formatDuration(tour.duration_value ?? tour.duration, tour.duration_unit ?? 'days')}</span>
-                <span className="font-bold text-primary text-lg">${tour.price} {getPriceLabel(t, (tour as any).price_group_size)}</span>
+                <span className="font-bold text-primary text-lg">${displayPrice} {getPriceLabel(t, (tour as any).price_group_size, pricingType)}</span>
               </div>
               <PaymentNote className="-mt-4 mb-5" />
               <p className="text-foreground leading-relaxed whitespace-pre-wrap text-[0.938rem]">{desc}</p>
 
             </div>
+
+            {pricingType === 'per_group' && tiers.length > 0 && (
+              <div>
+                <h2 className="text-xl font-semibold mb-4 pb-2 border-b border-border">{t('tours.groupPricing')}</h2>
+                <div className="overflow-hidden rounded-lg border border-border">
+                  <table className="w-full text-sm">
+                    <thead className="bg-muted">
+                      <tr>
+                        <th className="text-left px-4 py-2.5 font-semibold">{t('tours.travelersCol')}</th>
+                        <th className="text-right px-4 py-2.5 font-semibold">{t('tours.priceCol')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tiers.map((tier, i) => (
+                        <tr key={i} className="border-t border-border">
+                          <td className="px-4 py-2.5">{formatTierRange(tier)}</td>
+                          <td className="px-4 py-2.5 text-right font-semibold text-primary">${tier.price}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <PaymentNote />
+              </div>
+            )}
 
             {itinerary && (
               <div>
@@ -188,6 +216,8 @@ const TourDetail = () => {
                   tourTitle={title}
                   price={tour.price}
                   priceGroupSize={(tour as any).price_group_size ?? 1}
+                  pricingType={pricingType}
+                  tiers={tiers}
                 />
               </Suspense>
             </div>
