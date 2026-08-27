@@ -13,7 +13,7 @@ const TourRequestWidget = lazy(() => import('@/components/TourRequestWidget'));
 import { Button } from '@/components/ui/button';
 import { getLocalizedText, getLocalizedArray } from '@/lib/i18n-utils';
 import { formatDuration } from '@/lib/duration-utils';
-import { getPriceLabel, getDisplayPrice, sortTiers, formatTierRange, getPricingType, type PriceTier } from '@/lib/price-utils';
+import { getPriceLabel, getDisplayPrice, sortTiers, getPricingType, type PriceTier } from '@/lib/price-utils';
 import { ArrowLeft, MapPin, Clock, CheckCircle, XCircle } from 'lucide-react';
 import ShareButton from '@/components/ShareButton';
 import PaymentNote from '@/components/PaymentNote';
@@ -146,30 +146,6 @@ const TourDetail = () => {
 
             </div>
 
-            {pricingType === 'per_group' && tiers.length > 0 && (
-              <div>
-                <h2 className="text-xl font-semibold mb-4 pb-2 border-b border-border">{t('tours.groupPricing')}</h2>
-                <div className="overflow-hidden rounded-lg border border-border">
-                  <table className="w-full text-sm">
-                    <thead className="bg-muted">
-                      <tr>
-                        <th className="text-left px-4 py-2.5 font-semibold">{t('tours.travelersCol')}</th>
-                        <th className="text-right px-4 py-2.5 font-semibold">{t('tours.priceCol')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {tiers.map((tier, i) => (
-                        <tr key={i} className="border-t border-border">
-                          <td className="px-4 py-2.5">{formatTierRange(tier)}</td>
-                          <td className="px-4 py-2.5 text-right font-semibold text-primary">${tier.price}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <PaymentNote />
-              </div>
-            )}
 
             {itinerary && (
               <div>

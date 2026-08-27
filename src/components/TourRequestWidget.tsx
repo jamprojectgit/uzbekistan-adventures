@@ -11,7 +11,7 @@ import { CalendarIcon, MapPin, Users, Clock, MessageCircle, Send } from 'lucide-
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import PaymentNote from '@/components/PaymentNote';
-import { calcTotalPrice, getDisplayPrice, getPriceLabel, type PriceTier } from '@/lib/price-utils';
+import { calcTotalPrice, getDisplayPrice, getPriceLabel, formatTierRange, type PriceTier } from '@/lib/price-utils';
 
 
 interface TourRequestWidgetProps {
@@ -75,6 +75,22 @@ const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1, pricingType, 
         </div>
         <PaymentNote className="text-primary-foreground/80" />
       </div>
+
+      {pricingType === 'per_group' && tiers && tiers.length > 0 && (
+        <div className="px-6 py-3 bg-primary/5 border-b border-border/60">
+          <p className="text-xs font-semibold text-muted-foreground mb-2">{t('tours.groupPricing')}</p>
+          <ul className="space-y-1">
+            {tiers.map((tier, i) => (
+              <li key={i} className="flex items-center justify-between text-sm">
+                <span className="text-foreground">{formatTierRange(tier)} {t('booking.people')}</span>
+                <span className="font-semibold text-primary">${tier.price}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+
 
 
       <CardContent className="p-6 space-y-5">
