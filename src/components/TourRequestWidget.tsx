@@ -79,13 +79,30 @@ const TourRequestWidget = ({ tourTitle, price, priceGroupSize = 1, pricingType, 
       {pricingType === 'per_group' && tiers && tiers.length > 0 && (
         <div className="px-6 py-3 bg-primary/5 border-b border-border/60">
           <p className="text-xs font-semibold text-muted-foreground mb-2">{t('tours.groupPricing')}</p>
-          <ul className="space-y-1">
-            {tiers.map((tier, i) => (
-              <li key={i} className="flex items-center justify-between text-sm">
-                <span className="text-foreground">{formatTierRange(tier)} {t('booking.people')}</span>
-                <span className="font-semibold text-primary">${tier.price}</span>
-              </li>
-            ))}
+          <ul className="divide-y divide-border/60">
+            {tiers.map((tier, i) => {
+              const isActive = travelers >= tier.min_people && travelers <= tier.max_people;
+              return (
+                <li key={i}>
+                  <button
+                    type="button"
+                    onClick={() => setTravelers(tier.min_people)}
+                    className={cn(
+                      'w-full flex items-center justify-between min-h-11 py-2.5 px-3 -mx-3 rounded-md text-left cursor-pointer transition-colors',
+                      isActive ? 'bg-primary/15 text-foreground' : 'hover:bg-primary/10'
+                    )}
+                    aria-pressed={isActive}
+                  >
+                    <span className={cn('text-sm', isActive && 'font-semibold')}>
+                      {formatTierRange(tier)} {t('booking.people')}
+                    </span>
+                    <span className={cn('font-semibold text-primary text-sm', isActive && 'font-bold')}>
+                      ${tier.price}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
