@@ -128,7 +128,7 @@ async function collectRoutes() {
   const [cities, tours, transfers, trains] = await Promise.all([
     select('cities', 'select=slug,name,description,cover_image'),
     select('tours', 'select=slug,title,description,images,price,price_group_size,duration,cities(name,slug)'),
-    select('transfers', 'select=from_city,to_city&status=eq.published'),
+    select('transfers', 'select=from_city,to_city,vehicle_type,max_passengers,price,currency,description&status=eq.published'),
     select(
       'train_routes',
       'select=from_city,to_city,train_type,departure_time,arrival_time,price,currency,operating_days&status=eq.published',
@@ -214,15 +214,58 @@ async function collectRoutes() {
     });
   }
 
-  const seen = new Set();
+  const transfersBySlug = new Map();
   for (const t of transfers) {
     const slug = `${slugify(t.from_city)}-to-${slugify(t.to_city)}-transfer`;
-    if (seen.has(slug)) continue;
-    seen.add(slug);
+    if (!transfersBySlug.has(slug)) transfersBySlug.set(slug, []);
+    transfersBySlug.get(slug).push(t);
+  }
+  for (const [slug, list] of transfersBySlug) {
+    const t = list[0];
+    const description = `Book a private transfer from ${t.from_city} to ${t.to_city}, Uzbekistan. Choose from sedan, minivan, or minibus options with professional drivers.`;
+    const offers = list
+      .filter((x) => Number(x.price) > 0)
+      .map((x) => ({
+        '@type': 'Offer',
+        price: x.price,
+        priceCurrency: x.currency || 'USD',
+        availability: 'https://schema.org/InStock',
+        url: `${BASE_URL}/transfers/${slug}`,
+        description: `${x.vehicle_type} — up to ${x.max_passengers} passengers`,
+      }));
     routes.push({
       path: `/transfers/${slug}`,
       title: `${t.from_city} to ${t.to_city} Transfer | Private Car Service in Uzbekistan`,
-      description: `Book a private transfer from ${t.from_city} to ${t.to_city}, Uzbekistan. Choose from sedan, minivan, or minibus options with professional drivers.`,
+      description,
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          serviceType: 'Private transfer',
+          name: `${t.from_city} to ${t.to_city} private transfer`,
+          description: truncateAtWord(description, 300),
+          url: `${BASE_URL}/transfers/${slug}`,
+          provider: ORGANIZATION_REF,
+          areaServed: { '@type': 'Country', name: 'Uzbekistan' },
+          ...(offers.length
+            ? {
+                offers: {
+                  '@type': 'AggregateOffer',
+                  priceCurrency: offers[0].priceCurrency,
+                  lowPrice: Math.min(...offers.map((o) => Number(o.price))),
+                  highPrice: Math.max(...offers.map((o) => Number(o.price))),
+                  offerCount: offers.length,
+                  offers,
+                },
+              }
+            : {}),
+        },
+        breadcrumb([
+          { name: 'Home', path: '/' },
+          { name: 'Transfers', path: '/transfers' },
+          { name: `${t.from_city} → ${t.to_city}`, path: `/transfers/${slug}` },
+        ]),
+      ],
     });
   }
 
