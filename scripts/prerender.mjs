@@ -128,7 +128,7 @@ async function collectRoutes() {
   const [cities, tours, transfers, trains] = await Promise.all([
     select('cities', 'select=slug,name,description,cover_image'),
     select('tours', 'select=slug,title,description,images,price,price_group_size,duration,cities(name,slug)'),
-    select('transfers', 'select=from_city,to_city&status=eq.published'),
+    select('transfers', 'select=from_city,to_city,vehicle_type,max_passengers,price,currency,description&status=eq.published'),
     select(
       'train_routes',
       'select=from_city,to_city,train_type,departure_time,arrival_time,price,currency,operating_days&status=eq.published',
