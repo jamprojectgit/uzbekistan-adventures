@@ -7,7 +7,7 @@ import ContactButtons from '@/components/ContactButtons';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Car, MapPin, Users, Briefcase } from 'lucide-react';
-import { Link } from '@/components/LocalizedLink';
+import { Link } from 'react-router-dom';
 
 interface Transfer {
   id: string;

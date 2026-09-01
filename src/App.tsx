@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { lazy, Suspense } from "react";
-import LanguageSync from "@/components/LanguageSync";
 
 // Eagerly load the homepage for fastest FCP
 import Index from "./pages/Index";
@@ -38,22 +37,6 @@ const PageFallback = () => (
   </div>
 );
 
-/** Public pages, rendered once at "/" (Russian) and once at "/en" (English). */
-const publicRoutes = (
-  <>
-    <Route index element={<Index />} />
-    <Route path="tours" element={<Tours />} />
-    <Route path="tours/:slug" element={<TourDetail />} />
-    <Route path="cities" element={<Cities />} />
-    <Route path="cities/:slug" element={<CityDetail />} />
-    {/* My Bookings hidden from public - admin can still access */}
-    <Route path="transfers" element={<Transfers />} />
-    <Route path="transfers/:routeSlug" element={<TransferDetail />} />
-    <Route path="train-tickets" element={<TrainTickets />} />
-    <Route path="train-tickets/:routeSlug" element={<TrainRouteDetail />} />
-  </>
-);
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -61,11 +44,18 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <LanguageSync />
           <Suspense fallback={<PageFallback />}>
             <Routes>
-              <Route path="/">{publicRoutes}</Route>
-              <Route path="/en">{publicRoutes}</Route>
+              <Route path="/" element={<Index />} />
+              <Route path="/tours" element={<Tours />} />
+              <Route path="/tours/:slug" element={<TourDetail />} />
+              <Route path="/cities" element={<Cities />} />
+              <Route path="/cities/:slug" element={<CityDetail />} />
+              {/* My Bookings hidden from public - admin can still access */}
+              <Route path="/transfers" element={<Transfers />} />
+              <Route path="/transfers/:routeSlug" element={<TransferDetail />} />
+              <Route path="/train-tickets" element={<TrainTickets />} />
+              <Route path="/train-tickets/:routeSlug" element={<TrainRouteDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/admin" element={<AdminLayout />}>

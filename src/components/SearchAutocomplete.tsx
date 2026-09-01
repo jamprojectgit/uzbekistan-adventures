@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useLocalizedPath } from '@/lib/locale-path';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
@@ -24,7 +23,6 @@ interface SearchAutocompleteProps {
 const SearchAutocomplete = ({ value, onChange, onNavigate }: SearchAutocompleteProps) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const localize = useLocalizedPath();
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -110,9 +108,9 @@ const SearchAutocomplete = ({ value, onChange, onNavigate }: SearchAutocompleteP
     setOpen(false);
     onChange('');
     if (result.type === 'tour') {
-      navigate(localize(`/tours/${result.slug}`));
+      navigate(`/tours/${result.slug}`);
     } else {
-      navigate(localize(`/tours?city=${result.slug}`));
+      navigate(`/tours?city=${result.slug}`);
     }
     onNavigate?.();
   };

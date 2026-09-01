@@ -10,7 +10,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
-import { Link } from '@/components/LocalizedLink';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import PaymentNote from '@/components/PaymentNote';
 

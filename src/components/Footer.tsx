@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from '@/components/LocalizedLink';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { Link } from '@/components/LocalizedLink';
+import { Link } from 'react-router-dom';
 import {
   Breadcrumb,
   BreadcrumbList,
