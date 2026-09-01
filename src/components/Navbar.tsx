@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Globe, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { langFromPath, stripLangPrefix, withLang } from '@/lib/locale-path';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();

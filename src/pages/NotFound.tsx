@@ -1,4 +1,5 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import { useEffect } from "react";
 import Layout from "@/components/Layout";
 
