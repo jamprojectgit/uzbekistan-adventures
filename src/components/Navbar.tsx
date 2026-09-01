@@ -4,6 +4,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Globe, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { langFromPath, stripLangPrefix, withLang } from '@/lib/locale-path';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
