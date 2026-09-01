@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@/components/LocalizedLink';
 import OptimizedImage from '@/components/OptimizedImage';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
