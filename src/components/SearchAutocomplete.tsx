@@ -24,6 +24,7 @@ interface SearchAutocompleteProps {
 const SearchAutocomplete = ({ value, onChange, onNavigate }: SearchAutocompleteProps) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const localize = useLocalizedPath();
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
