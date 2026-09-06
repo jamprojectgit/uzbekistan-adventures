@@ -38,19 +38,15 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={toggleLang} title="Switch language">
-            <Globe className="h-4 w-4" />
-          </Button>
+          <LanguageSwitcher />
           {user && (
             <Button variant="outline" size="sm" onClick={signOut}>{t('nav.logout')}</Button>
           )}
         </div>
 
         {/* Mobile toggle */}
-        <div className="flex items-center gap-1 md:hidden">
-          <Button variant="ghost" size="icon" onClick={toggleLang} title="Switch language">
-            <Globe className="h-4 w-4" />
-          </Button>
+        <div className="flex items-center gap-2 md:hidden">
+          <LanguageSwitcher />
           <Button variant="ghost" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
@@ -62,10 +58,14 @@ const Navbar = () => {
         <div className="md:hidden border-t border-border bg-background px-4 py-4 flex flex-col gap-4 text-sm font-medium">
           {navLinks}
           <div className="flex items-center gap-3 pt-2 border-t border-border">
+            <LanguageSwitcher onChanged={() => setMobileOpen(false)} />
             {user && (
               <Button variant="outline" size="sm" onClick={() => { signOut(); setMobileOpen(false); }}>{t('nav.logout')}</Button>
             )}
           </div>
+        </div>
+      )}
+
         </div>
       )}
     </nav>
