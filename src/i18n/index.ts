@@ -14,11 +14,15 @@ i18n
     },
     fallbackLng: 'en',
     supportedLngs: ['en', 'ru'],
+    load: 'languageOnly',
+    nonExplicitSupportedLngs: true,
     interpolation: { escapeValue: false },
     detection: {
-      order: ['path', 'localStorage', 'navigator'],
-      lookupFromPathIndex: 0,
+      order: ['localStorage', 'navigator'],
+      lookupLocalStorage: 'i18nextLng',
+      caches: ['localStorage'],
     },
+
   });
 
 export default i18n;
